@@ -36,6 +36,7 @@ private val previewRoutes = listOf(
     PreviewRoute("发现", "趋势发现", "热门内容与趋势"),
     PreviewRoute("发现", "搜索", "搜索作品、用户与商品"),
     PreviewRoute("发现", "内容详情", "作品、作者与评论"),
+    PreviewRoute("创作", "内容发布", "图片、正文、话题与可见范围"),
     PreviewRoute("社区", "圈子首页", "兴趣动态与同好交流"),
     PreviewRoute("社区", "圈子发现", "兴趣圈子推荐"),
     PreviewRoute("社区", "圈子详情", "圈子介绍与动态"),

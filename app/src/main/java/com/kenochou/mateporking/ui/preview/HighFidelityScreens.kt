@@ -735,12 +735,17 @@ private fun CircleDetailScreen() {
 private fun DiscoverHomeScreen() {
     var selectedCategory by remember { mutableStateOf("推荐") }
     var liked by remember { mutableStateOf(setOf<Int>()) }
+    var saved by remember { mutableStateOf(setOf<Int>()) }
+    var followed by remember { mutableStateOf(setOf<Int>()) }
     val categories = listOf("推荐", "插画", "动漫", "手办", "游戏", "穿搭")
     val stories = listOf(Triple("小满", "今日穿搭", Color(0xFFF0C8C4)), Triple("阿澈", "新作发布", Color(0xFFD8D5EC)), Triple("MIO", "逛展日记", Color(0xFFD7E6DB)), Triple("KIKI", "开箱啦", Color(0xFFF1DDA8)), Triple("七七", "摸鱼中", Color(0xFFD9E2EE)))
     val posts = listOf(
         Triple("纸上星河", "原创插画", "把最近画的春日系列整理出来了，想把每一种喜欢都画成自己的小宇宙。"),
         Triple("模型收藏研究所", "手办 / 收藏", "终于等到这只到货！桌面的一角突然变得好幸福。"),
-        Triple("周末漫游计划", "线下活动", "周末去看展吗？整理了一份东京独立插画展路线。")
+        Triple("周末漫游计划", "线下活动", "周末去看展吗？整理了一份东京独立插画展路线。"),
+        Triple("momo 的房间", "桌面改造", "把喜欢的角色和小物件摆在一起，每天回家都像充电。"),
+        Triple("像素汽水", "游戏日常", "最近沉迷像素风独立游戏，这个配色真的太会了。"),
+        Triple("柚子同学", "穿搭灵感", "今天试着把制服感和街头单品混搭了一下。")
     )
     Column(Modifier.fillMaxSize().background(Color(0xFFFFFAF6))) {
         LazyColumn(
@@ -827,31 +832,68 @@ private fun DiscoverHomeScreen() {
                     Text("为你推荐 · 现在", color = Color(0xFFAAA2A8), fontSize = 9.sp)
                 }
             }
-            items(posts.indices.toList()) { index ->
-                val post = posts[index]
-                Surface(color = Color.White, shape = RoundedCornerShape(21.dp)) {
-                    Column(Modifier.padding(13.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Box(Modifier.size(37.dp).clip(CircleShape).background(listOf(Color(0xFFEADCEB), Color(0xFFE8E3D7), Color(0xFFDCE9E2))[index]), contentAlignment = Alignment.Center) { Text(post.first.take(1), color = Color(0xFF514653), fontWeight = FontWeight.Black) }
-                            Spacer(Modifier.width(9.dp))
-                            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                                Text(post.first, color = Color(0xFF302D35), fontSize = 11.sp, fontWeight = FontWeight.Bold)
-                                Text("刚刚 · " + post.second, color = Color(0xFFAAA2A8), fontSize = 8.sp)
+            items(posts.indices.toList().chunked(2)) { rowItems ->
+                Row(horizontalArrangement = Arrangement.spacedBy(11.dp)) {
+                    rowItems.forEach { index ->
+                        val post = posts[index]
+                        Column(Modifier.weight(1f)) {
+                            Surface(color = Color.White, shape = RoundedCornerShape(19.dp)) {
+                                Column {
+                                    Box(
+                                        Modifier.fillMaxWidth()
+                                            .height(if (index % 3 == 0) 174.dp else if (index % 3 == 1) 132.dp else 152.dp)
+                                            .background(
+                                                Brush.linearGradient(
+                                                    when (index % 4) {
+                                                        0 -> listOf(Color(0xFFEADCEB), Color(0xFFD5C9E6))
+                                                        1 -> listOf(Color(0xFFF1E0C9), Color(0xFFE5C8B9))
+                                                        2 -> listOf(Color(0xFFDCE9E2), Color(0xFFBFD5CE))
+                                                        else -> listOf(Color(0xFFDCE3F0), Color(0xFFC6CDE5))
+                                                    }
+                                                )
+                                            ),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        Text(
+                                            listOf("✳", "♡", "◈", "✦", "☁", "★")[index],
+                                            color = Color.White.copy(alpha = .88f),
+                                            fontSize = if (index % 3 == 0) 54.sp else 43.sp,
+                                            fontWeight = FontWeight.Light
+                                        )
+                                        Surface(
+                                            color = Color.White.copy(alpha = .84f),
+                                            shape = RoundedCornerShape(50),
+                                            modifier = Modifier.align(Alignment.BottomStart).padding(9.dp)
+                                        ) {
+                                            Text(post.second, color = Color(0xFF66596B), fontSize = 8.sp, modifier = Modifier.padding(horizontal = 8.dp, vertical = 5.dp))
+                                        }
+                                    }
+                                    Column(Modifier.padding(10.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                                        Text(post.third, color = Color(0xFF48434D), fontSize = 10.sp, lineHeight = 15.sp, maxLines = 3)
+                                        Row(verticalAlignment = Alignment.CenterVertically) {
+                                            Box(Modifier.size(22.dp).clip(CircleShape).background(listOf(Color(0xFFEADCEB), Color(0xFFE8E3D7), Color(0xFFDCE9E2))[index % 3]), contentAlignment = Alignment.Center) {
+                                                Text(post.first.take(1), color = Color(0xFF514653), fontSize = 9.sp, fontWeight = FontWeight.Bold)
+                                            }
+                                            Spacer(Modifier.width(5.dp))
+                                            Text(post.first, color = Color(0xFF716A75), fontSize = 8.sp, maxLines = 1, modifier = Modifier.weight(1f))
+                                            Text(
+                                                if (liked.contains(index)) "♥" else "♡",
+                                                color = if (liked.contains(index)) Color(0xFFE18F9B) else Color(0xFF918B94),
+                                                fontSize = 14.sp,
+                                                modifier = Modifier.clickable { liked = if (liked.contains(index)) liked - index else liked + index }
+                                            )
+                                        }
+                                        Row(verticalAlignment = Alignment.CenterVertically) {
+                                            Text(if (saved.contains(index)) "已收藏" else "收藏", color = if (saved.contains(index)) Color(0xFF8A789D) else Color(0xFFAAA2A8), fontSize = 8.sp, modifier = Modifier.clickable { saved = if (saved.contains(index)) saved - index else saved + index })
+                                            Spacer(Modifier.weight(1f))
+                                            Text(if (followed.contains(index)) "已关注" else "+ 关注", color = Color(0xFF8A789D), fontSize = 8.sp, modifier = Modifier.clickable { followed = if (followed.contains(index)) followed - index else followed + index })
+                                        }
+                                    }
+                                }
                             }
-                            Text("关注 +", color = Color(0xFF8A789D), fontSize = 9.sp, fontWeight = FontWeight.Bold)
-                        }
-                        Text(post.third, color = Color(0xFF514B54), fontSize = 12.sp, lineHeight = 19.sp)
-                        Box(Modifier.fillMaxWidth().height(if (index == 0) 150.dp else 112.dp).clip(RoundedCornerShape(15.dp)).background(listOf(Color(0xFFE8DCE9), Color(0xFFE9E3D8), Color(0xFFDDE9E3))[index]), contentAlignment = Alignment.Center) {
-                            Text(listOf("✳  ORIGINAL ART  ✳", "MY LITTLE COLLECTION", "WEEKEND WALK ✦")[index], color = Color(0xFF716478), fontSize = 13.sp, fontWeight = FontWeight.Black, letterSpacing = 1.sp)
-                        }
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text("♡  " + listOf("328", "96", "54")[index], color = if (liked.contains(index)) Color(0xFFE18F9B) else Color(0xFF918B94), fontSize = 10.sp, modifier = Modifier.clickable { liked = if (liked.contains(index)) liked - index else liked + index })
-                            Spacer(Modifier.width(18.dp))
-                            Text("◯  " + listOf("42", "18", "12")[index], color = Color(0xFF918B94), fontSize = 10.sp)
-                            Spacer(Modifier.weight(1f))
-                            Text("收藏  ↗", color = Color(0xFF9A8298), fontSize = 9.sp)
                         }
                     }
+                    if (rowItems.size == 1) Spacer(Modifier.weight(1f))
                 }
             }
         }

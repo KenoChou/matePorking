@@ -203,24 +203,56 @@ private fun VerificationScreen(phone: String = "13800008888", onBack: () -> Unit
     var code by androidx.compose.runtime.remember { androidx.compose.runtime.mutableStateOf("") }
     var verified by androidx.compose.runtime.remember { androidx.compose.runtime.mutableStateOf(false) }
     var resendHint by androidx.compose.runtime.remember { androidx.compose.runtime.mutableStateOf(false) }
-    val maskedPhone = if (phone.length == 11) "${phone.take(3)}****${phone.takeLast(4)}" else phone
+    val maskedPhone = if (phone.length == 11) phone.take(3) + "****" + phone.takeLast(4) else phone
+    val accent = Color(0xFF5A65D8)
+    val ink = Color(0xFF29283A)
     Column(
-        Modifier.fillMaxSize().background(HBg).padding(horizontal = 24.dp, vertical = 22.dp),
+        Modifier.fillMaxSize().background(Color(0xFFFFF9F3)).padding(horizontal = 23.dp, vertical = 18.dp),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
-        Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-            TextButton(onClick = onBack, contentPadding = PaddingValues(horizontal = 0.dp, vertical = 4.dp)) {
-                Text("‹  返回修改手机号", color = HMuted, fontSize = 12.sp)
-            }
-            Text("ANIMATE  /  SIGN IN", color = Color(0xFFB56F68), fontSize = 9.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.7.sp)
-            Text("输入验证码", color = HInk, fontSize = 29.sp, fontWeight = FontWeight.Bold)
-            Text("已发送至 +86  ${maskedPhone.ifBlank { "你的手机号" }}", color = HMuted, fontSize = 12.sp)
-        }
-        Column(verticalArrangement = Arrangement.spacedBy(20.dp)) {
+        Column(verticalArrangement = Arrangement.spacedBy(0.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text("验证码", color = HInk, fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
-                Spacer(Modifier.width(8.dp))
-                Text("6 DIGITS", color = HMuted, fontSize = 9.sp, letterSpacing = 1.2.sp)
+                TextButton(onClick = onBack, contentPadding = PaddingValues(0.dp)) {
+                    Text("‹  返回", color = Color(0xFF777487), fontSize = 12.sp)
+                }
+                Spacer(Modifier.weight(1f))
+                Text("02", color = accent, fontSize = 12.sp, fontWeight = FontWeight.Black)
+                Text(" / 02", color = Color(0xFFB8B4C0), fontSize = 11.sp)
+            }
+            Spacer(Modifier.height(28.dp))
+            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(7.dp)) {
+                Box(Modifier.size(8.dp).clip(CircleShape).background(Color(0xFFFF9878)))
+                Text("ANIMATE CLUB  ·  MEMBER ENTRY", color = accent, fontSize = 9.sp, fontWeight = FontWeight.Black, letterSpacing = 1.1.sp)
+            }
+            Spacer(Modifier.height(13.dp))
+            Text("差一点，", color = ink, fontSize = 35.sp, lineHeight = 41.sp, fontWeight = FontWeight.Black)
+            Row(verticalAlignment = Alignment.Bottom) {
+                Text("就开聊！", color = accent, fontSize = 35.sp, lineHeight = 41.sp, fontWeight = FontWeight.Black)
+                Spacer(Modifier.width(9.dp))
+                Text("✳", color = Color(0xFFFF9878), fontSize = 27.sp)
+            }
+            Spacer(Modifier.height(13.dp))
+            Text("输入手机收到的 6 位数字，\n把你的兴趣现场接回来。", color = Color(0xFF858092), fontSize = 13.sp, lineHeight = 21.sp)
+            Spacer(Modifier.height(23.dp))
+            Surface(color = Color(0xFFF0EDFF), shape = RoundedCornerShape(18.dp), modifier = Modifier.fillMaxWidth()) {
+                Row(Modifier.padding(horizontal = 15.dp, vertical = 13.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Box(Modifier.size(34.dp).clip(RoundedCornerShape(11.dp)).background(Color.White), contentAlignment = Alignment.Center) {
+                        Icon(Icons.Rounded.Sms, null, tint = accent, modifier = Modifier.size(19.dp))
+                    }
+                    Spacer(Modifier.width(11.dp))
+                    Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                        Text("验证码已准备好", color = ink, fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                        Text("+86  " + maskedPhone.ifBlank { "你的手机号" }, color = Color(0xFF777487), fontSize = 11.sp)
+                    }
+                    Text("EDIT", color = accent, fontSize = 9.sp, fontWeight = FontWeight.Black)
+                }
+            }
+        }
+        Column(verticalArrangement = Arrangement.spacedBy(18.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text("YOUR CODE", color = ink, fontSize = 11.sp, fontWeight = FontWeight.Black, letterSpacing = 1.5.sp)
+                Spacer(Modifier.weight(1f))
+                Text(code.length.toString() + " / 6", color = accent, fontSize = 11.sp, fontWeight = FontWeight.Bold)
             }
             BasicTextField(
                 value = code,
@@ -232,30 +264,21 @@ private fun VerificationScreen(phone: String = "13800008888", onBack: () -> Unit
                 cursorBrush = androidx.compose.ui.graphics.SolidColor(Color.Transparent),
                 decorationBox = { innerTextField ->
                     Box {
-                        Row(
-                            Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(12.dp)
-                        ) {
+                        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                             repeat(6) { index ->
                                 val digit = code.getOrNull(index)?.toString().orEmpty()
                                 val active = index == code.length && code.length < 6
-                                Column(Modifier.weight(1f), horizontalAlignment = Alignment.CenterHorizontally) {
-                                    Box(Modifier.height(44.dp), contentAlignment = Alignment.Center) {
-                                        Text(digit, color = HInk, fontSize = 25.sp, fontWeight = FontWeight.Medium)
-                                        if (active) {
-                                            Box(Modifier.width(2.dp).height(25.dp).background(Color(0xFFCB786E)))
-                                        }
-                                    }
-                                    Box(
-                                        Modifier.fillMaxWidth().height(if (active) 2.dp else 1.dp)
-                                            .background(
-                                                when {
-                                                    active -> Color(0xFFCB786E)
-                                                    digit.isNotEmpty() -> Color(0xFF77717A)
-                                                    else -> Color(0xFFDCD5D0)
-                                                }
-                                            )
-                                    )
+                                val filled = digit.isNotEmpty()
+                                Box(
+                                    Modifier.weight(1f).height(58.dp)
+                                        .clip(RoundedCornerShape(15.dp))
+                                        .background(if (filled) Color(0xFFE9E8FF) else if (active) Color.White else Color(0xFFF3EFEA))
+                                        .border(if (active) 1.5.dp else 1.dp, if (active) accent else Color(0xFFE8E2E0), RoundedCornerShape(15.dp)),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    if (filled) Text(digit, color = ink, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold)
+                                    else if (active) Box(Modifier.width(2.dp).height(23.dp).clip(CircleShape).background(Color(0xFFFF9878)))
+                                    else Box(Modifier.size(5.dp).clip(CircleShape).background(Color(0xFFD5D0D1)))
                                 }
                             }
                         }
@@ -263,34 +286,31 @@ private fun VerificationScreen(phone: String = "13800008888", onBack: () -> Unit
                     }
                 }
             )
-            Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                Text("没收到验证码？", color = HMuted, fontSize = 11.sp)
-                TextButton(
-                    onClick = { code = ""; verified = false; resendHint = true },
-                    contentPadding = PaddingValues(horizontal = 4.dp, vertical = 0.dp)
-                ) {
-                    Text("重新输入", color = Color(0xFFB56F68), fontSize = 11.sp, fontWeight = FontWeight.SemiBold)
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text("没收到？", color = Color(0xFF858092), fontSize = 11.sp)
+                TextButton(onClick = { code = ""; verified = false; resendHint = true }, contentPadding = PaddingValues(horizontal = 5.dp, vertical = 0.dp)) {
+                    Text("重新获取", color = accent, fontSize = 11.sp, fontWeight = FontWeight.Bold)
                 }
                 Spacer(Modifier.weight(1f))
-                Text("00:59", color = HMuted, fontSize = 11.sp)
+                Text("稍等片刻 · 00:59", color = Color(0xFFAAA5B0), fontSize = 10.sp)
             }
-            if (resendHint) Text("已清空输入，可以重新填写。", color = HMuted, fontSize = 10.sp)
-            if (verified) Text("验证码输入完成 · 登录流程界面预览", color = Color(0xFFB56F68), fontSize = 11.sp)
-        }
-        Button(
-            onClick = { verified = true },
-            enabled = code.length == 6,
-            modifier = Modifier.fillMaxWidth().height(54.dp),
-            shape = RoundedCornerShape(16.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = HInk, disabledContainerColor = Color(0xFFD8D3D7))
-        ) {
-            Text("完成（界面预览）", color = Color.White, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
-            Spacer(Modifier.width(8.dp))
-            Text("→", color = Color.White)
+            if (resendHint) Text("输入已清空，可以重新填写。", color = Color(0xFF858092), fontSize = 10.sp)
+            if (verified) Text("这是登录流程的界面预览，不会进行真实身份验证。", color = accent, fontSize = 10.sp)
+            Button(
+                onClick = { verified = true },
+                enabled = code.length == 6,
+                modifier = Modifier.fillMaxWidth().height(55.dp),
+                shape = RoundedCornerShape(17.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = accent, disabledContainerColor = Color(0xFFD8D4E2))
+            ) {
+                Text("进入兴趣现场", color = Color.White, fontSize = 14.sp, fontWeight = FontWeight.Bold)
+                Spacer(Modifier.width(9.dp))
+                Text("↗", color = Color.White, fontSize = 16.sp)
+            }
+            Text("MAKE YOUR FANDOM FEEL AT HOME.", color = Color(0xFFAAA5B0), fontSize = 8.sp, letterSpacing = 1.3.sp, modifier = Modifier.align(Alignment.CenterHorizontally))
         }
     }
 }
-
 @Composable
 private fun PageHeader(title: String, trailing: String = "") {
     Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {

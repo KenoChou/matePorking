@@ -135,7 +135,7 @@ fun PreviewGallery() {
                     Text(selectedPage!!.description, color = GalleryMuted, fontSize = 10.sp)
                 }
             }
-            ScreenMockup(selectedPage!!)
+            HighFidelityScreen(selectedPage!!.name)
         }
     }
 }

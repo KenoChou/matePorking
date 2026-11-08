@@ -11,6 +11,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,6 +31,7 @@ private val CAccent = Color(0xFF8A789D)
 private val CPale = Color(0xFFF0E9EE)
 private val CCoral = Color(0xFFD9A6A5)
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ContentDetailScreen() {
     var liked by remember { mutableStateOf(false) }

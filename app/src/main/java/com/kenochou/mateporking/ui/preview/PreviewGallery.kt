@@ -32,7 +32,7 @@ private val previewRoutes = listOf(
     PreviewRoute("认证", "欢迎页", "品牌介绍与开始使用"),
     PreviewRoute("认证", "手机号登录", "手机号与验证码入口"),
     PreviewRoute("认证", "验证码验证", "短信验证码输入"),
-    PreviewRoute("发现", "Discover 首页", "推荐内容与兴趣入口"),
+    PreviewRoute("首页", "首页", "个性化推荐流与关注动态"),
     PreviewRoute("发现", "趋势发现", "热门内容与趋势"),
     PreviewRoute("发现", "搜索", "搜索作品、用户与商品"),
     PreviewRoute("发现", "内容详情", "作品、作者与评论"),

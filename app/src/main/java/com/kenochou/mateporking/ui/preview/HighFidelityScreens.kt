@@ -1,6 +1,8 @@
 package com.kenochou.mateporking.ui.preview
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -203,20 +205,48 @@ private fun VerificationScreen(phone: String = "13800008888", onBack: () -> Unit
                 Text("CHECK YOUR MESSAGES", color = HMuted, fontSize = 8.sp, letterSpacing = 1.4.sp, modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = 18.dp))
             }
             Text("输入 6 位短信验证码", color = HInk, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
-            OutlinedTextField(
+            BasicTextField(
                 value = code,
                 onValueChange = { newValue: String -> code = newValue.filter(Char::isDigit).take(6); verified = false },
                 modifier = Modifier.fillMaxWidth(),
-                placeholder = { Text("—  —  —  —  —  —", color = HMuted) },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 singleLine = true,
-                shape = RoundedCornerShape(14.dp),
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = HPrimary,
-                    unfocusedBorderColor = Color(0xFFE8E1E5),
-                    focusedContainerColor = Color.White,
-                    unfocusedContainerColor = Color.White
-                )
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                textStyle = androidx.compose.ui.text.TextStyle(color = Color.Transparent),
+                cursorBrush = androidx.compose.ui.graphics.SolidColor(Color.Transparent),
+                decorationBox = { innerTextField ->
+                    Box {
+                        Row(
+                            Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            repeat(6) { index ->
+                                val digit = code.getOrNull(index)?.toString().orEmpty()
+                                val active = index == code.length && code.length < 6
+                                Box(
+                                    Modifier.weight(1f).height(56.dp)
+                                        .clip(RoundedCornerShape(13.dp))
+                                        .background(if (active) Color(0xFFF3EEF4) else Color.White)
+                                        .then(
+                                            Modifier.border(
+                                                width = if (active) 1.5.dp else 1.dp,
+                                                color = if (active) HPrimary.copy(alpha = 0.65f) else Color(0xFFE8E1E5),
+                                                shape = RoundedCornerShape(13.dp)
+                                            )
+                                        ),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Text(
+                                        text = digit.ifEmpty { if (active) "·" else "" },
+                                        color = if (digit.isNotEmpty()) HInk else HMuted,
+                                        fontSize = 22.sp,
+                                        fontWeight = FontWeight.SemiBold
+                                    )
+                                }
+                            }
+                        }
+                        Box(Modifier.matchParentSize()) { innerTextField() }
+                    }
+                }
             )
             TextButton(onClick = { code = ""; verified = false; resendHint = true }, modifier = Modifier.align(Alignment.End)) {
                 Text("重新输入验证码", color = HPrimary, fontSize = 11.sp)

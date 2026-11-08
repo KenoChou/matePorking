@@ -214,7 +214,7 @@ private fun VerificationScreen(phone: String = "13800008888", onBack: () -> Unit
             }
             Text("ANIMATE  /  SIGN IN", color = Color(0xFFB56F68), fontSize = 9.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.7.sp)
             Text("输入验证码", color = HInk, fontSize = 29.sp, fontWeight = FontWeight.Bold)
-            Text("已发送至 +86  \${maskedPhone.ifBlank { "你的手机号" }}", color = HMuted, fontSize = 12.sp)
+            Text("已发送至 +86  ${maskedPhone.ifBlank { "你的手机号" }}", color = HMuted, fontSize = 12.sp)
         }
         Column(verticalArrangement = Arrangement.spacedBy(20.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {

@@ -18,12 +18,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-private val HInk = Color(0xFF242332)
-private val HMuted = Color(0xFF898795)
-private val HBg = Color(0xFFF8F7FB)
-private val HPrimary = Color(0xFF7866D8)
-private val HPale = Color(0xFFEDE9FF)
-private val HCoral = Color(0xFFFF8A83)
+private val HInk = Color(0xFF17151D)
+private val HMuted = Color(0xFF77727D)
+private val HBg = Color(0xFFF4F1EA)
+private val HPrimary = Color(0xFF6847FF)
+private val HPale = Color(0xFFE7FF68)
+private val HCoral = Color(0xFFFF5578)
 
 @Composable
 fun HighFidelityScreen(name: String) {
@@ -483,93 +483,138 @@ private fun DiscoverHomeScreen() {
     Column(Modifier.fillMaxSize().background(HBg)) {
         LazyColumn(
             modifier = Modifier.weight(1f),
-            contentPadding = PaddingValues(start = 18.dp, top = 18.dp, end = 18.dp, bottom = 24.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            contentPadding = PaddingValues(start = 16.dp, top = 12.dp, end = 16.dp, bottom = 28.dp),
+            verticalArrangement = Arrangement.spacedBy(19.dp)
         ) {
             item {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Column(Modifier.weight(1f)) {
-                        Text("ANIMATE · DISCOVER", color = HPrimary, fontSize = 9.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.4.sp)
-                        Text("发现灵感", color = HInk, fontSize = 26.sp, fontWeight = FontWeight.ExtraBold)
+                    Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                        Text("ANIMATE / TOKYO CULTURE CLUB", color = HMuted, fontSize = 8.sp, fontWeight = FontWeight.Black, letterSpacing = 1.2.sp)
+                        Text("好き、集合。", color = HInk, fontSize = 30.sp, fontWeight = FontWeight.Black)
                     }
+                    Surface(color = Color(0xFF17151D), shape = CircleShape) {
+                        Row(Modifier.padding(horizontal = 12.dp, vertical = 9.dp), verticalAlignment = Alignment.CenterVertically) {
+                            Icon(Icons.Rounded.Search, null, tint = Color.White, modifier = Modifier.size(17.dp))
+                            Spacer(Modifier.width(6.dp))
+                            Text("探索", color = Color.White, fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                        }
+                    }
+                    Spacer(Modifier.width(7.dp))
                     IconButton(onClick = {}) { Icon(Icons.Rounded.NotificationsNone, "通知", tint = HInk) }
-                    IconButton(onClick = {}) { Icon(Icons.Rounded.Search, "搜索", tint = HInk) }
                 }
             }
             item {
-                Surface(color = HPale, shape = RoundedCornerShape(24.dp), modifier = Modifier.fillMaxWidth()) {
-                    Box(Modifier.background(androidx.compose.ui.graphics.Brush.linearGradient(listOf(Color(0xFFE5DEFF), Color(0xFFFFE5E1), Color(0xFFF8EFFF)))).padding(20.dp)) {
-                        Column(verticalArrangement = Arrangement.spacedBy(9.dp)) {
-                            Text("FIND YOUR NEXT INSPIRATION", color = HPrimary, fontSize = 9.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.2.sp)
-                            Text("每一种热爱，\n都值得被看见。", color = HInk, fontSize = 25.sp, lineHeight = 32.sp, fontWeight = FontWeight.Bold)
-                            Text("发现作品、认识同好，探索兴趣宇宙。", color = HMuted, fontSize = 11.sp)
-                            Surface(color = HPrimary, shape = CircleShape) {
-                                Text("探索今日精选  →", color = Color.White, fontSize = 10.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(horizontal = 14.dp, vertical = 9.dp))
-                            }
-                        }
+                Box(
+                    Modifier.fillMaxWidth().height(244.dp).clip(RoundedCornerShape(8.dp))
+                        .background(Color(0xFF6847FF))
+                ) {
+                    Box(Modifier.fillMaxWidth().height(244.dp).background(
+                        androidx.compose.ui.graphics.Brush.linearGradient(
+                            listOf(Color(0xFF6847FF), Color(0xFF8B59FF), Color(0xFFFF5B91))
+                        )
+                    ))
+                    Text("VOL. 01", color = Color(0xFFE7FF68), fontSize = 10.sp, fontWeight = FontWeight.Black, letterSpacing = 2.sp, modifier = Modifier.align(Alignment.TopStart).padding(17.dp))
+                    Text("好きなものに、\n夢中でいい。", color = Color.White, fontSize = 29.sp, lineHeight = 37.sp, fontWeight = FontWeight.Black, modifier = Modifier.align(Alignment.CenterStart).padding(start = 18.dp, top = 16.dp))
+                    Text("YOUR INTEREST. YOUR SCENE.", color = Color.White.copy(alpha = .86f), fontSize = 8.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.3.sp, modifier = Modifier.align(Alignment.BottomStart).padding(18.dp))
+                    Surface(color = Color(0xFFE7FF68), shape = RoundedCornerShape(4.dp), modifier = Modifier.align(Alignment.BottomEnd).padding(16.dp)) {
+                        Text("DISCOVER →", color = Color(0xFF17151D), fontSize = 9.sp, fontWeight = FontWeight.Black, modifier = Modifier.padding(horizontal = 11.dp, vertical = 8.dp))
                     }
+                    Text("✳", color = Color(0xFFE7FF68), fontSize = 105.sp, modifier = Modifier.align(Alignment.TopEnd).padding(end = 12.dp, top = 27.dp))
+                    Text("ANIME / ART / FIGURE / GAME", color = Color.White.copy(alpha = .8f), fontSize = 8.sp, fontWeight = FontWeight.Bold, modifier = Modifier.align(Alignment.CenterEnd).padding(end = 16.dp))
                 }
             }
             item {
-                SectionTitle("兴趣频道", "全部频道")
-                Spacer(Modifier.height(10.dp))
-                Row(horizontalArrangement = Arrangement.spacedBy(9.dp)) {
-                    listOf("动漫" to Icons.Rounded.Movie, "插画" to Icons.Rounded.Brush, "手办" to Icons.Rounded.Toys, "游戏" to Icons.Rounded.SportsEsports).forEachIndexed { index, item ->
-                        Column(Modifier.weight(1f), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(7.dp)) {
-                            Surface(color = listOf(HPale, Color(0xFFFFE9E5), Color(0xFFE5F1EF), Color(0xFFFFF0D9))[index], shape = RoundedCornerShape(16.dp)) {
-                                Box(Modifier.fillMaxWidth().height(58.dp), contentAlignment = Alignment.Center) {
-                                    Icon(item.second, null, tint = HPrimary, modifier = Modifier.size(24.dp))
-                                }
-                            }
-                            Text(item.first, color = HInk, fontSize = 10.sp, fontWeight = FontWeight.Medium)
-                        }
-                    }
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text("PICK YOUR SIDE", color = HInk, fontSize = 11.sp, fontWeight = FontWeight.Black, letterSpacing = 1.3.sp, modifier = Modifier.weight(1f))
+                    Text("兴趣频道 ↗", color = HPrimary, fontSize = 10.sp, fontWeight = FontWeight.Bold)
                 }
-            }
-            item {
-                SectionTitle("今日灵感", "查看趋势")
                 Spacer(Modifier.height(10.dp))
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    listOf("原创角色", "桌面收藏", "治愈插画", "同好活动").forEachIndexed { index, label ->
-                        Surface(color = if (index == 0) HPrimary else Color.White, shape = CircleShape) {
-                            Text(label, color = if (index == 0) Color.White else HMuted, fontSize = 10.sp, modifier = Modifier.padding(horizontal = 11.dp, vertical = 8.dp))
+                    listOf(
+                        Triple("ANIME", "动漫", Color(0xFFE7FF68)),
+                        Triple("ILLUST", "插画", Color(0xFFFFB8CF)),
+                        Triple("FIGURE", "手办", Color(0xFFB9A7FF)),
+                        Triple("GAME", "游戏", Color(0xFF9BE7DB))
+                    ).forEach { channel ->
+                        Surface(color = channel.third, shape = RoundedCornerShape(5.dp), modifier = Modifier.weight(1f)) {
+                            Column(Modifier.padding(vertical = 12.dp, horizontal = 7.dp), verticalArrangement = Arrangement.spacedBy(5.dp)) {
+                                Text(channel.first, color = HInk, fontSize = 7.sp, fontWeight = FontWeight.Black, letterSpacing = .4.sp)
+                                Text(channel.second, color = HInk, fontSize = 13.sp, fontWeight = FontWeight.Black)
+                            }
                         }
                     }
                 }
             }
             item {
-                SectionTitle("为你发现", "推荐")
-                Surface(color = Color.White, shape = RoundedCornerShape(20.dp), modifier = Modifier.fillMaxWidth()) {
-                    Column(Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(9.dp)) {
-                        MockImage(178, "✧")
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Box(Modifier.size(30.dp).clip(CircleShape).background(HPale), contentAlignment = Alignment.Center) {
-                                Icon(Icons.Rounded.Person, null, tint = HPrimary, modifier = Modifier.size(17.dp))
-                            }
-                            Spacer(Modifier.width(8.dp))
-                            Column(Modifier.weight(1f)) {
-                                Text("纸上星河", color = HInk, fontSize = 11.sp, fontWeight = FontWeight.Bold)
-                                Text("原创插画 · 3 小时前", color = HMuted, fontSize = 9.sp)
-                            }
-                            Text("关注 +", color = HPrimary, fontSize = 10.sp, fontWeight = FontWeight.SemiBold)
-                        }
-                        Text("把喜欢的角色，画成自己的故事。", color = HInk, fontSize = 14.sp, fontWeight = FontWeight.Bold)
-                        Text("用柔和的色彩记录最近的灵感，希望也能带给你一点好心情。", color = HMuted, fontSize = 10.sp, lineHeight = 16.sp)
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text("♡  128", color = HMuted, fontSize = 10.sp, modifier = Modifier.weight(1f))
-                            Text("◯  16 条评论", color = HMuted, fontSize = 10.sp)
-                            Spacer(Modifier.width(14.dp))
-                            Icon(Icons.Rounded.BookmarkBorder, null, tint = HMuted, modifier = Modifier.size(17.dp))
+                Row(verticalAlignment = Alignment.Bottom) {
+                    Column(Modifier.weight(1f)) {
+                        Text("TRENDING NOW", color = HPrimary, fontSize = 8.sp, fontWeight = FontWeight.Black, letterSpacing = 1.5.sp)
+                        Text("现在大家在玩什么", color = HInk, fontSize = 19.sp, fontWeight = FontWeight.Black)
+                    }
+                    Text("#本周话题", color = HMuted, fontSize = 9.sp)
+                }
+                Spacer(Modifier.height(10.dp))
+                Row(horizontalArrangement = Arrangement.spacedBy(9.dp)) {
+                    listOf("痛包改造", "原创角色", "谷子交换").forEachIndexed { index, tag ->
+                        Surface(color = if (index == 0) Color(0xFF17151D) else Color.White, shape = RoundedCornerShape(4.dp)) {
+                            Text("# $tag", color = if (index == 0) Color(0xFFE7FF68) else HInk, fontSize = 10.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(horizontal = 11.dp, vertical = 9.dp))
                         }
                     }
                 }
             }
             item {
-                Surface(color = Color.White, shape = RoundedCornerShape(20.dp), modifier = Modifier.fillMaxWidth()) {
-                    Column(Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(9.dp)) {
-                        MockImage(142, "✦")
-                        Text("今天的桌面收藏分享｜把喜欢的小小摆满日常", color = HInk, fontSize = 13.sp, fontWeight = FontWeight.Bold)
-                        Text("模型收藏研究所 · ♡ 86 · ◯ 12", color = HMuted, fontSize = 10.sp)
+                Row(verticalAlignment = Alignment.Bottom) {
+                    Column(Modifier.weight(1f)) {
+                        Text("THE CREATOR FILE", color = HPrimary, fontSize = 8.sp, fontWeight = FontWeight.Black, letterSpacing = 1.5.sp)
+                        Text("本期编辑推荐", color = HInk, fontSize = 19.sp, fontWeight = FontWeight.Black)
+                    }
+                    Text("VIEW ALL ↗", color = HMuted, fontSize = 8.sp, fontWeight = FontWeight.Black)
+                }
+                Spacer(Modifier.height(10.dp))
+                Surface(color = Color.White, shape = RoundedCornerShape(7.dp), modifier = Modifier.fillMaxWidth()) {
+                    Column(Modifier.padding(10.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                        Box(Modifier.fillMaxWidth().height(188.dp).clip(RoundedCornerShape(4.dp)).background(
+                            androidx.compose.ui.graphics.Brush.linearGradient(listOf(Color(0xFFFFB8CF), Color(0xFFB9A7FF), Color(0xFF9BE7DB)))
+                        )) {
+                            Text("ART\nIS\nEVERYWHERE", color = Color(0xFF17151D), fontSize = 29.sp, lineHeight = 28.sp, fontWeight = FontWeight.Black, modifier = Modifier.align(Alignment.CenterStart).padding(start = 18.dp))
+                            Text("✷", color = Color.White, fontSize = 92.sp, modifier = Modifier.align(Alignment.CenterEnd).padding(end = 20.dp))
+                            Text("CREATOR SPOTLIGHT / 001", color = Color(0xFF17151D), fontSize = 8.sp, fontWeight = FontWeight.Black, modifier = Modifier.align(Alignment.BottomStart).padding(12.dp))
+                        }
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
+                                Text("纸上星河", color = HInk, fontSize = 13.sp, fontWeight = FontWeight.Black)
+                                Text("独立插画师 · ORIGINAL CHARACTER", color = HMuted, fontSize = 8.sp, fontWeight = FontWeight.Bold)
+                            }
+                            Surface(color = Color(0xFFE7FF68), shape = RoundedCornerShape(4.dp)) {
+                                Text("FOLLOW +", color = HInk, fontSize = 9.sp, fontWeight = FontWeight.Black, modifier = Modifier.padding(horizontal = 10.dp, vertical = 8.dp))
+                            }
+                        }
+                        Text("把脑海里的角色，变成自己的宇宙。", color = HInk, fontSize = 14.sp, fontWeight = FontWeight.Black)
+                        Text("原创角色设定、色彩实验与日常灵感记录。", color = HMuted, fontSize = 10.sp)
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text("♡ 1.2K", color = HMuted, fontSize = 9.sp, modifier = Modifier.weight(1f))
+                            Text("◯ 86 COMMENTS", color = HMuted, fontSize = 9.sp, fontWeight = FontWeight.Bold)
+                        }
+                    }
+                }
+            }
+            item {
+                Row(verticalAlignment = Alignment.Bottom) {
+                    Column(Modifier.weight(1f)) {
+                        Text("COMMUNITY SNAP", color = HPrimary, fontSize = 8.sp, fontWeight = FontWeight.Black, letterSpacing = 1.4.sp)
+                        Text("来自同好的现场", color = HInk, fontSize = 19.sp, fontWeight = FontWeight.Black)
+                    }
+                    Text("更多动态 ↗", color = HMuted, fontSize = 9.sp)
+                }
+                Spacer(Modifier.height(9.dp))
+                Surface(color = Color(0xFFE7FF68), shape = RoundedCornerShape(7.dp), modifier = Modifier.fillMaxWidth()) {
+                    Row(Modifier.padding(14.dp), verticalAlignment = Alignment.CenterVertically) {
+                        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(5.dp)) {
+                            Text("WEEKEND LOG", color = HInk, fontSize = 8.sp, fontWeight = FontWeight.Black, letterSpacing = 1.2.sp)
+                            Text("痛包、立牌和一点点快乐。", color = HInk, fontSize = 15.sp, fontWeight = FontWeight.Black)
+                            Text("模型收藏研究所 · 86 likes", color = HMuted, fontSize = 9.sp)
+                        }
+                        Text("✦", color = HPrimary, fontSize = 45.sp)
                     }
                 }
             }

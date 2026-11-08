@@ -192,7 +192,7 @@ private fun VerificationScreen(phone: String = "13800008888", onBack: () -> Unit
                 Text("← 修改手机号", color = HMuted, fontSize = 11.sp)
             }
             Text("ANIMATE / SECURITY CHECK", color = HPrimary, fontSize = 9.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.2.sp)
-            Text("确认是你本人。", color = HInk, fontSize = 28.sp, fontWeight = FontWeight.SemiBold)
+            Text("查收你的登录口令。", color = HInk, fontSize = 28.sp, fontWeight = FontWeight.SemiBold)
             Text("验证码将发送至 +86  ${maskedPhone.ifBlank { "你的手机号" }}", color = HMuted, fontSize = 12.sp)
         }
         Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
@@ -249,10 +249,10 @@ private fun VerificationScreen(phone: String = "13800008888", onBack: () -> Unit
                 }
             )
             TextButton(onClick = { code = ""; verified = false; resendHint = true }, modifier = Modifier.align(Alignment.End)) {
-                Text("重新输入验证码", color = HPrimary, fontSize = 11.sp)
+                Text("清空并重新输入", color = HPrimary, fontSize = 11.sp)
             }
-            if (resendHint) Text("短信发送服务尚未接入，这里仅重置输入。", color = HMuted, fontSize = 10.sp)
-            if (verified) Text("格式已通过，真实身份验证需连接认证服务。", color = HPrimary, fontSize = 11.sp)
+            if (resendHint) Text("已清空输入，可以重新填写。", color = HMuted, fontSize = 10.sp)
+            if (verified) Text("验证码输入完成 · 登录流程界面预览", color = HPrimary, fontSize = 11.sp)
         }
         Button(
             onClick = { verified = true },
@@ -261,7 +261,7 @@ private fun VerificationScreen(phone: String = "13800008888", onBack: () -> Unit
             shape = RoundedCornerShape(16.dp),
             colors = ButtonDefaults.buttonColors(containerColor = HInk, disabledContainerColor = Color(0xFFD8D3D7))
         ) {
-            Text("验证并登录", color = Color.White, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
+            Text("完成（界面预览）", color = Color.White, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
             Spacer(Modifier.width(8.dp))
             Text("→", color = Color.White)
         }

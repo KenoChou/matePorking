@@ -17,6 +17,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardOptions
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -55,7 +57,7 @@ fun HighFidelityScreen(name: String) {
 private fun WelcomeScreen() {
     var showLogin by androidx.compose.runtime.remember { androidx.compose.runtime.mutableStateOf(false) }
     if (showLogin) {
-        PhoneLoginScreen()
+        PhoneLoginScreen(onBack = { showLogin = false })
         return
     }
     Column(
@@ -98,12 +100,12 @@ private fun WelcomeScreen() {
 }
 
 @Composable
-private fun PhoneLoginScreen() {
+private fun PhoneLoginScreen(onBack: () -> Unit = {}) {
     var phone by androidx.compose.runtime.remember { androidx.compose.runtime.mutableStateOf("") }
     var agreed by androidx.compose.runtime.remember { androidx.compose.runtime.mutableStateOf(false) }
     var codeSent by androidx.compose.runtime.remember { androidx.compose.runtime.mutableStateOf(false) }
     if (codeSent) {
-        VerificationScreen(phone = phone)
+        VerificationScreen(phone = phone, onBack = { codeSent = false })
         return
     }
     Column(
@@ -111,6 +113,9 @@ private fun PhoneLoginScreen() {
         verticalArrangement = Arrangement.SpaceBetween
     ) {
         Column(verticalArrangement = Arrangement.spacedBy(9.dp)) {
+            TextButton(onClick = onBack, contentPadding = PaddingValues(horizontal = 0.dp, vertical = 4.dp)) {
+                Text("← 返回", color = HMuted, fontSize = 11.sp)
+            }
             Text("ANIMATE / JOIN THE CLUB", color = HPrimary, fontSize = 9.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.3.sp)
             Text("嗨，欢迎回来。", color = HInk, fontSize = 28.sp, fontWeight = FontWeight.SemiBold)
             Text("用手机号登录，继续你的兴趣漫游。", color = HMuted, fontSize = 12.sp)
@@ -127,9 +132,10 @@ private fun PhoneLoginScreen() {
                 Text("手机号码", color = HInk, fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
                 OutlinedTextField(
                     value = phone,
-                    onValueChange = { phone = it.filter(Char::isDigit).take(15) },
+                    onValueChange = { newValue: String -> phone = newValue.filter(Char::isDigit).take(11) },
                     modifier = Modifier.fillMaxWidth(),
-                    placeholder = { Text("请输入手机号", color = HMuted) },
+                    placeholder = { Text("请输入 11 位手机号", color = HMuted) },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
                     singleLine = true,
                     shape = RoundedCornerShape(14.dp),
                     colors = OutlinedTextFieldDefaults.colors(
@@ -152,7 +158,7 @@ private fun PhoneLoginScreen() {
         Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
             Button(
                 onClick = { codeSent = true },
-                enabled = phone.length in 6..15 && agreed,
+                enabled = phone.length == 11 && phone.firstOrNull() == '1' && agreed,
                 modifier = Modifier.fillMaxWidth().height(54.dp),
                 shape = RoundedCornerShape(16.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = HInk, disabledContainerColor = Color(0xFFD8D3D7))
@@ -167,17 +173,22 @@ private fun PhoneLoginScreen() {
 }
 
 @Composable
-private fun VerificationScreen(phone: String = "138****8888") {
+private fun VerificationScreen(phone: String = "13800008888", onBack: () -> Unit = {}) {
     var code by androidx.compose.runtime.remember { androidx.compose.runtime.mutableStateOf("") }
     var verified by androidx.compose.runtime.remember { androidx.compose.runtime.mutableStateOf(false) }
+    var resendHint by androidx.compose.runtime.remember { androidx.compose.runtime.mutableStateOf(false) }
+    val maskedPhone = if (phone.length == 11) "${phone.take(3)}****${phone.takeLast(4)}" else phone
     Column(
         Modifier.fillMaxSize().background(HBg).padding(horizontal = 24.dp, vertical = 22.dp),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
         Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+            TextButton(onClick = onBack, contentPadding = PaddingValues(horizontal = 0.dp, vertical = 4.dp)) {
+                Text("← 修改手机号", color = HMuted, fontSize = 11.sp)
+            }
             Text("ANIMATE / SECURITY CHECK", color = HPrimary, fontSize = 9.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.2.sp)
             Text("确认是你本人。", color = HInk, fontSize = 28.sp, fontWeight = FontWeight.SemiBold)
-            Text("验证码已发送至 +86  ${phone.ifBlank { "你的手机号" }}", color = HMuted, fontSize = 12.sp)
+            Text("验证码将发送至 +86  ${maskedPhone.ifBlank { "你的手机号" }}", color = HMuted, fontSize = 12.sp)
         }
         Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
             Box(
@@ -191,9 +202,10 @@ private fun VerificationScreen(phone: String = "138****8888") {
             Text("输入 6 位短信验证码", color = HInk, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
             OutlinedTextField(
                 value = code,
-                onValueChange = { newValue: String -> code = newValue.filter(Char::isDigit).take(6) },
+                onValueChange = { newValue: String -> code = newValue.filter(Char::isDigit).take(6); verified = false },
                 modifier = Modifier.fillMaxWidth(),
                 placeholder = { Text("—  —  —  —  —  —", color = HMuted) },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 singleLine = true,
                 shape = RoundedCornerShape(14.dp),
                 colors = OutlinedTextFieldDefaults.colors(
@@ -203,10 +215,11 @@ private fun VerificationScreen(phone: String = "138****8888") {
                     unfocusedContainerColor = Color.White
                 )
             )
-            TextButton(onClick = { code = "" }, modifier = Modifier.align(Alignment.End)) {
-                Text("重新获取验证码", color = HPrimary, fontSize = 11.sp)
+            TextButton(onClick = { code = ""; verified = false; resendHint = true }, modifier = Modifier.align(Alignment.End)) {
+                Text("重新输入验证码", color = HPrimary, fontSize = 11.sp)
             }
-            if (verified) Text("验证码已填写，实际校验需连接认证服务。", color = HPrimary, fontSize = 11.sp)
+            if (resendHint) Text("短信发送服务尚未接入，这里仅重置输入。", color = HMuted, fontSize = 10.sp)
+            if (verified) Text("格式已通过，真实身份验证需连接认证服务。", color = HPrimary, fontSize = 11.sp)
         }
         Button(
             onClick = { verified = true },

@@ -18,12 +18,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-private val HInk = Color(0xFF17151D)
-private val HMuted = Color(0xFF77727D)
-private val HBg = Color(0xFFF4F1EA)
-private val HPrimary = Color(0xFF6847FF)
-private val HPale = Color(0xFFE7FF68)
-private val HCoral = Color(0xFFFF5578)
+private val HInk = Color(0xFF302D35)
+private val HMuted = Color(0xFF918B94)
+private val HBg = Color(0xFFFAF8F5)
+private val HPrimary = Color(0xFF8A789D)
+private val HPale = Color(0xFFF0E9EE)
+private val HCoral = Color(0xFFD9A6A5)
 
 @Composable
 fun HighFidelityScreen(name: String) {
@@ -490,9 +490,9 @@ private fun DiscoverHomeScreen() {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
                         Text("ANIMATE / TOKYO CULTURE CLUB", color = HMuted, fontSize = 8.sp, fontWeight = FontWeight.Black, letterSpacing = 1.2.sp)
-                        Text("好き、集合。", color = HInk, fontSize = 30.sp, fontWeight = FontWeight.Black)
+                        Text("好き、集合。", color = HInk, fontSize = 28.sp, fontWeight = FontWeight.Bold)
                     }
-                    Surface(color = Color(0xFF17151D), shape = CircleShape) {
+                    Surface(color = Color(0xFF514B54), shape = CircleShape) {
                         Row(Modifier.padding(horizontal = 12.dp, vertical = 9.dp), verticalAlignment = Alignment.CenterVertically) {
                             Icon(Icons.Rounded.Search, null, tint = Color.White, modifier = Modifier.size(17.dp))
                             Spacer(Modifier.width(6.dp))
@@ -505,21 +505,21 @@ private fun DiscoverHomeScreen() {
             }
             item {
                 Box(
-                    Modifier.fillMaxWidth().height(244.dp).clip(RoundedCornerShape(8.dp))
-                        .background(Color(0xFF6847FF))
+                    Modifier.fillMaxWidth().height(244.dp).clip(RoundedCornerShape(16.dp))
+                        .background(Color(0xFF9A8BAA))
                 ) {
                     Box(Modifier.fillMaxWidth().height(244.dp).background(
                         androidx.compose.ui.graphics.Brush.linearGradient(
-                            listOf(Color(0xFF6847FF), Color(0xFF8B59FF), Color(0xFFFF5B91))
+                            listOf(Color(0xFF9A8BAA), Color(0xFFB7A9BD), Color(0xFFE2C5C2))
                         )
                     ))
-                    Text("VOL. 01", color = Color(0xFFE7FF68), fontSize = 10.sp, fontWeight = FontWeight.Black, letterSpacing = 2.sp, modifier = Modifier.align(Alignment.TopStart).padding(17.dp))
-                    Text("好きなものに、\n夢中でいい。", color = Color.White, fontSize = 29.sp, lineHeight = 37.sp, fontWeight = FontWeight.Black, modifier = Modifier.align(Alignment.CenterStart).padding(start = 18.dp, top = 16.dp))
+                    Text("VOL. 01", color = Color(0xFFE9E1D8), fontSize = 10.sp, fontWeight = FontWeight.Black, letterSpacing = 2.sp, modifier = Modifier.align(Alignment.TopStart).padding(17.dp))
+                    Text("好きなものに、\n夢中でいい。", color = Color.White, fontSize = 27.sp, lineHeight = 36.sp, fontWeight = FontWeight.Bold, modifier = Modifier.align(Alignment.CenterStart).padding(start = 18.dp, top = 16.dp))
                     Text("YOUR INTEREST. YOUR SCENE.", color = Color.White.copy(alpha = .86f), fontSize = 8.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.3.sp, modifier = Modifier.align(Alignment.BottomStart).padding(18.dp))
-                    Surface(color = Color(0xFFE7FF68), shape = RoundedCornerShape(4.dp), modifier = Modifier.align(Alignment.BottomEnd).padding(16.dp)) {
-                        Text("DISCOVER →", color = Color(0xFF17151D), fontSize = 9.sp, fontWeight = FontWeight.Black, modifier = Modifier.padding(horizontal = 11.dp, vertical = 8.dp))
+                    Surface(color = Color(0xFFE9E1D8), shape = RoundedCornerShape(4.dp), modifier = Modifier.align(Alignment.BottomEnd).padding(16.dp)) {
+                        Text("DISCOVER →", color = Color(0xFF514B54), fontSize = 9.sp, fontWeight = FontWeight.Black, modifier = Modifier.padding(horizontal = 11.dp, vertical = 8.dp))
                     }
-                    Text("✳", color = Color(0xFFE7FF68), fontSize = 105.sp, modifier = Modifier.align(Alignment.TopEnd).padding(end = 12.dp, top = 27.dp))
+                    Text("✳", color = Color(0xFFE9E1D8), fontSize = 105.sp, modifier = Modifier.align(Alignment.TopEnd).padding(end = 12.dp, top = 27.dp))
                     Text("ANIME / ART / FIGURE / GAME", color = Color.White.copy(alpha = .8f), fontSize = 8.sp, fontWeight = FontWeight.Bold, modifier = Modifier.align(Alignment.CenterEnd).padding(end = 16.dp))
                 }
             }
@@ -531,12 +531,12 @@ private fun DiscoverHomeScreen() {
                 Spacer(Modifier.height(10.dp))
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     listOf(
-                        Triple("ANIME", "动漫", Color(0xFFE7FF68)),
-                        Triple("ILLUST", "插画", Color(0xFFFFB8CF)),
-                        Triple("FIGURE", "手办", Color(0xFFB9A7FF)),
-                        Triple("GAME", "游戏", Color(0xFF9BE7DB))
+                        Triple("ANIME", "动漫", Color(0xFFE9E1D8)),
+                        Triple("ILLUST", "插画", Color(0xFFEBD9D8)),
+                        Triple("FIGURE", "手办", Color(0xFFDCD4E4)),
+                        Triple("GAME", "游戏", Color(0xFFD8E4DE))
                     ).forEach { channel ->
-                        Surface(color = channel.third, shape = RoundedCornerShape(5.dp), modifier = Modifier.weight(1f)) {
+                        Surface(color = channel.third, shape = RoundedCornerShape(12.dp), modifier = Modifier.weight(1f)) {
                             Column(Modifier.padding(vertical = 12.dp, horizontal = 7.dp), verticalArrangement = Arrangement.spacedBy(5.dp)) {
                                 Text(channel.first, color = HInk, fontSize = 7.sp, fontWeight = FontWeight.Black, letterSpacing = .4.sp)
                                 Text(channel.second, color = HInk, fontSize = 13.sp, fontWeight = FontWeight.Black)
@@ -548,7 +548,7 @@ private fun DiscoverHomeScreen() {
             item {
                 Row(verticalAlignment = Alignment.Bottom) {
                     Column(Modifier.weight(1f)) {
-                        Text("TRENDING NOW", color = HPrimary, fontSize = 8.sp, fontWeight = FontWeight.Black, letterSpacing = 1.5.sp)
+                        Text("TRENDING NOW", color = HPrimary, fontSize = 8.sp, fontWeight = FontWeight.Black, letterSpacing = 1.1.sp)
                         Text("现在大家在玩什么", color = HInk, fontSize = 19.sp, fontWeight = FontWeight.Black)
                     }
                     Text("#本周话题", color = HMuted, fontSize = 9.sp)
@@ -556,8 +556,8 @@ private fun DiscoverHomeScreen() {
                 Spacer(Modifier.height(10.dp))
                 Row(horizontalArrangement = Arrangement.spacedBy(9.dp)) {
                     listOf("痛包改造", "原创角色", "谷子交换").forEachIndexed { index, tag ->
-                        Surface(color = if (index == 0) Color(0xFF17151D) else Color.White, shape = RoundedCornerShape(4.dp)) {
-                            Text("# $tag", color = if (index == 0) Color(0xFFE7FF68) else HInk, fontSize = 10.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(horizontal = 11.dp, vertical = 9.dp))
+                        Surface(color = if (index == 0) Color(0xFF514B54) else Color.White, shape = RoundedCornerShape(4.dp)) {
+                            Text("# $tag", color = if (index == 0) Color(0xFFE9E1D8) else HInk, fontSize = 10.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(horizontal = 11.dp, vertical = 9.dp))
                         }
                     }
                 }
@@ -574,18 +574,18 @@ private fun DiscoverHomeScreen() {
                 Surface(color = Color.White, shape = RoundedCornerShape(7.dp), modifier = Modifier.fillMaxWidth()) {
                     Column(Modifier.padding(10.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
                         Box(Modifier.fillMaxWidth().height(188.dp).clip(RoundedCornerShape(4.dp)).background(
-                            androidx.compose.ui.graphics.Brush.linearGradient(listOf(Color(0xFFFFB8CF), Color(0xFFB9A7FF), Color(0xFF9BE7DB)))
+                            androidx.compose.ui.graphics.Brush.linearGradient(listOf(Color(0xFFEBD9D8), Color(0xFFDCD4E4), Color(0xFFD8E4DE)))
                         )) {
-                            Text("ART\nIS\nEVERYWHERE", color = Color(0xFF17151D), fontSize = 29.sp, lineHeight = 28.sp, fontWeight = FontWeight.Black, modifier = Modifier.align(Alignment.CenterStart).padding(start = 18.dp))
+                            Text("ART\nIS\nEVERYWHERE", color = Color(0xFF514B54), fontSize = 29.sp, lineHeight = 28.sp, fontWeight = FontWeight.Black, modifier = Modifier.align(Alignment.CenterStart).padding(start = 18.dp))
                             Text("✷", color = Color.White, fontSize = 92.sp, modifier = Modifier.align(Alignment.CenterEnd).padding(end = 20.dp))
-                            Text("CREATOR SPOTLIGHT / 001", color = Color(0xFF17151D), fontSize = 8.sp, fontWeight = FontWeight.Black, modifier = Modifier.align(Alignment.BottomStart).padding(12.dp))
+                            Text("CREATOR SPOTLIGHT / 001", color = Color(0xFF514B54), fontSize = 8.sp, fontWeight = FontWeight.Black, modifier = Modifier.align(Alignment.BottomStart).padding(12.dp))
                         }
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
                                 Text("纸上星河", color = HInk, fontSize = 13.sp, fontWeight = FontWeight.Black)
                                 Text("独立插画师 · ORIGINAL CHARACTER", color = HMuted, fontSize = 8.sp, fontWeight = FontWeight.Bold)
                             }
-                            Surface(color = Color(0xFFE7FF68), shape = RoundedCornerShape(4.dp)) {
+                            Surface(color = Color(0xFFE9E1D8), shape = RoundedCornerShape(4.dp)) {
                                 Text("FOLLOW +", color = HInk, fontSize = 9.sp, fontWeight = FontWeight.Black, modifier = Modifier.padding(horizontal = 10.dp, vertical = 8.dp))
                             }
                         }
@@ -607,7 +607,7 @@ private fun DiscoverHomeScreen() {
                     Text("更多动态 ↗", color = HMuted, fontSize = 9.sp)
                 }
                 Spacer(Modifier.height(9.dp))
-                Surface(color = Color(0xFFE7FF68), shape = RoundedCornerShape(7.dp), modifier = Modifier.fillMaxWidth()) {
+                Surface(color = Color(0xFFE9E1D8), shape = RoundedCornerShape(7.dp), modifier = Modifier.fillMaxWidth()) {
                     Row(Modifier.padding(14.dp), verticalAlignment = Alignment.CenterVertically) {
                         Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(5.dp)) {
                             Text("WEEKEND LOG", color = HInk, fontSize = 8.sp, fontWeight = FontWeight.Black, letterSpacing = 1.2.sp)

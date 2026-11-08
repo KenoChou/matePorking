@@ -217,15 +217,27 @@ private fun VerificationScreen(phone: String = "13800008888", onBack: () -> Unit
             Text("验证码将发送至 +86  ${maskedPhone.ifBlank { "你的手机号" }}", color = HMuted, fontSize = 12.sp)
         }
         Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-            Box(
-                Modifier.fillMaxWidth().height(160.dp).clip(RoundedCornerShape(22.dp))
-                    .background(Color(0xFFEAE4EC)),
-                contentAlignment = Alignment.Center
+            Row(
+                Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Text("✉", color = HPrimary, fontSize = 66.sp)
-                Text("CHECK YOUR MESSAGES", color = HMuted, fontSize = 8.sp, letterSpacing = 1.4.sp, modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = 18.dp))
+                Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
+                    Text("ONE MORE STEP!", color = Color(0xFFB47782), fontSize = 9.sp, fontWeight = FontWeight.Black, letterSpacing = 1.5.sp)
+                    Text("把验证码填进来 ✳", color = HInk, fontSize = 17.sp, fontWeight = FontWeight.Bold)
+                    Text("6 位数字 · 很快就好", color = HMuted, fontSize = 10.sp)
+                }
+                Box(
+                    Modifier.size(76.dp).clip(RoundedCornerShape(26.dp))
+                        .background(Color(0xFFF4DCE0)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text("✉", color = Color(0xFFB47782), fontSize = 36.sp)
+                    Box(Modifier.size(13.dp).align(Alignment.TopEnd).offset(x = (-5).dp, y = 5.dp)
+                        .clip(CircleShape).background(Color(0xFFF0C95F)))
+                }
             }
-            Text("输入 6 位短信验证码", color = HInk, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
+            Text("YOUR 6-DIGIT CODE", color = HMuted, fontSize = 9.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.6.sp)
             BasicTextField(
                 value = code,
                 onValueChange = { newValue: String -> code = newValue.filter(Char::isDigit).take(6); verified = false },
@@ -238,30 +250,43 @@ private fun VerificationScreen(phone: String = "13800008888", onBack: () -> Unit
                     Box {
                         Row(
                             Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            horizontalArrangement = Arrangement.spacedBy(7.dp)
                         ) {
                             repeat(6) { index ->
                                 val digit = code.getOrNull(index)?.toString().orEmpty()
                                 val active = index == code.length && code.length < 6
+                                val filled = digit.isNotEmpty()
                                 Box(
-                                    Modifier.weight(1f).height(56.dp)
-                                        .clip(RoundedCornerShape(13.dp))
-                                        .background(if (active) Color(0xFFF3EEF4) else Color.White)
+                                    Modifier.weight(1f).height(66.dp)
+                                        .clip(RoundedCornerShape(17.dp))
+                                        .background(
+                                            when {
+                                                filled -> Color(0xFFE7EEF0)
+                                                active -> Color(0xFFFFF0D7)
+                                                else -> Color(0xFFF1EDE9)
+                                            }
+                                        )
                                         .then(
                                             Modifier.border(
-                                                width = if (active) 1.5.dp else 1.dp,
-                                                color = if (active) HPrimary.copy(alpha = 0.65f) else Color(0xFFE8E1E5),
-                                                shape = RoundedCornerShape(13.dp)
+                                                width = if (active) 1.7.dp else 1.dp,
+                                                color = when {
+                                                    active -> Color(0xFFD39A69)
+                                                    filled -> Color(0xFFB6C9D0)
+                                                    else -> Color(0xFFE9E1DA)
+                                                },
+                                                shape = RoundedCornerShape(17.dp)
                                             )
                                         ),
                                     contentAlignment = Alignment.Center
                                 ) {
-                                    Text(
-                                        text = digit.ifEmpty { if (active) "·" else "" },
-                                        color = if (digit.isNotEmpty()) HInk else HMuted,
-                                        fontSize = 22.sp,
-                                        fontWeight = FontWeight.SemiBold
-                                    )
+                                    if (filled) {
+                                        Text(digit, color = Color(0xFF46535B), fontSize = 25.sp, fontWeight = FontWeight.Black)
+                                    } else {
+                                        Box(
+                                            Modifier.size(if (active) 7.dp else 5.dp).clip(CircleShape)
+                                                .background(if (active) Color(0xFFD39A69) else Color(0xFFD8D0C9))
+                                        )
+                                    }
                                 }
                             }
                         }
@@ -272,7 +297,7 @@ private fun VerificationScreen(phone: String = "13800008888", onBack: () -> Unit
             TextButton(onClick = { code = ""; verified = false; resendHint = true }, modifier = Modifier.align(Alignment.End)) {
                 Text("清空并重新输入", color = HPrimary, fontSize = 11.sp)
             }
-            if (resendHint) Text("已清空输入，可以重新填写。", color = HMuted, fontSize = 10.sp)
+            if (resendHint) Text("输入已清空，再来一次就好。", color = HMuted, fontSize = 10.sp)
             if (verified) Text("验证码输入完成 · 登录流程界面预览", color = HPrimary, fontSize = 11.sp)
         }
         Button(

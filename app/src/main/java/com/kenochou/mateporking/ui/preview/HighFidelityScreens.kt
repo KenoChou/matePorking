@@ -54,6 +54,7 @@ fun HighFidelityScreen(name: String) {
         "商家中心" -> MerchantDashboardScreen()
         "活动详情" -> EventDetailScreen()
         "圈子详情" -> CircleDetailScreen()
+        "首页" -> DiscoverHomeScreen()
         "Discover 首页" -> DiscoverHomeScreen()
         else -> SecondaryPreviewScreen(name)
     }
@@ -866,33 +867,47 @@ private fun DiscoverHomeScreen() {
 
 @Composable
 private fun DiscoverHomeBottomBar() {
-    Surface(color = Color.White, shadowElevation = 8.dp) {
+    Surface(color = Color.White, shadowElevation = 9.dp) {
         Row(
-            Modifier.fillMaxWidth().navigationBarsPadding().padding(horizontal = 8.dp, vertical = 8.dp),
-            horizontalArrangement = Arrangement.SpaceAround
+            Modifier.fillMaxWidth().navigationBarsPadding().padding(horizontal = 8.dp, vertical = 7.dp),
+            horizontalArrangement = Arrangement.SpaceAround,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             val tabs = listOf(
-                Triple("发现", Icons.Rounded.Explore, true),
-                Triple("圈子", Icons.Rounded.Groups, false),
-                Triple("商城", Icons.Rounded.Storefront, false),
-                Triple("消息", Icons.Rounded.ChatBubbleOutline, false),
-                Triple("我的", Icons.Rounded.PersonOutline, false)
+                Triple("首页", Icons.Rounded.Home, true),
+                Triple("圈子", Icons.Rounded.Groups, false)
             )
             tabs.forEach { tab ->
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(4.dp),
-                    modifier = Modifier.width(58.dp).clip(RoundedCornerShape(13.dp)).padding(vertical = 3.dp)
+                    verticalArrangement = Arrangement.spacedBy(3.dp),
+                    modifier = Modifier.width(54.dp).clip(RoundedCornerShape(12.dp)).padding(vertical = 3.dp)
                 ) {
-                    Box(
-                        Modifier.width(42.dp).clip(RoundedCornerShape(13.dp))
-                            .background(if (tab.third) Color(0xFFF0E9EE) else Color.Transparent)
-                            .padding(vertical = 5.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Icon(tab.second, contentDescription = tab.first, tint = if (tab.third) Color(0xFF8A789D) else Color(0xFFAAA2A8), modifier = Modifier.size(20.dp))
-                    }
+                    Icon(tab.second, contentDescription = tab.first, tint = if (tab.third) Color(0xFF8A789D) else Color(0xFFAAA2A8), modifier = Modifier.size(21.dp))
                     Text(tab.first, color = if (tab.third) Color(0xFF8A789D) else Color(0xFFAAA2A8), fontSize = 9.sp, fontWeight = if (tab.third) FontWeight.Bold else FontWeight.Normal)
+                }
+            }
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(3.dp),
+                modifier = Modifier.width(58.dp).clickable { }.padding(vertical = 1.dp)
+            ) {
+                Box(Modifier.size(38.dp).clip(RoundedCornerShape(14.dp)).background(Color(0xFF514653)), contentAlignment = Alignment.Center) {
+                    Icon(Icons.Rounded.Add, contentDescription = "发布", tint = Color.White, modifier = Modifier.size(23.dp))
+                }
+                Text("发布", color = Color(0xFF8A789D), fontSize = 9.sp, fontWeight = FontWeight.Bold)
+            }
+            listOf(
+                Triple("消息", Icons.Rounded.ChatBubbleOutline, false),
+                Triple("我的", Icons.Rounded.PersonOutline, false)
+            ).forEach { tab ->
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(3.dp),
+                    modifier = Modifier.width(54.dp).clip(RoundedCornerShape(12.dp)).padding(vertical = 3.dp)
+                ) {
+                    Icon(tab.second, contentDescription = tab.first, tint = Color(0xFFAAA2A8), modifier = Modifier.size(21.dp))
+                    Text(tab.first, color = Color(0xFFAAA2A8), fontSize = 9.sp)
                 }
             }
         }

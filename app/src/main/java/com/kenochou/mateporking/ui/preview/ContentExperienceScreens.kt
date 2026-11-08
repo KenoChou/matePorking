@@ -158,8 +158,15 @@ fun ContentDetailScreen() {
                 IconButton(onClick = { showShareSheet = true }) {
                     Icon(Icons.Rounded.Share, "分享", tint = CMuted)
                 }
-                TextButton(onClick = { if (comment.isNotBlank()) { sent = true; comment = "" } }) {
-                    Text("发送", color = CAccent, fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                IconButton(
+                    onClick = { if (comment.isNotBlank()) { sent = true; comment = "" } },
+                    enabled = comment.isNotBlank()
+                ) {
+                    Icon(
+                        Icons.Rounded.Send,
+                        contentDescription = "发送评论",
+                        tint = if (comment.isNotBlank()) CAccent else Color(0xFFCBC6CC)
+                    )
                 }
             }
         }

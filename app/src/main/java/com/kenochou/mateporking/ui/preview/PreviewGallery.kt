@@ -69,8 +69,14 @@ private val previewRoutes = listOf(
 fun PreviewGallery() {
     var selectedGroup by remember { mutableStateOf("全部") }
     var selectedPage by remember { mutableStateOf<PreviewRoute?>(null) }
+    var searchQuery by remember { mutableStateOf("") }
     val groups = listOf("全部") + previewRoutes.map { it.group }.distinct()
-    val visible = previewRoutes.filter { selectedGroup == "全部" || it.group == selectedGroup }
+    val visible = previewRoutes.filter { page ->
+        (selectedGroup == "全部" || page.group == selectedGroup) &&
+            (searchQuery.isBlank() || page.name.contains(searchQuery.trim(), ignoreCase = true) ||
+                page.group.contains(searchQuery.trim(), ignoreCase = true) ||
+                page.description.contains(searchQuery.trim(), ignoreCase = true))
+    }
 
     Column(Modifier.fillMaxSize().background(GalleryBg)) {
         Row(
@@ -80,7 +86,7 @@ fun PreviewGallery() {
             Column(Modifier.weight(1f)) {
                 Text("ANIMATE DESIGN SYSTEM", color = GalleryViolet, fontSize = 9.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.3.sp)
                 Text("页面预览中心", color = GalleryInk, fontSize = 24.sp, fontWeight = FontWeight.Bold)
-                Text("34 个页面 · 10 个业务模块", color = GalleryMuted, fontSize = 11.sp)
+                Text("${previewRoutes.size} 个页面 · ${groups.size - 1} 个业务模块", color = GalleryMuted, fontSize = 11.sp)
             }
             Surface(color = GalleryPale, shape = CircleShape) {
                 Text("UI ONLY", color = GalleryViolet, fontSize = 10.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp))
@@ -88,6 +94,22 @@ fun PreviewGallery() {
         }
 
         if (selectedPage == null) {
+            OutlinedTextField(
+                value = searchQuery,
+                onValueChange = { searchQuery = it },
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
+                placeholder = { Text("搜索页面、模块或功能") },
+                leadingIcon = { Icon(Icons.Rounded.Search, contentDescription = null) },
+                trailingIcon = {
+                    if (searchQuery.isNotEmpty()) {
+                        IconButton(onClick = { searchQuery = "" }) {
+                            Icon(Icons.Rounded.Close, contentDescription = "清空搜索")
+                        }
+                    }
+                },
+                singleLine = true,
+                shape = RoundedCornerShape(16.dp)
+            )
             androidx.compose.foundation.lazy.LazyRow(
                 contentPadding = PaddingValues(horizontal = 16.dp, vertical = 14.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -100,11 +122,31 @@ fun PreviewGallery() {
                     )
                 }
             }
-            LazyColumn(
-                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 4.dp, bottom = 28.dp),
-                verticalArrangement = Arrangement.spacedBy(9.dp)
+            Row(
+                Modifier.fillMaxWidth().padding(horizontal = 18.dp, vertical = 2.dp),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                items(visible) { page ->
+                Text("页面目录", color = GalleryInk, fontSize = 14.sp, fontWeight = FontWeight.Bold)
+                Spacer(Modifier.weight(1f))
+                Text("显示 ${visible.size} / ${previewRoutes.size}", color = GalleryMuted, fontSize = 10.sp)
+            }
+            if (visible.isEmpty()) {
+                Column(
+                    Modifier.fillMaxWidth().weight(1f).padding(30.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Icon(Icons.Rounded.SearchOff, contentDescription = null, tint = GalleryMuted, modifier = Modifier.size(38.dp))
+                    Spacer(Modifier.height(10.dp))
+                    Text("没有找到匹配页面", color = GalleryInk, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
+                    Text("试试其他关键词或切换业务模块", color = GalleryMuted, fontSize = 11.sp)
+                }
+            } else {
+                LazyColumn(
+                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 4.dp, bottom = 28.dp),
+                    verticalArrangement = Arrangement.spacedBy(9.dp)
+                ) {
+                    items(visible) { page ->
                     Surface(
                         color = Color.White,
                         shape = RoundedCornerShape(16.dp),
@@ -122,6 +164,7 @@ fun PreviewGallery() {
                             Icon(Icons.Rounded.ChevronRight, null, tint = GalleryMuted)
                         }
                     }
+                }
                 }
             }
         } else {

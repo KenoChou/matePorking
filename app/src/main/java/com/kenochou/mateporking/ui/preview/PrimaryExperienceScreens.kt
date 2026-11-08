@@ -21,13 +21,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-private val PInk = Color(0xFF252238)
-private val PMuted = Color(0xFF8B8998)
-private val PBg = Color(0xFFF7F6FA)
-private val PAccent = Color(0xFF7967D8)
-private val PPale = Color(0xFFEDE9FF)
-private val PCoral = Color(0xFFFF8C85)
-private val PLine = Color(0xFFF0EEF4)
+private val PInk = Color(0xFF17151F)
+private val PMuted = Color(0xFF777383)
+private val PBg = Color(0xFFF4F2EE)
+private val PAccent = Color(0xFF6847FF)
+private val PPale = Color(0xFFE7FF68)
+private val PCoral = Color(0xFFFF5578)
+private val PLine = Color(0xFFE6E2DC)
 
 private data class FeedPost(
     val author: String,
@@ -71,8 +71,8 @@ fun CommunityFeedScreen() {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
                         Eyebrow("COMMUNITY · YOUR PEOPLE")
-                        Text("同好聚集地", color = PInk, fontSize = 27.sp, fontWeight = FontWeight.ExtraBold)
-                        Text("分享热爱，也发现新的灵感", color = PMuted, fontSize = 11.sp)
+                        Text("找到你的同频", color = PInk, fontSize = 30.sp, fontWeight = FontWeight.Black)
+                        Text("兴趣不设限，表达不设限", color = PMuted, fontSize = 11.sp)
                     }
                     IconButton(onClick = { searchVisible = !searchVisible }) {
                         Icon(if (searchVisible) Icons.Rounded.Close else Icons.Rounded.Search, "搜索", tint = PInk)
@@ -108,7 +108,7 @@ fun CommunityFeedScreen() {
                 }
             }
             item {
-                Surface(color = Color.White, shape = RoundedCornerShape(18.dp)) {
+                Surface(color = Color.White, shape = RoundedCornerShape(20.dp)) {
                     Row(
                         Modifier.fillMaxWidth().padding(14.dp),
                         verticalAlignment = Alignment.CenterVertically
@@ -178,7 +178,7 @@ fun CommunityFeedScreen() {
 
 @Composable
 private fun CommunityPostCard(post: FeedPost, liked: Boolean, onLike: () -> Unit) {
-    Surface(color = Color.White, shape = RoundedCornerShape(21.dp)) {
+    Surface(color = Color.White, shape = RoundedCornerShape(25.dp)) {
         Column(Modifier.padding(15.dp), verticalArrangement = Arrangement.spacedBy(11.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 AvatarMark(post.initial, if (post.featured) PPale else Color(0xFFFFE9E5), 42)
@@ -242,7 +242,7 @@ fun MarketHomeScreen() {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
                         Eyebrow("ANIMATE MARKET · CURATED")
-                        Text("兴趣好物", color = PInk, fontSize = 27.sp, fontWeight = FontWeight.ExtraBold)
+                        Text("灵感补给站", color = PInk, fontSize = 30.sp, fontWeight = FontWeight.Black)
                         Text("让每一份喜欢，都值得被收藏", color = PMuted, fontSize = 11.sp)
                     }
                     IconButton(onClick = {}) { Icon(Icons.Rounded.Search, "搜索商品", tint = PInk) }
@@ -254,12 +254,12 @@ fun MarketHomeScreen() {
             item {
                 Box(
                     Modifier.fillMaxWidth().clip(RoundedCornerShape(25.dp))
-                        .background(Brush.linearGradient(listOf(Color(0xFF7967D8), Color(0xFF9D8CE8), Color(0xFFFFBEB4))))
+                        .background(Brush.linearGradient(listOf(Color(0xFF6847FF), Color(0xFF9B70FF), Color(0xFFFF6D91))))
                         .padding(20.dp)
                 ) {
                     Column(verticalArrangement = Arrangement.spacedBy(9.dp)) {
-                        Text("MADE BY CREATORS", color = Color.White.copy(alpha = .8f), fontSize = 9.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.5.sp)
-                        Text("把热爱，\n变成触手可及的收藏。", color = Color.White, fontSize = 22.sp, lineHeight = 29.sp, fontWeight = FontWeight.Bold)
+                        Text("THE CREATOR CLUB ✳", color = Color(0xFFE7FF68), fontSize = 10.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.5.sp)
+                        Text("喜欢的东西，\n就要大声收藏。", color = Color.White, fontSize = 25.sp, lineHeight = 29.sp, fontWeight = FontWeight.Bold)
                         Text("原创设计 · 限量周边 · 兴趣好物", color = Color.White.copy(alpha = .9f), fontSize = 10.sp)
                         Surface(color = Color.White.copy(alpha = .96f), shape = CircleShape) {
                             Row(Modifier.padding(horizontal = 13.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
@@ -287,7 +287,7 @@ fun MarketHomeScreen() {
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.spacedBy(7.dp)
                         ) {
-                            Surface(color = category.third, shape = RoundedCornerShape(18.dp)) {
+                            Surface(color = category.third, shape = RoundedCornerShape(20.dp)) {
                                 Box(Modifier.size(58.dp), contentAlignment = Alignment.Center) {
                                     Icon(category.second, null, tint = PAccent, modifier = Modifier.size(25.dp))
                                 }
@@ -377,8 +377,8 @@ fun ConversationListScreen() {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
                     Eyebrow("MESSAGES · STAY CONNECTED")
-                    Text("消息", color = PInk, fontSize = 27.sp, fontWeight = FontWeight.ExtraBold)
-                    Text("和喜欢相同事物的人保持联系", color = PMuted, fontSize = 11.sp)
+                    Text("消息", color = PInk, fontSize = 30.sp, fontWeight = FontWeight.Black)
+                    Text("别让有趣的对话停在这里", color = PMuted, fontSize = 11.sp)
                 }
                 IconButton(onClick = {}) { Icon(Icons.Rounded.EditNote, "新消息", tint = PInk) }
             }
@@ -558,7 +558,7 @@ private fun ProductTile(
     onFavorite: () -> Unit = {},
     onAdd: () -> Unit = {}
 ) {
-    Surface(color = Color.White, shape = RoundedCornerShape(19.dp), modifier = modifier) {
+    Surface(color = Color.White, shape = RoundedCornerShape(23.dp), modifier = modifier) {
         Column(Modifier.padding(9.dp), verticalArrangement = Arrangement.spacedBy(7.dp)) {
             Box {
                 ArtTile(symbol, 118)

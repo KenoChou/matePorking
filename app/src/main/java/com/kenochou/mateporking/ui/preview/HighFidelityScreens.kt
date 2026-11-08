@@ -67,8 +67,8 @@ private fun SectionTitle(title: String, more: String = "") {
 @Composable
 private fun MockImage(height: Int = 150, symbol: String = "✦") {
     Box(
-        Modifier.fillMaxWidth().height(height.dp).clip(RoundedCornerShape(18.dp)).background(
-            androidx.compose.ui.graphics.Brush.linearGradient(listOf(Color(0xFFE9E3FF), Color(0xFFFFE8E4), Color(0xFFF3EFFB)))
+        Modifier.fillMaxWidth().height(height.dp).clip(RoundedCornerShape(5.dp)).background(
+            androidx.compose.ui.graphics.Brush.linearGradient(listOf(Color(0xFFFFB8CF), Color(0xFFB9A7FF), Color(0xFFE7FF68)))
         ),
         contentAlignment = Alignment.Center
     ) {
@@ -89,7 +89,7 @@ private fun ActionButton(label: String, modifier: Modifier = Modifier, secondary
     Button(
         onClick = {},
         modifier = modifier.height(48.dp),
-        shape = RoundedCornerShape(14.dp),
+        shape = RoundedCornerShape(5.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = if (secondary) HPale else HPrimary,
             contentColor = if (secondary) HPrimary else Color.White

@@ -211,20 +211,6 @@ private fun VerificationScreen(phone: String = "13800008888", onBack: () -> Unit
         verticalArrangement = Arrangement.SpaceBetween
     ) {
         Column(verticalArrangement = Arrangement.spacedBy(0.dp)) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                TextButton(onClick = onBack, contentPadding = PaddingValues(0.dp)) {
-                    Text("‹  返回", color = Color(0xFF777487), fontSize = 12.sp)
-                }
-                Spacer(Modifier.weight(1f))
-                Text("02", color = accent, fontSize = 12.sp, fontWeight = FontWeight.Black)
-                Text(" / 02", color = Color(0xFFB8B4C0), fontSize = 11.sp)
-            }
-            Spacer(Modifier.height(28.dp))
-            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(7.dp)) {
-                Box(Modifier.size(8.dp).clip(CircleShape).background(Color(0xFFFF9878)))
-                Text("ANIMATE CLUB  ·  MEMBER ENTRY", color = accent, fontSize = 9.sp, fontWeight = FontWeight.Black, letterSpacing = 1.1.sp)
-            }
-            Spacer(Modifier.height(13.dp))
             Text("差一点，", color = ink, fontSize = 35.sp, lineHeight = 41.sp, fontWeight = FontWeight.Black)
             Row(verticalAlignment = Alignment.Bottom) {
                 Text("就开聊！", color = accent, fontSize = 35.sp, lineHeight = 41.sp, fontWeight = FontWeight.Black)

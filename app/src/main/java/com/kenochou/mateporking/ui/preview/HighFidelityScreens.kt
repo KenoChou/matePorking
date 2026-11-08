@@ -1,6 +1,9 @@
 package com.kenochou.mateporking.ui.preview
 
 import androidx.compose.foundation.background
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.border
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
@@ -321,7 +324,7 @@ private fun SectionTitle(title: String, more: String = "") {
 private fun MockImage(height: Int = 150, symbol: String = "✦") {
     Box(
         Modifier.fillMaxWidth().height(height.dp).clip(RoundedCornerShape(5.dp)).background(
-            androidx.compose.ui.graphics.Brush.linearGradient(listOf(Color(0xFFFFB8CF), Color(0xFFB9A7FF), Color(0xFFE7FF68)))
+            androidx.compose.ui.graphics.androidx.compose.ui.graphics.Brush.linearGradient(listOf(Color(0xFFFFB8CF), Color(0xFFB9A7FF), Color(0xFFE7FF68)))
         ),
         contentAlignment = Alignment.Center
     ) {

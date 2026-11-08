@@ -72,17 +72,31 @@ private fun WelcomeScreen() {
         }
         Column(verticalArrangement = Arrangement.spacedBy(20.dp)) {
             Box(
-                Modifier.fillMaxWidth().height(300.dp).clip(RoundedCornerShape(28.dp))
-                    .background(androidx.compose.ui.graphics.Brush.linearGradient(listOf(Color(0xFFE9DFE8), Color(0xFFF1E7E0), Color(0xFFDDE7E1))))
+                Modifier.fillMaxWidth().height(310.dp).clip(RoundedCornerShape(30.dp))
+                    .background(Color(0xFFF0E8E4))
             ) {
-                Text("好き", color = Color(0xFF8A789D), fontSize = 76.sp, fontWeight = FontWeight.Light, modifier = Modifier.align(Alignment.TopStart).padding(start = 22.dp, top = 25.dp))
-                Text("✳", color = Color(0xFFD9A6A5), fontSize = 92.sp, modifier = Modifier.align(Alignment.CenterEnd).padding(end = 25.dp))
-                Text("YOUR LITTLE\nUNIVERSE", color = HInk, fontSize = 22.sp, lineHeight = 28.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.align(Alignment.BottomStart).padding(24.dp))
-                Text("ANIME · ART · COLLECT · CONNECT", color = HMuted, fontSize = 8.sp, letterSpacing = 1.1.sp, modifier = Modifier.align(Alignment.BottomEnd).padding(20.dp))
+                Box(Modifier.fillMaxWidth(0.62f).height(210.dp).align(Alignment.TopEnd).padding(top = 18.dp, end = 14.dp)
+                    .clip(RoundedCornerShape(topStart = 90.dp, topEnd = 24.dp, bottomEnd = 90.dp, bottomStart = 24.dp))
+                    .background(Color(0xFFAFC7D8)))
+                Box(Modifier.size(112.dp).align(Alignment.CenterEnd).offset(x = (-28).dp, y = 5.dp)
+                    .clip(CircleShape).background(Color(0xFFF4D875)))
+                Box(Modifier.size(72.dp).align(Alignment.TopStart).offset(x = 22.dp, y = 82.dp)
+                    .clip(CircleShape).background(Color(0xFFE9AEBB)))
+                Text("好きなもの\nぜんぶ！", color = Color(0xFF4C4650), fontSize = 31.sp, lineHeight = 37.sp,
+                    fontWeight = FontWeight.Black, modifier = Modifier.align(Alignment.TopStart).padding(start = 24.dp, top = 24.dp))
+                Text("♡", color = Color(0xFFFBF7F0), fontSize = 54.sp, modifier = Modifier.align(Alignment.CenterEnd).padding(end = 54.dp))
+                Text("FAN CULTURE CLUB", color = Color(0xFF4C4650), fontSize = 9.sp, letterSpacing = 2.sp,
+                    fontWeight = FontWeight.Bold, modifier = Modifier.align(Alignment.BottomStart).padding(start = 22.dp, bottom = 62.dp))
+                Text("ANIME  /  ART  /  GOODS  /  FRIENDS", color = Color(0xFF716A70), fontSize = 8.sp, letterSpacing = 1.sp,
+                    modifier = Modifier.align(Alignment.BottomStart).padding(start = 22.dp, bottom = 25.dp))
+                Box(Modifier.align(Alignment.TopEnd).padding(top = 18.dp, end = 18.dp)
+                    .clip(RoundedCornerShape(50)).background(Color(0xFFFAF8F5)).padding(horizontal = 12.dp, vertical = 7.dp)) {
+                    Text("VOL. 01  ✳", color = HInk, fontSize = 9.sp, fontWeight = FontWeight.Bold)
+                }
             }
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                Text("让喜欢的事，\n成为生活的一部分。", color = HInk, fontSize = 27.sp, lineHeight = 36.sp, fontWeight = FontWeight.SemiBold)
-                Text("发现同好、分享灵感，也收藏每一个心动瞬间。", color = HMuted, fontSize = 12.sp, lineHeight = 19.sp)
+                Text("喜欢的东西，\n当然要大声安利。", color = HInk, fontSize = 28.sp, lineHeight = 38.sp, fontWeight = FontWeight.Black)
+                Text("把收藏夹里的热爱，变成一起玩的人。", color = HMuted, fontSize = 12.sp, lineHeight = 19.sp)
             }
         }
         Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -90,7 +104,7 @@ private fun WelcomeScreen() {
                 onClick = { showLogin = true },
                 modifier = Modifier.fillMaxWidth().height(54.dp),
                 shape = RoundedCornerShape(16.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = HInk)
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF514653))
             ) {
                 Text("开始探索", color = Color.White, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
                 Spacer(Modifier.width(8.dp))
@@ -124,11 +138,18 @@ private fun PhoneLoginScreen(onBack: () -> Unit = {}) {
         }
         Column(verticalArrangement = Arrangement.spacedBy(18.dp)) {
             Box(
-                Modifier.fillMaxWidth().height(126.dp).clip(RoundedCornerShape(22.dp))
-                    .background(Color(0xFFF0E9EE))
+                Modifier.fillMaxWidth().height(142.dp).clip(RoundedCornerShape(24.dp))
+                    .background(Color(0xFFE8EEF0))
             ) {
-                Text("HELLO,\nFELLOW FAN.", color = HInk, fontSize = 23.sp, lineHeight = 29.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.align(Alignment.CenterStart).padding(start = 20.dp))
-                Text("♡", color = HPrimary, fontSize = 68.sp, modifier = Modifier.align(Alignment.CenterEnd).padding(end = 22.dp))
+                Box(Modifier.size(116.dp).align(Alignment.CenterEnd).offset(x = (-22).dp)
+                    .clip(CircleShape).background(Color(0xFFF3D36F)))
+                Box(Modifier.size(72.dp).align(Alignment.TopEnd).offset(x = (-76).dp, y = 13.dp)
+                    .clip(CircleShape).background(Color(0xFFE7A9B8)))
+                Text("HEY,\nYOU'RE BACK!", color = HInk, fontSize = 23.sp, lineHeight = 27.sp,
+                    fontWeight = FontWeight.Black, modifier = Modifier.align(Alignment.CenterStart).padding(start = 20.dp))
+                Text("✳", color = Color(0xFFFAF8F5), fontSize = 42.sp, modifier = Modifier.align(Alignment.CenterEnd).padding(end = 48.dp))
+                Text("GOOD TO SEE YOU AGAIN", color = HMuted, fontSize = 8.sp, letterSpacing = 1.1.sp,
+                    modifier = Modifier.align(Alignment.BottomStart).padding(start = 21.dp, bottom = 12.dp))
             }
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Text("手机号码", color = HInk, fontSize = 12.sp, fontWeight = FontWeight.SemiBold)

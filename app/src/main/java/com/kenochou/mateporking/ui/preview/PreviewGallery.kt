@@ -20,11 +20,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-private val GalleryInk = Color(0xFF17151D)
-private val GalleryMuted = Color(0xFF77727D)
-private val GalleryBg = Color(0xFFF4F1EA)
-private val GalleryViolet = Color(0xFF6847FF)
-private val GalleryPale = Color(0xFFE7FF68)
+private val GalleryInk = Color(0xFF302D35)
+private val GalleryMuted = Color(0xFF918B94)
+private val GalleryBg = Color(0xFFFAF8F5)
+private val GalleryViolet = Color(0xFF8A789D)
+private val GalleryPale = Color(0xFFF0E9EE)
 
 private data class PreviewRoute(val group: String, val name: String, val description: String)
 
@@ -109,7 +109,7 @@ fun PreviewGallery() {
                     }
                 },
                 singleLine = true,
-                shape = RoundedCornerShape(6.dp)
+                shape = RoundedCornerShape(14.dp)
             )
             androidx.compose.foundation.lazy.LazyRow(
                 contentPadding = PaddingValues(horizontal = 16.dp, vertical = 14.dp),

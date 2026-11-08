@@ -1,0 +1,437 @@
+package com.kenochou.mateporking.ui.preview
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+
+private val HInk = Color(0xFF242332)
+private val HMuted = Color(0xFF898795)
+private val HBg = Color(0xFFF8F7FB)
+private val HPrimary = Color(0xFF7866D8)
+private val HPale = Color(0xFFEDE9FF)
+private val HCoral = Color(0xFFFF8A83)
+
+@Composable
+fun HighFidelityScreen(name: String) {
+    when (name) {
+        "商品详情" -> ProductDetailScreen()
+        "购物车" -> CartScreen()
+        "订单详情" -> OrderDetailScreen()
+        "聊天详情" -> ChatScreen()
+        "个人主页" -> ProfileHomeScreen()
+        "创作者中心" -> CreatorDashboardScreen()
+        "商家中心" -> MerchantDashboardScreen()
+        "活动详情" -> EventDetailScreen()
+        "圈子详情" -> CircleDetailScreen()
+        "Discover 首页" -> DiscoverHomeScreen()
+        else -> GenericDetailScreen(name)
+    }
+}
+
+@Composable
+private fun PageHeader(title: String, trailing: String = "") {
+    Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+        Column(Modifier.weight(1f)) {
+            Text("ANIMATE", color = HPrimary, fontSize = 9.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.4.sp)
+            Text(title, color = HInk, fontSize = 23.sp, fontWeight = FontWeight.Bold)
+        }
+        if (trailing.isNotBlank()) Text(trailing, color = HPrimary, fontSize = 11.sp, fontWeight = FontWeight.SemiBold)
+    }
+}
+
+@Composable
+private fun SectionTitle(title: String, more: String = "") {
+    Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+        Text(title, color = HInk, fontSize = 16.sp, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+        if (more.isNotBlank()) Text(more, color = HPrimary, fontSize = 10.sp)
+    }
+}
+
+@Composable
+private fun MockImage(height: Int = 150, symbol: String = "✦") {
+    Box(
+        Modifier.fillMaxWidth().height(height.dp).clip(RoundedCornerShape(18.dp)).background(
+            androidx.compose.ui.graphics.Brush.linearGradient(listOf(Color(0xFFE9E3FF), Color(0xFFFFE8E4), Color(0xFFF3EFFB)))
+        ),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(symbol, color = Color(0xFF9C8BDB), fontSize = 42.sp, fontWeight = FontWeight.Light)
+    }
+}
+
+@Composable
+private fun InfoRow(label: String, value: String) {
+    Row(Modifier.fillMaxWidth().padding(vertical = 9.dp), verticalAlignment = Alignment.CenterVertically) {
+        Text(label, color = HMuted, fontSize = 11.sp, modifier = Modifier.weight(1f))
+        Text(value, color = HInk, fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
+    }
+}
+
+@Composable
+private fun ActionButton(label: String, modifier: Modifier = Modifier, secondary: Boolean = false) {
+    Button(
+        onClick = {},
+        modifier = modifier.height(48.dp),
+        shape = RoundedCornerShape(14.dp),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = if (secondary) HPale else HPrimary,
+            contentColor = if (secondary) HPrimary else Color.White
+        )
+    ) { Text(label, fontWeight = FontWeight.SemiBold, fontSize = 12.sp) }
+}
+
+@Composable
+private fun ProductDetailScreen() {
+    Column(Modifier.fillMaxSize().background(Color.White)) {
+        LazyColumn(Modifier.weight(1f), contentPadding = PaddingValues(18.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
+            item { PageHeader("商品详情", "♡ 收藏") }
+            item { MockImage(260, "✧") }
+            item {
+                Text("原创艺术收藏摆件 · 星月系列", color = HInk, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                Text("创作者原创设计 / 限量发行", color = HMuted, fontSize = 11.sp)
+                Spacer(Modifier.height(8.dp))
+                Text("¥ 128.00", color = HCoral, fontSize = 23.sp, fontWeight = FontWeight.ExtraBold)
+            }
+            item {
+                Surface(color = HBg, shape = RoundedCornerShape(16.dp)) {
+                    Column(Modifier.padding(14.dp)) {
+                        InfoRow("配送", "现货 · 预计 48 小时内发货")
+                        HorizontalDivider(color = Color.White)
+                        InfoRow("服务", "正品保障 · 售后支持")
+                        HorizontalDivider(color = Color.White)
+                        InfoRow("规格", "标准款 · 紫色")
+                    }
+                }
+            }
+            item { SectionTitle("创作者介绍", "进入主页") }
+            item { Text("以原创设计记录兴趣灵感，让每件作品都有自己的故事。", color = HMuted, fontSize = 12.sp) }
+            item { SectionTitle("商品评价", "查看全部") }
+            item { Text("暂无真实评价数据 · 当前为 UI 展示样例", color = HMuted, fontSize = 11.sp) }
+        }
+        Row(Modifier.fillMaxWidth().background(Color.White).padding(14.dp), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+            ActionButton("加入购物车", Modifier.weight(1f), true)
+            ActionButton("立即购买", Modifier.weight(1f))
+        }
+    }
+}
+
+@Composable
+private fun CartScreen() {
+    Column(Modifier.fillMaxSize().background(HBg).padding(18.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+        PageHeader("购物车", "管理")
+        repeat(2) { index ->
+            Surface(color = Color.White, shape = RoundedCornerShape(18.dp)) {
+                Row(Modifier.padding(13.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Checkbox(checked = index == 0, onCheckedChange = {}, colors = CheckboxDefaults.colors(checkedColor = HPrimary))
+                    Box(Modifier.size(76.dp).clip(RoundedCornerShape(13.dp)).background(HPale), contentAlignment = Alignment.Center) {
+                        Icon(Icons.Rounded.AutoAwesome, null, tint = HPrimary, modifier = Modifier.size(28.dp))
+                    }
+                    Spacer(Modifier.width(11.dp))
+                    Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                        Text(if (index == 0) "星月系列原创摆件" else "原创插画收藏卡", color = HInk, fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
+                        Text("标准款 · 紫色", color = HMuted, fontSize = 10.sp)
+                        Text(if (index == 0) "¥128.00" else "¥36.00", color = HCoral, fontSize = 14.sp, fontWeight = FontWeight.Bold)
+                    }
+                    Text("−   1   +", color = HInk, fontSize = 11.sp)
+                }
+            }
+        }
+        Surface(color = Color.White, shape = RoundedCornerShape(18.dp)) {
+            Column(Modifier.padding(16.dp)) {
+                InfoRow("商品金额", "¥ 164.00")
+                InfoRow("配送费用", "¥ 0.00")
+                HorizontalDivider(color = HBg)
+                InfoRow("合计", "¥ 164.00")
+            }
+        }
+        Spacer(Modifier.weight(1f))
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Checkbox(checked = true, onCheckedChange = {})
+            Text("全选", color = HMuted, fontSize = 11.sp, modifier = Modifier.weight(1f))
+            Text("合计 ¥164.00", color = HInk, fontSize = 14.sp, fontWeight = FontWeight.Bold)
+            Spacer(Modifier.width(10.dp))
+            ActionButton("去结算")
+        }
+    }
+}
+
+@Composable
+private fun OrderDetailScreen() {
+    Column(Modifier.fillMaxSize().background(HBg).padding(18.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
+        PageHeader("订单详情")
+        Surface(color = HPrimary, shape = RoundedCornerShape(20.dp), modifier = Modifier.fillMaxWidth()) {
+            Column(Modifier.padding(18.dp)) {
+                Text("等待发货", color = Color.White, fontSize = 21.sp, fontWeight = FontWeight.Bold)
+                Text("商家正在准备你的商品", color = Color(0xFFE7E1FF), fontSize = 11.sp)
+                Spacer(Modifier.height(16.dp))
+                Text("订单进度", color = Color.White, fontSize = 11.sp, fontWeight = FontWeight.SemiBold)
+                Text("已下单     已付款     待发货     待收货", color = Color.White, fontSize = 10.sp)
+            }
+        }
+        Surface(color = Color.White, shape = RoundedCornerShape(17.dp)) {
+            Column(Modifier.padding(15.dp)) {
+                Text("收货信息", color = HInk, fontSize = 13.sp, fontWeight = FontWeight.Bold)
+                InfoRow("收货人", "用户展示名称")
+                InfoRow("联系电话", "138****0000")
+                InfoRow("收货地址", "此处展示收货地址")
+            }
+        }
+        Surface(color = Color.White, shape = RoundedCornerShape(17.dp)) {
+            Column(Modifier.padding(15.dp)) {
+                Text("商品信息", color = HInk, fontSize = 13.sp, fontWeight = FontWeight.Bold)
+                InfoRow("星月系列原创摆件 × 1", "¥128.00")
+                InfoRow("商品总额", "¥128.00")
+                InfoRow("实付款", "¥128.00")
+            }
+        }
+        Surface(color = Color.White, shape = RoundedCornerShape(17.dp)) {
+            Column(Modifier.padding(15.dp)) {
+                InfoRow("订单编号", "AM202600001")
+                InfoRow("创建时间", "2026-11-08 14:30")
+                InfoRow("支付方式", "在线支付")
+            }
+        }
+        ActionButton("联系商家", Modifier.fillMaxWidth(), true)
+    }
+}
+
+@Composable
+private fun ChatScreen() {
+    Column(Modifier.fillMaxSize().background(Color.White)) {
+        PageHeader("创作交流", "在线")
+        Column(Modifier.weight(1f).fillMaxWidth().background(HBg).padding(16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+            Text("今天 14:32", color = HMuted, fontSize = 10.sp, modifier = Modifier.align(Alignment.CenterHorizontally))
+            ChatBubble("最近发现一位很棒的创作者，分享给你看看。", false)
+            ChatBubble("好呀！我也在找新的灵感。", true)
+            ChatBubble("这组作品的配色真的很特别。", false)
+            ChatBubble("喜欢这种温柔的色彩风格 ✨", true)
+        }
+        Row(Modifier.fillMaxWidth().padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
+            IconButton(onClick = {}) { Icon(Icons.Rounded.AddCircleOutline, null, tint = HMuted) }
+            Surface(color = HBg, shape = CircleShape, modifier = Modifier.weight(1f)) {
+                Text("发送消息…", color = HMuted, fontSize = 12.sp, modifier = Modifier.padding(horizontal = 15.dp, vertical = 13.dp))
+            }
+            IconButton(onClick = {}) { Icon(Icons.Rounded.Mood, null, tint = HMuted) }
+            IconButton(onClick = {}) { Icon(Icons.Rounded.Send, null, tint = HPrimary) }
+        }
+    }
+}
+
+@Composable
+private fun ChatBubble(text: String, mine: Boolean) {
+    Row(Modifier.fillMaxWidth(), horizontalArrangement = if (mine) Arrangement.End else Arrangement.Start) {
+        Surface(color = if (mine) HPale else Color.White, shape = RoundedCornerShape(16.dp), modifier = Modifier.widthIn(max = 270.dp)) {
+            Text(text, color = HInk, fontSize = 12.sp, modifier = Modifier.padding(13.dp))
+        }
+    }
+}
+
+@Composable
+private fun ProfileHomeScreen() {
+    Column(Modifier.fillMaxSize().background(HBg).padding(18.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+        PageHeader("个人主页", "编辑")
+        Surface(color = Color.White, shape = RoundedCornerShape(22.dp), modifier = Modifier.fillMaxWidth()) {
+            Column(Modifier.padding(20.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                Box(Modifier.size(76.dp).clip(CircleShape).background(HPale), contentAlignment = Alignment.Center) {
+                    Icon(Icons.Rounded.Person, null, tint = HPrimary, modifier = Modifier.size(38.dp))
+                }
+                Spacer(Modifier.height(10.dp))
+                Text("AniMate 用户", color = HInk, fontSize = 17.sp, fontWeight = FontWeight.Bold)
+                Text("让热爱连接彼此", color = HMuted, fontSize = 11.sp)
+                Spacer(Modifier.height(14.dp))
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
+                    StatItem("作品", "12")
+                    StatItem("关注", "128")
+                    StatItem("粉丝", "2.4k")
+                }
+            }
+        }
+        listOf("我的作品", "我的收藏", "我的订单", "创作者中心", "商家入口", "账号与设置").forEach {
+            Surface(color = Color.White, shape = RoundedCornerShape(14.dp)) {
+                Row(Modifier.fillMaxWidth().padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Text(it, color = HInk, fontSize = 12.sp, modifier = Modifier.weight(1f))
+                    Icon(Icons.Rounded.ChevronRight, null, tint = HMuted)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun StatItem(label: String, value: String) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Text(value, color = HInk, fontSize = 17.sp, fontWeight = FontWeight.Bold)
+        Text(label, color = HMuted, fontSize = 10.sp)
+    }
+}
+
+@Composable
+private fun CreatorDashboardScreen() {
+    Column(Modifier.fillMaxSize().background(HBg).padding(18.dp), verticalArrangement = Arrangement.spacedBy(15.dp)) {
+        PageHeader("创作者中心", "工作台")
+        Surface(color = HPrimary, shape = RoundedCornerShape(20.dp), modifier = Modifier.fillMaxWidth()) {
+            Column(Modifier.padding(18.dp)) {
+                Text("创作表现", color = Color.White, fontSize = 17.sp, fontWeight = FontWeight.Bold)
+                Text("数据展示样例 · 非真实运营数据", color = Color(0xFFE6E0FF), fontSize = 10.sp)
+                Spacer(Modifier.height(15.dp))
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                    StatItem("作品浏览", "12.8k")
+                    StatItem("互动次数", "860")
+                    StatItem("新增粉丝", "126")
+                }
+            }
+        }
+        SectionTitle("内容管理", "管理全部")
+        listOf("发布新作品", "已发布作品", "草稿箱", "内容审核").forEach { DashboardRow(it) }
+        SectionTitle("创作者服务")
+        listOf("创作者资料", "收益与结算说明", "平台创作规范").forEach { DashboardRow(it) }
+    }
+}
+
+@Composable
+private fun MerchantDashboardScreen() {
+    Column(Modifier.fillMaxSize().background(HBg).padding(18.dp), verticalArrangement = Arrangement.spacedBy(15.dp)) {
+        PageHeader("商家中心", "店铺管理")
+        Surface(color = Color.White, shape = RoundedCornerShape(20.dp), modifier = Modifier.fillMaxWidth()) {
+            Column(Modifier.padding(18.dp)) {
+                Text("我的兴趣商店", color = HInk, fontSize = 17.sp, fontWeight = FontWeight.Bold)
+                Text("店铺经营数据展示样例", color = HMuted, fontSize = 10.sp)
+                Spacer(Modifier.height(14.dp))
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                    StatItem("商品", "18")
+                    StatItem("待发货", "06")
+                    StatItem("售后", "02")
+                }
+            }
+        }
+        SectionTitle("商品经营")
+        listOf("全部商品", "新增商品", "库存管理", "商品分类").forEach { DashboardRow(it) }
+        SectionTitle("订单与服务")
+        listOf("店铺订单", "售后管理", "配送设置").forEach { DashboardRow(it) }
+    }
+}
+
+@Composable
+private fun DashboardRow(label: String) {
+    Surface(color = Color.White, shape = RoundedCornerShape(14.dp)) {
+        Row(Modifier.fillMaxWidth().padding(15.dp), verticalAlignment = Alignment.CenterVertically) {
+            Icon(Icons.Rounded.AutoAwesome, null, tint = HPrimary, modifier = Modifier.size(18.dp))
+            Spacer(Modifier.width(11.dp))
+            Text(label, color = HInk, fontSize = 12.sp, modifier = Modifier.weight(1f))
+            Icon(Icons.Rounded.ChevronRight, null, tint = HMuted)
+        }
+    }
+}
+
+@Composable
+private fun EventDetailScreen() {
+    Column(Modifier.fillMaxSize().background(Color.White)) {
+        LazyColumn(Modifier.weight(1f), contentPadding = PaddingValues(18.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
+            item { PageHeader("活动详情", "分享") }
+            item { MockImage(210, "✧") }
+            item { Text("AniMate 兴趣创作交流日", color = HInk, fontSize = 20.sp, fontWeight = FontWeight.Bold) }
+            item { Text("连接创作者与兴趣社群，分享灵感与作品。", color = HMuted, fontSize = 12.sp) }
+            item {
+                Surface(color = HBg, shape = RoundedCornerShape(16.dp)) {
+                    Column(Modifier.padding(15.dp)) {
+                        InfoRow("活动时间", "11 月 28 日 · 13:00")
+                        InfoRow("活动地点", "城市创意空间")
+                        InfoRow("报名状态", "开放报名")
+                    }
+                }
+            }
+            item { SectionTitle("活动日程") }
+            item { InfoRow("13:00", "签到与自由交流") }
+            item { InfoRow("14:00", "创作者主题分享") }
+            item { InfoRow("16:00", "作品展示与互动") }
+        }
+        ActionButton("立即报名", Modifier.fillMaxWidth().padding(14.dp))
+    }
+}
+
+@Composable
+private fun CircleDetailScreen() {
+    Column(Modifier.fillMaxSize().background(HBg).padding(18.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
+        PageHeader("圈子详情", "分享")
+        Surface(color = HPale, shape = RoundedCornerShape(22.dp), modifier = Modifier.fillMaxWidth()) {
+            Column(Modifier.padding(20.dp)) {
+                Box(Modifier.size(58.dp).clip(RoundedCornerShape(18.dp)).background(Color.White), contentAlignment = Alignment.Center) {
+                    Icon(Icons.Rounded.Groups, null, tint = HPrimary, modifier = Modifier.size(30.dp))
+                }
+                Spacer(Modifier.height(12.dp))
+                Text("原创插画交流社", color = HInk, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                Text("分享灵感、交流技法、认识同好。", color = HMuted, fontSize = 11.sp)
+                Spacer(Modifier.height(12.dp))
+                Text("2.4k 成员   ·   128 篇帖子", color = HPrimary, fontSize = 11.sp, fontWeight = FontWeight.SemiBold)
+                Spacer(Modifier.height(12.dp))
+                ActionButton("加入圈子", Modifier.fillMaxWidth())
+            }
+        }
+        SectionTitle("圈子动态", "发布")
+        repeat(3) { index ->
+            Surface(color = Color.White, shape = RoundedCornerShape(17.dp)) {
+                Column(Modifier.padding(15.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Text(listOf("今日配色练习分享", "最近完成的一组原创作品", "大家最喜欢哪种创作风格？")[index], color = HInk, fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
+                    Text("兴趣交流 · 帖子内容展示样例", color = HMuted, fontSize = 10.sp)
+                    Text("♡  28       ◯  12", color = HMuted, fontSize = 10.sp)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun DiscoverHomeScreen() {
+    Column(Modifier.fillMaxSize().background(HBg).padding(18.dp), verticalArrangement = Arrangement.spacedBy(15.dp)) {
+        PageHeader("发现", "搜索")
+        Surface(color = HPale, shape = RoundedCornerShape(22.dp), modifier = Modifier.fillMaxWidth()) {
+            Column(Modifier.padding(20.dp)) {
+                Text("YOUR INTEREST, YOUR WORLD", color = HPrimary, fontSize = 9.sp, fontWeight = FontWeight.Bold)
+                Spacer(Modifier.height(8.dp))
+                Text("每一种热爱，\n都值得被看见。", color = HInk, fontSize = 25.sp, fontWeight = FontWeight.Bold, lineHeight = 32.sp)
+                Text("发现作品、认识同好，探索兴趣宇宙。", color = HMuted, fontSize = 11.sp)
+            }
+        }
+        SectionTitle("兴趣频道", "全部")
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            listOf("动漫", "插画", "手办", "游戏").forEach { Surface(color = Color.White, shape = CircleShape) { Text(it, color = HInk, fontSize = 11.sp, modifier = Modifier.padding(horizontal = 15.dp, vertical = 9.dp)) } }
+        }
+        SectionTitle("为你发现", "推荐")
+        repeat(2) { index ->
+            Surface(color = Color.White, shape = RoundedCornerShape(18.dp)) {
+                Column(Modifier.padding(13.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    MockImage(130, if (index == 0) "✧" else "✦")
+                    Text(if (index == 0) "把喜欢的角色，画成自己的故事。" else "分享今天收集到的兴趣灵感。", color = HInk, fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
+                    Text("原创创作 · 兴趣分享       ♡  128     ◯  16", color = HMuted, fontSize = 10.sp)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun GenericDetailScreen(name: String) {
+    Column(Modifier.fillMaxSize().background(HBg).padding(18.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
+        PageHeader(name)
+        Surface(color = HPale, shape = RoundedCornerShape(20.dp), modifier = Modifier.fillMaxWidth()) {
+            Column(Modifier.padding(18.dp)) {
+                Text(name, color = HInk, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                Text("此页面采用独立业务布局方向，内容为本地静态 UI 样例。", color = HMuted, fontSize = 11.sp)
+            }
+        }
+        repeat(4) { index -> DashboardRow(listOf("主要内容", "详细信息", "相关记录", "更多操作")[index]) }
+    }
+}

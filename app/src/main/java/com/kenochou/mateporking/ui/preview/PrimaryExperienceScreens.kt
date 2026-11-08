@@ -54,33 +54,31 @@ fun CommunityFeedScreen() {
     var likedPosts by remember { mutableStateOf(setOf<Int>()) }
     var searchVisible by remember { mutableStateOf(false) }
     var query by remember { mutableStateOf("") }
-    val tabs = listOf("推荐", "关注", "最新", "圈子动态")
+    val tabs = listOf("推荐", "关注", "最新", "圈子")
     val visiblePosts = samplePosts.withIndex().filter { (_, post) ->
         (query.isBlank() || post.title.contains(query, true) || post.author.contains(query, true)) &&
             (selectedTab != "关注" || post.author == "纸上星河") &&
-            (selectedTab != "圈子动态" || post.author.contains("社") || post.author.contains("研究所"))
+            (selectedTab != "圈子" || post.author.contains("社") || post.author.contains("研究所"))
     }
 
-    Column(Modifier.fillMaxSize().background(PBg)) {
+    Column(Modifier.fillMaxSize().background(Color.White)) {
         LazyColumn(
             modifier = Modifier.weight(1f),
-            contentPadding = PaddingValues(start = 18.dp, top = 18.dp, end = 18.dp, bottom = 24.dp),
-            verticalArrangement = Arrangement.spacedBy(15.dp)
+            contentPadding = PaddingValues(start = 16.dp, top = 10.dp, end = 16.dp, bottom = 22.dp),
+            verticalArrangement = Arrangement.spacedBy(17.dp)
         ) {
             item {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
-                        Eyebrow("COMMUNITY · YOUR PEOPLE")
-                        Text("找到你的同频", color = PInk, fontSize = 30.sp, fontWeight = FontWeight.Black)
-                        Text("兴趣不设限，表达不设限", color = PMuted, fontSize = 11.sp)
+                    Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(1.dp)) {
+                        Text("animate  ✳", color = PAccent, fontSize = 11.sp, fontWeight = FontWeight.Bold, letterSpacing = .5.sp)
+                        Text("发现同好，也发现灵感", color = PInk, fontSize = 21.sp, fontWeight = FontWeight.Bold)
                     }
                     IconButton(onClick = { searchVisible = !searchVisible }) {
-                        Icon(if (searchVisible) Icons.Rounded.Close else Icons.Rounded.Search, "搜索", tint = PInk)
+                        Icon(if (searchVisible) Icons.Rounded.Close else Icons.Rounded.Search, "搜索", tint = PMuted)
                     }
-                    FilledIconButton(
-                        onClick = {},
-                        colors = IconButtonDefaults.filledIconButtonColors(containerColor = PAccent)
-                    ) { Icon(Icons.Rounded.Edit, "发布动态", tint = Color.White) }
+                    IconButton(onClick = {}) {
+                        Icon(Icons.Rounded.Edit, "发布动态", tint = PAccent)
+                    }
                 }
             }
             if (searchVisible) {
@@ -89,18 +87,13 @@ fun CommunityFeedScreen() {
                         value = query,
                         onValueChange = { query = it },
                         modifier = Modifier.fillMaxWidth(),
-                        placeholder = { Text("搜索帖子或创作者", fontSize = 12.sp) },
+                        placeholder = { Text("搜索作品或创作者", fontSize = 12.sp) },
                         leadingIcon = { Icon(Icons.Rounded.Search, null, tint = PMuted) },
-                        trailingIcon = {
-                            if (query.isNotEmpty()) IconButton(onClick = { query = "" }) {
-                                Icon(Icons.Rounded.Close, "清空", tint = PMuted)
-                            }
-                        },
                         singleLine = true,
-                        shape = RoundedCornerShape(16.dp),
+                        shape = RoundedCornerShape(14.dp),
                         colors = OutlinedTextFieldDefaults.colors(
-                            unfocusedContainerColor = Color.White,
-                            focusedContainerColor = Color.White,
+                            unfocusedContainerColor = PBg,
+                            focusedContainerColor = PBg,
                             unfocusedBorderColor = Color.Transparent,
                             focusedBorderColor = PAccent
                         )
@@ -108,68 +101,54 @@ fun CommunityFeedScreen() {
                 }
             }
             item {
-                Surface(color = Color.White, shape = RoundedCornerShape(20.dp)) {
-                    Row(
-                        Modifier.fillMaxWidth().padding(14.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Box(Modifier.size(38.dp).clip(RoundedCornerShape(12.dp)).background(PPale), contentAlignment = Alignment.Center) {
-                            Icon(Icons.Rounded.AutoAwesome, null, tint = PAccent)
+                Row(horizontalArrangement = Arrangement.spacedBy(23.dp), verticalAlignment = Alignment.CenterVertically) {
+                    tabs.forEach { tab ->
+                        Column(
+                            Modifier.clickable { selectedTab = tab },
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.spacedBy(5.dp)
+                        ) {
+                            Text(tab, color = if (selectedTab == tab) PInk else PMuted, fontSize = 13.sp,
+                                fontWeight = if (selectedTab == tab) FontWeight.Bold else FontWeight.Normal)
+                            Box(Modifier.width(17.dp).height(2.dp).clip(CircleShape)
+                                .background(if (selectedTab == tab) PAccent else Color.Transparent))
                         }
-                        Spacer(Modifier.width(11.dp))
-                        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
-                            Text("找到你的兴趣同频", color = PInk, fontSize = 12.sp, fontWeight = FontWeight.Bold)
-                            Text("探索 24 个正在活跃的兴趣圈子", color = PMuted, fontSize = 10.sp)
-                        }
-                        Icon(Icons.Rounded.ChevronRight, null, tint = PMuted)
-                    }
-                }
-            }
-            item {
-                LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    items(tabs) { tab ->
-                        FilterChip(
-                            selected = selectedTab == tab,
-                            onClick = { selectedTab = tab },
-                            label = { Text(tab, fontSize = 11.sp) },
-                            shape = RoundedCornerShape(13.dp),
-                            colors = FilterChipDefaults.filterChipColors(
-                                selectedContainerColor = PAccent,
-                                selectedLabelColor = Color.White,
-                                containerColor = Color.White,
-                                labelColor = PMuted
-                            ),
-                            border = null
-                        )
-                    }
-                }
-            }
-            item {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text("为你精选", color = PInk, fontSize = 16.sp, fontWeight = FontWeight.Bold)
-                    Spacer(Modifier.width(7.dp))
-                    Surface(color = PPale, shape = CircleShape) {
-                        Text("TODAY", color = PAccent, fontSize = 8.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(horizontal = 7.dp, vertical = 4.dp))
                     }
                     Spacer(Modifier.weight(1f))
-                    Text("示例内容", color = PMuted, fontSize = 9.sp)
+                    Icon(Icons.Rounded.Tune, "筛选", tint = PMuted, modifier = Modifier.size(18.dp))
                 }
             }
-            items(visiblePosts, key = { it.index }) { indexed ->
-                val post = indexed.value
-                CommunityPostCard(
-                    post = post,
-                    liked = likedPosts.contains(indexed.index),
-                    onLike = {
-                        likedPosts = if (likedPosts.contains(indexed.index)) likedPosts - indexed.index
-                        else likedPosts + indexed.index
-                    }
-                )
-            }
-            if (visiblePosts.isEmpty()) {
+            if (visiblePosts.isNotEmpty()) {
                 item {
-                    EmptyHint("没有找到相关动态", "换个关键词，看看其他同好在分享什么")
+                    val first = visiblePosts.first()
+                    EditorialFeature(
+                        post = first.value,
+                        liked = likedPosts.contains(first.index),
+                        onLike = {
+                            likedPosts = if (likedPosts.contains(first.index)) likedPosts - first.index else likedPosts + first.index
+                        }
+                    )
                 }
+                val remaining = visiblePosts.drop(1)
+                remaining.chunked(2).forEach { pair ->
+                    item {
+                        Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                            pair.forEach { indexed ->
+                                EditorialPostTile(
+                                    post = indexed.value,
+                                    liked = likedPosts.contains(indexed.index),
+                                    modifier = Modifier.weight(1f),
+                                    onLike = {
+                                        likedPosts = if (likedPosts.contains(indexed.index)) likedPosts - indexed.index else likedPosts + indexed.index
+                                    }
+                                )
+                            }
+                            if (pair.size == 1) Spacer(Modifier.weight(1f))
+                        }
+                    }
+                }
+            } else {
+                item { EmptyHint("还没有找到相关内容", "试试其他关键词，发现新的兴趣灵感") }
             }
         }
         PrimaryBottomBar("Community")
@@ -177,41 +156,42 @@ fun CommunityFeedScreen() {
 }
 
 @Composable
-private fun CommunityPostCard(post: FeedPost, liked: Boolean, onLike: () -> Unit) {
-    Surface(color = Color.White, shape = RoundedCornerShape(25.dp)) {
-        Column(Modifier.padding(15.dp), verticalArrangement = Arrangement.spacedBy(11.dp)) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                AvatarMark(post.initial, if (post.featured) PPale else Color(0xFFFFE9E5), 42)
-                Spacer(Modifier.width(10.dp))
-                Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
-                    Text(post.author, color = PInk, fontSize = 12.sp, fontWeight = FontWeight.Bold)
-                    Text("${post.time} · ${post.tag}", color = PMuted, fontSize = 9.sp)
-                }
-                if (post.featured) {
-                    Surface(color = PPale, shape = CircleShape) {
-                        Text("精选", color = PAccent, fontSize = 9.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.padding(horizontal = 9.dp, vertical = 5.dp))
-                    }
-                } else {
-                    Icon(Icons.Rounded.MoreHoriz, "更多", tint = PMuted)
-                }
+private fun EditorialFeature(post: FeedPost, liked: Boolean, onLike: () -> Unit) {
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        ArtTile(post.symbol, 218)
+        Text(post.title, color = PInk, fontSize = 15.sp, lineHeight = 22.sp, fontWeight = FontWeight.SemiBold)
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            AvatarMark(post.initial, PPale, 27)
+            Spacer(Modifier.width(7.dp))
+            Text(post.author, color = PMuted, fontSize = 10.sp, modifier = Modifier.weight(1f))
+            Text(post.time, color = PMuted, fontSize = 9.sp)
+            Spacer(Modifier.width(9.dp))
+            IconButton(onClick = onLike, modifier = Modifier.size(30.dp)) {
+                Icon(if (liked) Icons.Rounded.Favorite else Icons.Rounded.FavoriteBorder, "喜欢",
+                    tint = if (liked) PCoral else PMuted, modifier = Modifier.size(17.dp))
             }
-            Text(post.title, color = PInk, fontSize = 13.sp, lineHeight = 21.sp)
-            ArtTile(post.symbol, if (post.featured) 172 else 126)
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text("兴趣分享", color = PAccent, fontSize = 9.sp, modifier = Modifier.weight(1f))
-                TextButton(onClick = onLike, contentPadding = PaddingValues(horizontal = 8.dp)) {
-                    Icon(if (liked) Icons.Rounded.Favorite else Icons.Rounded.FavoriteBorder, null, tint = if (liked) PCoral else PMuted, modifier = Modifier.size(16.dp))
-                    Spacer(Modifier.width(4.dp))
-                    Text("${post.likes + if (liked) 1 else 0}", color = if (liked) PCoral else PMuted, fontSize = 10.sp)
-                }
-                TextButton(onClick = {}, contentPadding = PaddingValues(horizontal = 8.dp)) {
-                    Icon(Icons.Rounded.ChatBubbleOutline, null, tint = PMuted, modifier = Modifier.size(15.dp))
-                    Spacer(Modifier.width(4.dp))
-                    Text("${post.comments}", color = PMuted, fontSize = 10.sp)
-                }
-                IconButton(onClick = {}, modifier = Modifier.size(34.dp)) {
-                    Icon(Icons.Rounded.Share, "分享", tint = PMuted, modifier = Modifier.size(16.dp))
-                }
+            Text("${post.likes + if (liked) 1 else 0}", color = PMuted, fontSize = 10.sp)
+        }
+    }
+}
+
+@Composable
+private fun EditorialPostTile(
+    post: FeedPost,
+    liked: Boolean,
+    modifier: Modifier = Modifier,
+    onLike: () -> Unit
+) {
+    Column(modifier, verticalArrangement = Arrangement.spacedBy(7.dp)) {
+        ArtTile(post.symbol, 142)
+        Text(post.title, color = PInk, fontSize = 12.sp, lineHeight = 18.sp, maxLines = 2)
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            AvatarMark(post.initial, Color(0xFFF4EEF2), 22)
+            Spacer(Modifier.width(5.dp))
+            Text(post.author, color = PMuted, fontSize = 9.sp, maxLines = 1, modifier = Modifier.weight(1f))
+            IconButton(onClick = onLike, modifier = Modifier.size(25.dp)) {
+                Icon(if (liked) Icons.Rounded.Favorite else Icons.Rounded.FavoriteBorder, "喜欢",
+                    tint = if (liked) PCoral else PMuted, modifier = Modifier.size(14.dp))
             }
         }
     }

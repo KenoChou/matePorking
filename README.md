@@ -24,12 +24,13 @@ The app launches directly into the in-app **Preview Gallery**.
 
 The gallery groups screens by product domain. Select a category, then tap a page to open its dedicated Compose layout.
 
-The project also contains individual `@Preview` functions in:
+The project includes **34 individual page-level Compose previews** in:
 
-- `ui/preview/ScreenPreviews.kt`
-- `ui/preview/PreviewGallery.kt`
+- `ui/preview/HighFidelityPreviews.kt` — actual page layouts used by the gallery
+- `ui/preview/PreviewGallery.kt` — searchable gallery entry point
+- `ui/preview/ScreenPreviews.kt` — design exploration references
 
-Use Android Studio's Design or Split view to inspect these previews without launching the app.
+In Android Studio, open `HighFidelityPreviews.kt` and switch to Design or Split view. Each page has its own named `@Preview` at a 393 × 852 dp phone viewport. You can inspect a single page without launching the app.
 
 ## UI modules
 

@@ -49,8 +49,8 @@ fun HighFidelityScreen(name: String) {
 private fun PageHeader(title: String, trailing: String = "") {
     Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
         Column(Modifier.weight(1f)) {
-            Text("ANIMATE", color = HPrimary, fontSize = 9.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.4.sp)
-            Text(title, color = HInk, fontSize = 23.sp, fontWeight = FontWeight.Bold)
+            Text("ANIMATE / EDITION 01", color = HPrimary, fontSize = 8.sp, fontWeight = FontWeight.Black, letterSpacing = 1.6.sp)
+            Text(title, color = HInk, fontSize = 27.sp, fontWeight = FontWeight.Black)
         }
         if (trailing.isNotBlank()) Text(trailing, color = HPrimary, fontSize = 11.sp, fontWeight = FontWeight.SemiBold)
     }
@@ -72,7 +72,7 @@ private fun MockImage(height: Int = 150, symbol: String = "✦") {
         ),
         contentAlignment = Alignment.Center
     ) {
-        Text(symbol, color = Color(0xFF9C8BDB), fontSize = 42.sp, fontWeight = FontWeight.Light)
+        Text(symbol, color = Color(0xFF6847FF), fontSize = 54.sp, fontWeight = FontWeight.Black)
     }
 }
 
@@ -339,7 +339,7 @@ private fun CreatorDashboardScreen() {
                     Column(Modifier.background(androidx.compose.ui.graphics.Brush.linearGradient(listOf(Color(0xFF7866D8), Color(0xFF9A87E8)))).padding(18.dp), verticalArrangement = Arrangement.spacedBy(11.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Column(Modifier.weight(1f)) {
-                                Text("CREATOR STUDIO", color = Color(0xFFE7E0FF), fontSize = 9.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.3.sp)
+                                Text("CREATOR STUDIO / 001", color = Color(0xFFE7FF68), fontSize = 9.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.3.sp)
                                 Text("创作表现", color = Color.White, fontSize = 19.sp, fontWeight = FontWeight.Bold)
                             }
                             Icon(Icons.Rounded.AutoAwesome, null, tint = Color.White, modifier = Modifier.size(27.dp))

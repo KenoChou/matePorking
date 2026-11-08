@@ -50,6 +50,8 @@ fun HighFidelityScreen(name: String) {
         "活动详情" -> EventDetailScreen()
         "圈子详情" -> CircleDetailScreen()
         "Discover 首页" -> DiscoverHomeScreen()
+        "内容详情" -> ContentDetailScreen()
+        "内容发布" -> ContentPublishScreen()
         else -> SecondaryPreviewScreen(name)
     }
 }

@@ -28,6 +28,9 @@ private val HCoral = Color(0xFFD9A6A5)
 @Composable
 fun HighFidelityScreen(name: String) {
     when (name) {
+        "欢迎页" -> WelcomeScreen()
+        "手机号登录" -> PhoneLoginScreen()
+        "验证码验证" -> VerificationScreen()
         "圈子首页" -> CommunityFeedScreen()
         "商城首页" -> MarketHomeScreen()
         "会话列表" -> ConversationListScreen()
@@ -42,6 +45,178 @@ fun HighFidelityScreen(name: String) {
         "圈子详情" -> CircleDetailScreen()
         "Discover 首页" -> DiscoverHomeScreen()
         else -> SecondaryPreviewScreen(name)
+    }
+}
+
+
+@Composable
+private fun WelcomeScreen() {
+    var showLogin by androidx.compose.runtime.remember { androidx.compose.runtime.mutableStateOf(false) }
+    if (showLogin) {
+        PhoneLoginScreen()
+        return
+    }
+    Column(
+        Modifier.fillMaxSize().background(HBg).padding(horizontal = 24.dp, vertical = 22.dp),
+        verticalArrangement = Arrangement.SpaceBetween
+    ) {
+        Column(verticalArrangement = Arrangement.spacedBy(7.dp)) {
+            Text("A N I M A T E", color = HPrimary, fontSize = 11.sp, fontWeight = FontWeight.Bold)
+            Text("INTEREST, IN FULL COLOR.", color = HInk, fontSize = 10.sp, letterSpacing = 2.sp)
+        }
+        Column(verticalArrangement = Arrangement.spacedBy(20.dp)) {
+            Box(
+                Modifier.fillMaxWidth().height(300.dp).clip(RoundedCornerShape(28.dp))
+                    .background(androidx.compose.ui.graphics.Brush.linearGradient(listOf(Color(0xFFE9DFE8), Color(0xFFF1E7E0), Color(0xFFDDE7E1))))
+            ) {
+                Text("好き", color = Color(0xFF8A789D), fontSize = 76.sp, fontWeight = FontWeight.Light, modifier = Modifier.align(Alignment.TopStart).padding(start = 22.dp, top = 25.dp))
+                Text("✳", color = Color(0xFFD9A6A5), fontSize = 92.sp, modifier = Modifier.align(Alignment.CenterEnd).padding(end = 25.dp))
+                Text("YOUR LITTLE\nUNIVERSE", color = HInk, fontSize = 22.sp, lineHeight = 28.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.align(Alignment.BottomStart).padding(24.dp))
+                Text("ANIME · ART · COLLECT · CONNECT", color = HMuted, fontSize = 8.sp, letterSpacing = 1.1.sp, modifier = Modifier.align(Alignment.BottomEnd).padding(20.dp))
+            }
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text("让喜欢的事，\n成为生活的一部分。", color = HInk, fontSize = 27.sp, lineHeight = 36.sp, fontWeight = FontWeight.SemiBold)
+                Text("发现同好、分享灵感，也收藏每一个心动瞬间。", color = HMuted, fontSize = 12.sp, lineHeight = 19.sp)
+            }
+        }
+        Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            Button(
+                onClick = { showLogin = true },
+                modifier = Modifier.fillMaxWidth().height(54.dp),
+                shape = RoundedCornerShape(16.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = HInk)
+            ) {
+                Text("开始探索", color = Color.White, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
+                Spacer(Modifier.width(8.dp))
+                Text("→", color = Color.White, fontSize = 16.sp)
+            }
+            Text("加入 AniMate，遇见与你同频的人。", color = HMuted, fontSize = 10.sp, modifier = Modifier.align(Alignment.CenterHorizontally))
+        }
+    }
+}
+
+@Composable
+private fun PhoneLoginScreen() {
+    var phone by androidx.compose.runtime.remember { androidx.compose.runtime.mutableStateOf("") }
+    var agreed by androidx.compose.runtime.remember { androidx.compose.runtime.mutableStateOf(false) }
+    var codeSent by androidx.compose.runtime.remember { androidx.compose.runtime.mutableStateOf(false) }
+    if (codeSent) {
+        VerificationScreen(phone = phone)
+        return
+    }
+    Column(
+        Modifier.fillMaxSize().background(HBg).padding(horizontal = 24.dp, vertical = 22.dp),
+        verticalArrangement = Arrangement.SpaceBetween
+    ) {
+        Column(verticalArrangement = Arrangement.spacedBy(9.dp)) {
+            Text("ANIMATE / JOIN THE CLUB", color = HPrimary, fontSize = 9.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.3.sp)
+            Text("嗨，欢迎回来。", color = HInk, fontSize = 28.sp, fontWeight = FontWeight.SemiBold)
+            Text("用手机号登录，继续你的兴趣漫游。", color = HMuted, fontSize = 12.sp)
+        }
+        Column(verticalArrangement = Arrangement.spacedBy(18.dp)) {
+            Box(
+                Modifier.fillMaxWidth().height(126.dp).clip(RoundedCornerShape(22.dp))
+                    .background(Color(0xFFF0E9EE))
+            ) {
+                Text("HELLO,\nFELLOW FAN.", color = HInk, fontSize = 23.sp, lineHeight = 29.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.align(Alignment.CenterStart).padding(start = 20.dp))
+                Text("♡", color = HPrimary, fontSize = 68.sp, modifier = Modifier.align(Alignment.CenterEnd).padding(end = 22.dp))
+            }
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text("手机号码", color = HInk, fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
+                OutlinedTextField(
+                    value = phone,
+                    onValueChange = { phone = it.filter(Char::isDigit).take(15) },
+                    modifier = Modifier.fillMaxWidth(),
+                    placeholder = { Text("请输入手机号", color = HMuted) },
+                    singleLine = true,
+                    shape = RoundedCornerShape(14.dp),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = HPrimary,
+                        unfocusedBorderColor = Color(0xFFE8E1E5),
+                        focusedContainerColor = Color.White,
+                        unfocusedContainerColor = Color.White
+                    )
+                )
+                Text("我们将向该号码发送短信验证码", color = HMuted, fontSize = 10.sp)
+            }
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Checkbox(checked = agreed, onCheckedChange = { agreed = it }, colors = CheckboxDefaults.colors(checkedColor = HPrimary))
+                Text("我已阅读并同意", color = HMuted, fontSize = 10.sp)
+                Text("用户协议", color = HPrimary, fontSize = 10.sp, fontWeight = FontWeight.SemiBold)
+                Text("与", color = HMuted, fontSize = 10.sp)
+                Text("隐私政策", color = HPrimary, fontSize = 10.sp, fontWeight = FontWeight.SemiBold)
+            }
+        }
+        Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            Button(
+                onClick = { codeSent = true },
+                enabled = phone.length in 6..15 && agreed,
+                modifier = Modifier.fillMaxWidth().height(54.dp),
+                shape = RoundedCornerShape(16.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = HInk, disabledContainerColor = Color(0xFFD8D3D7))
+            ) {
+                Text("获取验证码", color = Color.White, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
+                Spacer(Modifier.width(8.dp))
+                Text("→", color = Color.White)
+            }
+            Text("登录即代表你已年满适用年龄，并接受平台规则。", color = HMuted, fontSize = 9.sp, modifier = Modifier.align(Alignment.CenterHorizontally))
+        }
+    }
+}
+
+@Composable
+private fun VerificationScreen(phone: String = "138****8888") {
+    var code by androidx.compose.runtime.remember { androidx.compose.runtime.mutableStateOf("") }
+    var verified by androidx.compose.runtime.remember { androidx.compose.runtime.mutableStateOf(false) }
+    Column(
+        Modifier.fillMaxSize().background(HBg).padding(horizontal = 24.dp, vertical = 22.dp),
+        verticalArrangement = Arrangement.SpaceBetween
+    ) {
+        Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+            Text("ANIMATE / SECURITY CHECK", color = HPrimary, fontSize = 9.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.2.sp)
+            Text("确认是你本人。", color = HInk, fontSize = 28.sp, fontWeight = FontWeight.SemiBold)
+            Text("验证码已发送至 +86  ${phone.ifBlank { "你的手机号" }}", color = HMuted, fontSize = 12.sp)
+        }
+        Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+            Box(
+                Modifier.fillMaxWidth().height(160.dp).clip(RoundedCornerShape(22.dp))
+                    .background(Color(0xFFEAE4EC)),
+                contentAlignment = Alignment.Center
+            ) {
+                Text("✉", color = HPrimary, fontSize = 66.sp)
+                Text("CHECK YOUR MESSAGES", color = HMuted, fontSize = 8.sp, letterSpacing = 1.4.sp, modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = 18.dp))
+            }
+            Text("输入 6 位短信验证码", color = HInk, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
+            OutlinedTextField(
+                value = code,
+                onValueChange = { code = it.filter(Char::isDigit).take(6) },
+                modifier = Modifier.fillMaxWidth(),
+                placeholder = { Text("—  —  —  —  —  —", color = HMuted) },
+                singleLine = true,
+                shape = RoundedCornerShape(14.dp),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = HPrimary,
+                    unfocusedBorderColor = Color(0xFFE8E1E5),
+                    focusedContainerColor = Color.White,
+                    unfocusedContainerColor = Color.White
+                )
+            )
+            TextButton(onClick = { code = "" }, modifier = Modifier.align(Alignment.End)) {
+                Text("重新获取验证码", color = HPrimary, fontSize = 11.sp)
+            }
+            if (verified) Text("验证码已填写，实际校验需连接认证服务。", color = HPrimary, fontSize = 11.sp)
+        }
+        Button(
+            onClick = { verified = true },
+            enabled = code.length == 6,
+            modifier = Modifier.fillMaxWidth().height(54.dp),
+            shape = RoundedCornerShape(16.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = HInk, disabledContainerColor = Color(0xFFD8D3D7))
+        ) {
+            Text("验证并登录", color = Color.White, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
+            Spacer(Modifier.width(8.dp))
+            Text("→", color = Color.White)
+        }
     }
 }
 

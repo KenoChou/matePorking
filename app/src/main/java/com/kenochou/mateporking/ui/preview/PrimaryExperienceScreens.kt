@@ -21,13 +21,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-private val PInk = Color(0xFF17151F)
-private val PMuted = Color(0xFF777383)
-private val PBg = Color(0xFFF4F2EE)
-private val PAccent = Color(0xFF6847FF)
-private val PPale = Color(0xFFE7FF68)
-private val PCoral = Color(0xFFFF5578)
-private val PLine = Color(0xFFE6E2DC)
+private val PInk = Color(0xFF302D35)
+private val PMuted = Color(0xFF918B94)
+private val PBg = Color(0xFFFAF8F5)
+private val PAccent = Color(0xFF8A789D)
+private val PPale = Color(0xFFF0E9EE)
+private val PCoral = Color(0xFFD9A6A5)
+private val PLine = Color(0xFFEDE8E3)
 
 private data class FeedPost(
     val author: String,
@@ -254,11 +254,11 @@ fun MarketHomeScreen() {
             item {
                 Box(
                     Modifier.fillMaxWidth().clip(RoundedCornerShape(25.dp))
-                        .background(Brush.linearGradient(listOf(Color(0xFF6847FF), Color(0xFF9B70FF), Color(0xFFFF6D91))))
+                        .background(Brush.linearGradient(listOf(Color(0xFF8A789D), Color(0xFF9B70FF), Color(0xFFFF6D91))))
                         .padding(20.dp)
                 ) {
                     Column(verticalArrangement = Arrangement.spacedBy(9.dp)) {
-                        Text("THE CREATOR CLUB ✳", color = Color(0xFFE7FF68), fontSize = 10.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.5.sp)
+                        Text("THE CREATOR CLUB ✳", color = Color(0xFFF0E9EE), fontSize = 10.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.5.sp)
                         Text("喜欢的东西，\n就要大声收藏。", color = Color.White, fontSize = 25.sp, lineHeight = 29.sp, fontWeight = FontWeight.Bold)
                         Text("原创设计 · 限量周边 · 兴趣好物", color = Color.White.copy(alpha = .9f), fontSize = 10.sp)
                         Surface(color = Color.White.copy(alpha = .96f), shape = CircleShape) {

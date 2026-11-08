@@ -243,36 +243,79 @@ private fun ChatBubble(text: String, mine: Boolean) {
 }
 
 @Composable
-private fun ProfileHomeScreen() {
-    Column(Modifier.fillMaxSize().background(HBg).padding(18.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
-        PageHeader("个人主页", "编辑")
-        Surface(color = Color.White, shape = RoundedCornerShape(22.dp), modifier = Modifier.fillMaxWidth()) {
-            Column(Modifier.padding(20.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-                Box(Modifier.size(76.dp).clip(CircleShape).background(HPale), contentAlignment = Alignment.Center) {
-                    Icon(Icons.Rounded.Person, null, tint = HPrimary, modifier = Modifier.size(38.dp))
-                }
-                Spacer(Modifier.height(10.dp))
-                Text("AniMate 用户", color = HInk, fontSize = 17.sp, fontWeight = FontWeight.Bold)
-                Text("让热爱连接彼此", color = HMuted, fontSize = 11.sp)
-                Spacer(Modifier.height(14.dp))
-                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
-                    StatItem("作品", "12")
-                    StatItem("关注", "128")
-                    StatItem("粉丝", "2.4k")
+fun ProfileHomeScreen() {
+    Column(Modifier.fillMaxSize().background(HBg)) {
+        LazyColumn(
+            modifier = Modifier.weight(1f),
+            contentPadding = PaddingValues(start = 18.dp, top = 18.dp, end = 18.dp, bottom = 26.dp),
+            verticalArrangement = Arrangement.spacedBy(14.dp)
+        ) {
+            item { PageHeader("我的主页", "设置") }
+            item {
+                Surface(color = Color.White, shape = RoundedCornerShape(23.dp), modifier = Modifier.fillMaxWidth()) {
+                    Column(Modifier.padding(18.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Box(Modifier.size(68.dp).clip(CircleShape).background(HPale), contentAlignment = Alignment.Center) {
+                                Icon(Icons.Rounded.Person, null, tint = HPrimary, modifier = Modifier.size(36.dp))
+                            }
+                            Spacer(Modifier.width(13.dp))
+                            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                                Text("AniMate 用户", color = HInk, fontSize = 17.sp, fontWeight = FontWeight.Bold)
+                                Text("ID: animate_2026", color = HMuted, fontSize = 9.sp)
+                                Text("让热爱连接彼此 · 动漫 / 插画 / 收藏", color = HMuted, fontSize = 10.sp)
+                            }
+                            Surface(color = HPale, shape = RoundedCornerShape(12.dp)) {
+                                Text("编辑资料", color = HPrimary, fontSize = 10.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.padding(horizontal = 11.dp, vertical = 8.dp))
+                            }
+                        }
+                        HorizontalDivider(color = HBg)
+                        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
+                            StatItem("作品", "12")
+                            StatItem("关注", "128")
+                            StatItem("粉丝", "2.4k")
+                            StatItem("获赞", "8.6k")
+                        }
+                    }
                 }
             }
-        }
-        listOf("我的作品", "我的收藏", "我的订单", "创作者中心", "商家入口", "账号与设置").forEach {
-            Surface(color = Color.White, shape = RoundedCornerShape(14.dp)) {
-                Row(Modifier.fillMaxWidth().padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
-                    Text(it, color = HInk, fontSize = 12.sp, modifier = Modifier.weight(1f))
-                    Icon(Icons.Rounded.ChevronRight, null, tint = HMuted)
+            item {
+                Row(horizontalArrangement = Arrangement.spacedBy(9.dp)) {
+                    listOf("我的作品" to Icons.Rounded.GridView, "我的收藏" to Icons.Rounded.FavoriteBorder, "浏览历史" to Icons.Rounded.History).forEach { item ->
+                        Surface(color = Color.White, shape = RoundedCornerShape(16.dp), modifier = Modifier.weight(1f)) {
+                            Column(Modifier.padding(vertical = 14.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(7.dp)) {
+                                Icon(item.second, null, tint = HPrimary, modifier = Modifier.size(22.dp))
+                                Text(item.first, color = HInk, fontSize = 10.sp, fontWeight = FontWeight.Medium)
+                            }
+                        }
+                    }
+                }
+            }
+            item {
+                Surface(color = HPale, shape = RoundedCornerShape(20.dp), modifier = Modifier.fillMaxWidth()) {
+                    Row(Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+                        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(5.dp)) {
+                            Text("创作者空间", color = HPrimary, fontSize = 9.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.sp)
+                            Text("记录灵感，让作品被更多人看见", color = HInk, fontSize = 14.sp, fontWeight = FontWeight.Bold)
+                            Text("作品管理 · 创作数据 · 创作者服务", color = HMuted, fontSize = 9.sp)
+                        }
+                        Icon(Icons.Rounded.AutoAwesome, null, tint = HPrimary, modifier = Modifier.size(30.dp))
+                    }
+                }
+            }
+            item { SectionTitle("我的服务") }
+            items(listOf("我的订单" to Icons.Rounded.ReceiptLong, "我的活动与门票" to Icons.Rounded.ConfirmationNumber, "我的圈子" to Icons.Rounded.Groups, "商家中心" to Icons.Rounded.Storefront, "账号与安全" to Icons.Rounded.Security, "设置与隐私" to Icons.Rounded.Settings)) { item ->
+                Surface(color = Color.White, shape = RoundedCornerShape(15.dp)) {
+                    Row(Modifier.fillMaxWidth().padding(horizontal = 15.dp, vertical = 14.dp), verticalAlignment = Alignment.CenterVertically) {
+                        Icon(item.second, null, tint = HPrimary, modifier = Modifier.size(19.dp))
+                        Spacer(Modifier.width(12.dp))
+                        Text(item.first, color = HInk, fontSize = 11.sp, modifier = Modifier.weight(1f))
+                        Icon(Icons.Rounded.ChevronRight, null, tint = HMuted, modifier = Modifier.size(18.dp))
+                    }
                 }
             }
         }
     }
 }
-
 @Composable
 private fun StatItem(label: String, value: String) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -283,27 +326,65 @@ private fun StatItem(label: String, value: String) {
 
 @Composable
 private fun CreatorDashboardScreen() {
-    Column(Modifier.fillMaxSize().background(HBg).padding(18.dp), verticalArrangement = Arrangement.spacedBy(15.dp)) {
-        PageHeader("创作者中心", "工作台")
-        Surface(color = HPrimary, shape = RoundedCornerShape(20.dp), modifier = Modifier.fillMaxWidth()) {
-            Column(Modifier.padding(18.dp)) {
-                Text("创作表现", color = Color.White, fontSize = 17.sp, fontWeight = FontWeight.Bold)
-                Text("数据展示样例 · 非真实运营数据", color = Color(0xFFE6E0FF), fontSize = 10.sp)
-                Spacer(Modifier.height(15.dp))
-                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                    StatItem("作品浏览", "12.8k")
-                    StatItem("互动次数", "860")
-                    StatItem("新增粉丝", "126")
+    Column(Modifier.fillMaxSize().background(HBg)) {
+        LazyColumn(
+            modifier = Modifier.weight(1f),
+            contentPadding = PaddingValues(start = 18.dp, top = 18.dp, end = 18.dp, bottom = 26.dp),
+            verticalArrangement = Arrangement.spacedBy(15.dp)
+        ) {
+            item { PageHeader("创作者中心", "工作台") }
+            item {
+                Surface(color = HPrimary, shape = RoundedCornerShape(22.dp), modifier = Modifier.fillMaxWidth()) {
+                    Column(Modifier.background(androidx.compose.ui.graphics.Brush.linearGradient(listOf(Color(0xFF7866D8), Color(0xFF9A87E8)))).padding(18.dp), verticalArrangement = Arrangement.spacedBy(11.dp)) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Column(Modifier.weight(1f)) {
+                                Text("CREATOR STUDIO", color = Color(0xFFE7E0FF), fontSize = 9.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.3.sp)
+                                Text("创作表现", color = Color.White, fontSize = 19.sp, fontWeight = FontWeight.Bold)
+                            }
+                            Icon(Icons.Rounded.AutoAwesome, null, tint = Color.White, modifier = Modifier.size(27.dp))
+                        }
+                        Text("本地 UI 样例数据 · 非真实运营数据", color = Color(0xFFE7E0FF), fontSize = 9.sp)
+                        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                            StatItem("作品浏览", "12.8k")
+                            StatItem("互动次数", "860")
+                            StatItem("新增粉丝", "126")
+                        }
+                    }
                 }
             }
+            item {
+                Surface(color = Color.White, shape = RoundedCornerShape(19.dp), modifier = Modifier.fillMaxWidth()) {
+                    Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                        SectionTitle("近 7 天内容趋势", "查看数据")
+                        Row(Modifier.fillMaxWidth().height(104.dp), horizontalArrangement = Arrangement.SpaceEvenly, verticalAlignment = Alignment.Bottom) {
+                            listOf(42, 58, 48, 76, 64, 90, 72).forEachIndexed { index, value ->
+                                Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                                    Box(Modifier.width(19.dp).height(value.dp).clip(RoundedCornerShape(topStart = 6.dp, topEnd = 6.dp)).background(if (index == 5) HPrimary else HPale))
+                                    Text(listOf("一", "二", "三", "四", "五", "六", "日")[index], color = HMuted, fontSize = 8.sp)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            item {
+                SectionTitle("内容管理", "管理全部")
+                Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                    listOf("发布作品" to Icons.Rounded.AddPhotoAlternate, "作品管理" to Icons.Rounded.Collections, "草稿箱" to Icons.Rounded.EditNote).forEach { item ->
+                        Surface(color = Color.White, shape = RoundedCornerShape(16.dp), modifier = Modifier.weight(1f)) {
+                            Column(Modifier.padding(vertical = 15.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                                Icon(item.second, null, tint = HPrimary, modifier = Modifier.size(23.dp))
+                                Text(item.first, color = HInk, fontSize = 10.sp, fontWeight = FontWeight.SemiBold)
+                            }
+                        }
+                    }
+                }
+            }
+            item { SectionTitle("创作者服务") }
+            items(listOf("创作者资料", "内容审核记录", "收益与结算说明", "平台创作规范")) { label -> DashboardRow(label) }
         }
-        SectionTitle("内容管理", "管理全部")
-        listOf("发布新作品", "已发布作品", "草稿箱", "内容审核").forEach { DashboardRow(it) }
-        SectionTitle("创作者服务")
-        listOf("创作者资料", "收益与结算说明", "平台创作规范").forEach { DashboardRow(it) }
     }
 }
-
 @Composable
 private fun MerchantDashboardScreen() {
     Column(Modifier.fillMaxSize().background(HBg).padding(18.dp), verticalArrangement = Arrangement.spacedBy(15.dp)) {
@@ -398,33 +479,102 @@ private fun CircleDetailScreen() {
 
 @Composable
 private fun DiscoverHomeScreen() {
-    Column(Modifier.fillMaxSize().background(HBg).padding(18.dp), verticalArrangement = Arrangement.spacedBy(15.dp)) {
-        PageHeader("发现", "搜索")
-        Surface(color = HPale, shape = RoundedCornerShape(22.dp), modifier = Modifier.fillMaxWidth()) {
-            Column(Modifier.padding(20.dp)) {
-                Text("YOUR INTEREST, YOUR WORLD", color = HPrimary, fontSize = 9.sp, fontWeight = FontWeight.Bold)
-                Spacer(Modifier.height(8.dp))
-                Text("每一种热爱，\n都值得被看见。", color = HInk, fontSize = 25.sp, fontWeight = FontWeight.Bold, lineHeight = 32.sp)
-                Text("发现作品、认识同好，探索兴趣宇宙。", color = HMuted, fontSize = 11.sp)
+    Column(Modifier.fillMaxSize().background(HBg)) {
+        LazyColumn(
+            modifier = Modifier.weight(1f),
+            contentPadding = PaddingValues(start = 18.dp, top = 18.dp, end = 18.dp, bottom = 24.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            item {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Column(Modifier.weight(1f)) {
+                        Text("ANIMATE · DISCOVER", color = HPrimary, fontSize = 9.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.4.sp)
+                        Text("发现灵感", color = HInk, fontSize = 26.sp, fontWeight = FontWeight.ExtraBold)
+                    }
+                    IconButton(onClick = {}) { Icon(Icons.Rounded.NotificationsNone, "通知", tint = HInk) }
+                    IconButton(onClick = {}) { Icon(Icons.Rounded.Search, "搜索", tint = HInk) }
+                }
             }
-        }
-        SectionTitle("兴趣频道", "全部")
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            listOf("动漫", "插画", "手办", "游戏").forEach { Surface(color = Color.White, shape = CircleShape) { Text(it, color = HInk, fontSize = 11.sp, modifier = Modifier.padding(horizontal = 15.dp, vertical = 9.dp)) } }
-        }
-        SectionTitle("为你发现", "推荐")
-        repeat(2) { index ->
-            Surface(color = Color.White, shape = RoundedCornerShape(18.dp)) {
-                Column(Modifier.padding(13.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    MockImage(130, if (index == 0) "✧" else "✦")
-                    Text(if (index == 0) "把喜欢的角色，画成自己的故事。" else "分享今天收集到的兴趣灵感。", color = HInk, fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
-                    Text("原创创作 · 兴趣分享       ♡  128     ◯  16", color = HMuted, fontSize = 10.sp)
+            item {
+                Surface(color = HPale, shape = RoundedCornerShape(24.dp), modifier = Modifier.fillMaxWidth()) {
+                    Box(Modifier.background(androidx.compose.ui.graphics.Brush.linearGradient(listOf(Color(0xFFE5DEFF), Color(0xFFFFE5E1), Color(0xFFF8EFFF)))).padding(20.dp)) {
+                        Column(verticalArrangement = Arrangement.spacedBy(9.dp)) {
+                            Text("FIND YOUR NEXT INSPIRATION", color = HPrimary, fontSize = 9.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.2.sp)
+                            Text("每一种热爱，\n都值得被看见。", color = HInk, fontSize = 25.sp, lineHeight = 32.sp, fontWeight = FontWeight.Bold)
+                            Text("发现作品、认识同好，探索兴趣宇宙。", color = HMuted, fontSize = 11.sp)
+                            Surface(color = HPrimary, shape = CircleShape) {
+                                Text("探索今日精选  →", color = Color.White, fontSize = 10.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(horizontal = 14.dp, vertical = 9.dp))
+                            }
+                        }
+                    }
+                }
+            }
+            item {
+                SectionTitle("兴趣频道", "全部频道")
+                Spacer(Modifier.height(10.dp))
+                Row(horizontalArrangement = Arrangement.spacedBy(9.dp)) {
+                    listOf("动漫" to Icons.Rounded.Movie, "插画" to Icons.Rounded.Brush, "手办" to Icons.Rounded.Toys, "游戏" to Icons.Rounded.SportsEsports).forEachIndexed { index, item ->
+                        Column(Modifier.weight(1f), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(7.dp)) {
+                            Surface(color = listOf(HPale, Color(0xFFFFE9E5), Color(0xFFE5F1EF), Color(0xFFFFF0D9))[index], shape = RoundedCornerShape(16.dp)) {
+                                Box(Modifier.fillMaxWidth().height(58.dp), contentAlignment = Alignment.Center) {
+                                    Icon(item.second, null, tint = HPrimary, modifier = Modifier.size(24.dp))
+                                }
+                            }
+                            Text(item.first, color = HInk, fontSize = 10.sp, fontWeight = FontWeight.Medium)
+                        }
+                    }
+                }
+            }
+            item {
+                SectionTitle("今日灵感", "查看趋势")
+                Spacer(Modifier.height(10.dp))
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    listOf("原创角色", "桌面收藏", "治愈插画", "同好活动").forEachIndexed { index, label ->
+                        Surface(color = if (index == 0) HPrimary else Color.White, shape = CircleShape) {
+                            Text(label, color = if (index == 0) Color.White else HMuted, fontSize = 10.sp, modifier = Modifier.padding(horizontal = 11.dp, vertical = 8.dp))
+                        }
+                    }
+                }
+            }
+            item {
+                SectionTitle("为你发现", "推荐")
+                Surface(color = Color.White, shape = RoundedCornerShape(20.dp), modifier = Modifier.fillMaxWidth()) {
+                    Column(Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(9.dp)) {
+                        MockImage(178, "✧")
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Box(Modifier.size(30.dp).clip(CircleShape).background(HPale), contentAlignment = Alignment.Center) {
+                                Icon(Icons.Rounded.Person, null, tint = HPrimary, modifier = Modifier.size(17.dp))
+                            }
+                            Spacer(Modifier.width(8.dp))
+                            Column(Modifier.weight(1f)) {
+                                Text("纸上星河", color = HInk, fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                                Text("原创插画 · 3 小时前", color = HMuted, fontSize = 9.sp)
+                            }
+                            Text("关注 +", color = HPrimary, fontSize = 10.sp, fontWeight = FontWeight.SemiBold)
+                        }
+                        Text("把喜欢的角色，画成自己的故事。", color = HInk, fontSize = 14.sp, fontWeight = FontWeight.Bold)
+                        Text("用柔和的色彩记录最近的灵感，希望也能带给你一点好心情。", color = HMuted, fontSize = 10.sp, lineHeight = 16.sp)
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text("♡  128", color = HMuted, fontSize = 10.sp, modifier = Modifier.weight(1f))
+                            Text("◯  16 条评论", color = HMuted, fontSize = 10.sp)
+                            Spacer(Modifier.width(14.dp))
+                            Icon(Icons.Rounded.BookmarkBorder, null, tint = HMuted, modifier = Modifier.size(17.dp))
+                        }
+                    }
+                }
+            }
+            item {
+                Surface(color = Color.White, shape = RoundedCornerShape(20.dp), modifier = Modifier.fillMaxWidth()) {
+                    Column(Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(9.dp)) {
+                        MockImage(142, "✦")
+                        Text("今天的桌面收藏分享｜把喜欢的小小摆满日常", color = HInk, fontSize = 13.sp, fontWeight = FontWeight.Bold)
+                        Text("模型收藏研究所 · ♡ 86 · ◯ 12", color = HMuted, fontSize = 10.sp)
+                    }
                 }
             }
         }
     }
 }
-
 @Composable
 private fun GenericDetailScreen(name: String) {
     Column(Modifier.fillMaxSize().background(HBg).padding(18.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {

@@ -43,7 +43,7 @@ fun ContentDetailScreen() {
     val context = LocalContext.current
     val clipboard = LocalClipboardManager.current
     val shareText = "把夏天收进一颗星星里 ✦\n来自 animate 兴趣社区"
-    val shareLink = "https://animate.example.com/post/001"
+    val sharePayload = "$shareText\n作者：纸上星河\n在 animate 发现更多兴趣内容"
 
     Column(Modifier.fillMaxSize().background(Color.White)) {
         Row(
@@ -187,7 +187,7 @@ fun ContentDetailScreen() {
                 Row(
                     Modifier.fillMaxWidth().clip(RoundedCornerShape(16.dp))
                         .background(Color(0xFFFAF8F7)).clickable {
-                            clipboard.setText(AnnotatedString("$shareText\n$shareLink"))
+                            clipboard.setText(AnnotatedString(sharePayload))
                             Toast.makeText(context, "分享链接已复制", Toast.LENGTH_SHORT).show()
                             showShareSheet = false
                         }.padding(15.dp),
@@ -208,7 +208,7 @@ fun ContentDetailScreen() {
                         .background(Color(0xFFFAF8F7)).clickable {
                             val intent = Intent(Intent.ACTION_SEND).apply {
                                 type = "text/plain"
-                                putExtra(Intent.EXTRA_TEXT, "$shareText\n$shareLink")
+                                putExtra(Intent.EXTRA_TEXT, sharePayload)
                             }
                             context.startActivity(Intent.createChooser(intent, "分享作品"))
                             showShareSheet = false
@@ -216,7 +216,7 @@ fun ContentDetailScreen() {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Box(Modifier.size(40.dp).clip(CircleShape).background(Color(0xFFF8ECEA)), contentAlignment = Alignment.Center) {
-                        Icon(Icons.Rounded.IosShare, null, tint = CCoral)
+                        Icon(Icons.Rounded.Share, null, tint = CCoral)
                     }
                     Spacer(Modifier.width(12.dp))
                     Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {

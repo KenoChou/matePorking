@@ -325,7 +325,7 @@ private fun SectionTitle(title: String, more: String = "") {
 private fun MockImage(height: Int = 150, symbol: String = "✦") {
     Box(
         Modifier.fillMaxWidth().height(height.dp).clip(RoundedCornerShape(5.dp)).background(
-            androidx.compose.ui.graphics.androidx.compose.ui.graphics.ComposeBrush.linearGradient(listOf(Color(0xFFFFB8CF), Color(0xFFB9A7FF), Color(0xFFE7FF68)))
+            ComposeBrush.linearGradient(listOf(Color(0xFFFFB8CF), Color(0xFFB9A7FF), Color(0xFFE7FF68)))
         ),
         contentAlignment = Alignment.Center
     ) {
@@ -593,7 +593,7 @@ private fun CreatorDashboardScreen() {
             item { PageHeader("创作者中心", "工作台") }
             item {
                 Surface(color = HPrimary, shape = RoundedCornerShape(22.dp), modifier = Modifier.fillMaxWidth()) {
-                    Column(Modifier.background(androidx.compose.ui.graphics.ComposeBrush.linearGradient(listOf(Color(0xFF7866D8), Color(0xFF9A87E8)))).padding(18.dp), verticalArrangement = Arrangement.spacedBy(11.dp)) {
+                    Column(Modifier.background(ComposeBrush.linearGradient(listOf(Color(0xFF7866D8), Color(0xFF9A87E8)))).padding(18.dp), verticalArrangement = Arrangement.spacedBy(11.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Column(Modifier.weight(1f)) {
                                 Text("CREATOR STUDIO / 001", color = Color(0xFFE7FF68), fontSize = 9.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.3.sp)

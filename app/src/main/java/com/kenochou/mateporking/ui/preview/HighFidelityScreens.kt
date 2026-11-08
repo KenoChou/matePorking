@@ -135,6 +135,9 @@ private fun PhoneLoginScreen(onBack: () -> Unit = {}) {
                     onValueChange = { newValue: String -> phone = newValue.filter(Char::isDigit).take(11) },
                     modifier = Modifier.fillMaxWidth(),
                     placeholder = { Text("请输入 11 位手机号", color = HMuted) },
+                    leadingIcon = {
+                        Text("+86", color = HInk, fontSize = 13.sp, fontWeight = FontWeight.Medium)
+                    },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
                     singleLine = true,
                     shape = RoundedCornerShape(14.dp),

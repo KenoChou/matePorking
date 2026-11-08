@@ -20,6 +20,10 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -43,6 +47,7 @@ fun ContentDetailScreen() {
     var sent by remember { mutableStateOf(false) }
     var showShareSheet by remember { mutableStateOf(false) }
     val context = LocalContext.current
+    val keyboardController = LocalSoftwareKeyboardController.current
     val clipboard = LocalClipboardManager.current
     val shareText = "把夏天收进一颗星星里 ✦\n来自 animate 兴趣社区"
     val sharePayload = "$shareText\n作者：纸上星河\n在 animate 发现更多兴趣内容"
@@ -133,6 +138,16 @@ fun ContentDetailScreen() {
                     modifier = Modifier.weight(1f),
                     placeholder = { Text("说点喜欢的话…", fontSize = 11.sp) },
                     singleLine = true,
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Send),
+                    keyboardActions = KeyboardActions(
+                        onSend = {
+                            if (comment.isNotBlank()) {
+                                sent = true
+                                comment = ""
+                            }
+                            keyboardController?.hide()
+                        }
+                    ),
                     shape = RoundedCornerShape(22.dp),
                     colors = OutlinedTextFieldDefaults.colors(
                         unfocusedContainerColor = Color(0xFFFAF8F5),
@@ -158,16 +173,7 @@ fun ContentDetailScreen() {
                 IconButton(onClick = { showShareSheet = true }) {
                     Icon(Icons.Rounded.Share, "分享", tint = CMuted)
                 }
-                IconButton(
-                    onClick = { if (comment.isNotBlank()) { sent = true; comment = "" } },
-                    enabled = comment.isNotBlank()
-                ) {
-                    Icon(
-                        Icons.Rounded.Send,
-                        contentDescription = "发送评论",
-                        tint = if (comment.isNotBlank()) CAccent else Color(0xFFCBC6CC)
-                    )
-                }
+
             }
         }
     }

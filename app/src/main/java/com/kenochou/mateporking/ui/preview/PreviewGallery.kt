@@ -20,11 +20,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-private val GalleryInk = Color(0xFF242332)
-private val GalleryMuted = Color(0xFF888696)
-private val GalleryBg = Color(0xFFF8F7FB)
-private val GalleryViolet = Color(0xFF7866D8)
-private val GalleryPale = Color(0xFFEDE9FF)
+private val GalleryInk = Color(0xFF17151D)
+private val GalleryMuted = Color(0xFF77727D)
+private val GalleryBg = Color(0xFFF4F1EA)
+private val GalleryViolet = Color(0xFF6847FF)
+private val GalleryPale = Color(0xFFE7FF68)
 
 private data class PreviewRoute(val group: String, val name: String, val description: String)
 
@@ -85,8 +85,8 @@ fun PreviewGallery() {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(Modifier.weight(1f)) {
-                Text("ANIMATE DESIGN SYSTEM", color = GalleryViolet, fontSize = 9.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.3.sp)
-                Text("页面预览中心", color = GalleryInk, fontSize = 24.sp, fontWeight = FontWeight.Bold)
+                Text("ANIMATE / EDITORIAL LAB", color = GalleryViolet, fontSize = 9.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.3.sp)
+                Text("视觉实验室", color = GalleryInk, fontSize = 27.sp, fontWeight = FontWeight.Black)
                 Text("${previewRoutes.size} 个页面 · ${groups.size - 1} 个业务模块", color = GalleryMuted, fontSize = 11.sp)
             }
             Surface(color = GalleryPale, shape = CircleShape) {
@@ -109,7 +109,7 @@ fun PreviewGallery() {
                     }
                 },
                 singleLine = true,
-                shape = RoundedCornerShape(16.dp)
+                shape = RoundedCornerShape(6.dp)
             )
             androidx.compose.foundation.lazy.LazyRow(
                 contentPadding = PaddingValues(horizontal = 16.dp, vertical = 14.dp),

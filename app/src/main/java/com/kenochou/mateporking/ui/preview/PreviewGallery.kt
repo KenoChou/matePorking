@@ -143,7 +143,7 @@ fun PreviewGallery() {
                 }
             } else {
                 LazyColumn(
-                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 4.dp, bottom = 28.dp),
+                    contentPadding = PaddingValues(start = 16.dp, top = 4.dp, end = 16.dp, bottom = 28.dp),
                     verticalArrangement = Arrangement.spacedBy(9.dp)
                 ) {
                     items(visible) { page ->

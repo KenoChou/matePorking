@@ -737,120 +737,89 @@ private fun CircleDetailScreen() {
 
 @Composable
 private fun DiscoverHomeScreen() {
-    var selectedCategory by remember { mutableStateOf("推荐") }
+    var feedTab by remember { mutableStateOf("推荐") }
     var liked by remember { mutableStateOf(setOf<Int>()) }
     var saved by remember { mutableStateOf(setOf<Int>()) }
     var followed by remember { mutableStateOf(setOf<Int>()) }
-    val categories = listOf("推荐", "插画", "动漫", "手办", "游戏", "穿搭")
-    val stories = listOf(Triple("小满", "今日穿搭", Color(0xFFF0C8C4)), Triple("阿澈", "新作发布", Color(0xFFD8D5EC)), Triple("MIO", "逛展日记", Color(0xFFD7E6DB)), Triple("KIKI", "开箱啦", Color(0xFFF1DDA8)), Triple("七七", "摸鱼中", Color(0xFFD9E2EE)))
     val posts = listOf(
         Triple("纸上星河", "原创插画", "把最近画的春日系列整理出来了，想把每一种喜欢都画成自己的小宇宙。"),
-        Triple("模型收藏研究所", "手办 / 收藏", "终于等到这只到货！桌面的一角突然变得好幸福。"),
+        Triple("模型收藏研究所", "手办收藏", "终于等到这只到货！桌面的一角突然变得好幸福。"),
         Triple("周末漫游计划", "线下活动", "周末去看展吗？整理了一份东京独立插画展路线。"),
         Triple("momo 的房间", "桌面改造", "把喜欢的角色和小物件摆在一起，每天回家都像充电。"),
         Triple("像素汽水", "游戏日常", "最近沉迷像素风独立游戏，这个配色真的太会了。"),
-        Triple("柚子同学", "穿搭灵感", "今天试着把制服感和街头单品混搭了一下。")
+        Triple("柚子同学", "穿搭灵感", "今天试着把制服感和街头单品混搭了一下。"),
+        Triple("NANA", "Cosplay", "这次拍摄终于把脑海里的角色氛围还原出来了。"),
+        Triple("白昼汽水", "同人创作", "给喜欢的角色画了新的生日贺图，过程比想象中快乐。")
     )
-    Column(Modifier.fillMaxSize().background(Color(0xFFFFFAF6))) {
+    Column(Modifier.fillMaxSize().background(Color(0xFFFFFAF7))) {
+        Column(Modifier.padding(start = 18.dp, end = 18.dp, top = 10.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(1.dp)) {
+                    Text("ANIMATE  ✳", color = Color(0xFF8A789D), fontSize = 10.sp, fontWeight = FontWeight.Black, letterSpacing = 2.sp)
+                    Text("兴趣，让相遇发生。", color = Color(0xFFAAA2A8), fontSize = 9.sp)
+                }
+                IconButton(onClick = {}) {
+                    Icon(Icons.Rounded.NotificationsNone, contentDescription = "通知", tint = Color(0xFF514653))
+                }
+                Box(Modifier.size(34.dp).clip(CircleShape).background(Color(0xFFEADCEB)), contentAlignment = Alignment.Center) {
+                    Text("M", color = Color(0xFF66596B), fontSize = 13.sp, fontWeight = FontWeight.Bold)
+                }
+            }
+            Spacer(Modifier.height(7.dp))
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                listOf("推荐", "关注").forEach { tab ->
+                    Column(
+                        modifier = Modifier.clickable { feedTab = tab }.padding(end = 23.dp, top = 7.dp, bottom = 9.dp),
+                        horizontalAlignment = Alignment.Start,
+                        verticalArrangement = Arrangement.spacedBy(5.dp)
+                    ) {
+                        Text(tab, color = if (feedTab == tab) Color(0xFF302D35) else Color(0xFFAAA2A8), fontSize = 17.sp, fontWeight = if (feedTab == tab) FontWeight.Black else FontWeight.Medium)
+                        Box(Modifier.width(22.dp).height(3.dp).clip(RoundedCornerShape(3.dp)).background(if (feedTab == tab) Color(0xFFD9A6B5) else Color.Transparent))
+                    }
+                }
+                Spacer(Modifier.weight(1f))
+                Icon(Icons.Rounded.Search, contentDescription = "搜索", tint = Color(0xFF514653), modifier = Modifier.size(21.dp))
+            }
+        }
         LazyColumn(
             modifier = Modifier.weight(1f),
-            contentPadding = PaddingValues(start = 17.dp, top = 13.dp, end = 17.dp, bottom = 28.dp),
-            verticalArrangement = Arrangement.spacedBy(18.dp)
+            contentPadding = PaddingValues(start = 14.dp, end = 14.dp, top = 5.dp, bottom = 22.dp),
+            verticalArrangement = Arrangement.spacedBy(11.dp)
         ) {
             item {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                        Text("SATURDAY, YOUR WAY ✳", color = Color(0xFF9A8298), fontSize = 8.sp, fontWeight = FontWeight.Black, letterSpacing = 1.2.sp)
-                        Text("今天，喜欢什么？", color = Color(0xFF302D35), fontSize = 27.sp, fontWeight = FontWeight.Black)
-                    }
-                    Surface(color = Color.White, shape = CircleShape) {
-                        IconButton(onClick = {}) { Icon(Icons.Rounded.NotificationsNone, "通知", tint = Color(0xFF514653)) }
-                    }
-                    Spacer(Modifier.width(7.dp))
-                    Surface(color = Color(0xFFE9DDEB), shape = CircleShape) {
-                        Box(Modifier.size(39.dp), contentAlignment = Alignment.Center) { Text("M", color = Color(0xFF514653), fontWeight = FontWeight.Black) }
-                    }
-                }
-            }
-            item {
-                Surface(color = Color.White, shape = RoundedCornerShape(17.dp), modifier = Modifier.fillMaxWidth()) {
-                    Row(Modifier.padding(horizontal = 14.dp, vertical = 12.dp), verticalAlignment = Alignment.CenterVertically) {
-                        Icon(Icons.Rounded.Search, null, tint = Color(0xFF9A8298), modifier = Modifier.size(19.dp))
-                        Spacer(Modifier.width(9.dp))
-                        Text("搜作品、角色、同好和圈子", color = Color(0xFFAAA2A8), fontSize = 11.sp)
-                        Spacer(Modifier.weight(1f))
-                        Text("⌘", color = Color(0xFFB7AEB4), fontSize = 13.sp)
-                    }
-                }
-            }
-            item {
-                Box(Modifier.fillMaxWidth().height(205.dp).clip(RoundedCornerShape(23.dp)).background(Color(0xFFB7A6C6))) {
-                    Box(Modifier.fillMaxSize().background(ComposeBrush.linearGradient(listOf(Color(0xFFB9A9CB), Color(0xFFE6BFC0), Color(0xFFF0D8B7)))))
-                    Box(Modifier.size(160.dp).align(Alignment.CenterEnd).offset(x = 24.dp, y = 19.dp).clip(CircleShape).background(Color(0xFFFFE9C8).copy(alpha = .72f)))
-                    Box(Modifier.size(105.dp).align(Alignment.TopEnd).offset(x = (-67).dp, y = 20.dp).clip(CircleShape).background(Color(0xFF8D86B4).copy(alpha = .5f)))
-                    Text("THIS WEEK'S MOOD", color = Color.White.copy(alpha = .9f), fontSize = 8.sp, fontWeight = FontWeight.Black, letterSpacing = 1.6.sp, modifier = Modifier.align(Alignment.TopStart).padding(18.dp))
-                    Text("把热爱\n调成最大声。", color = Color(0xFF403746), fontSize = 27.sp, lineHeight = 34.sp, fontWeight = FontWeight.Black, modifier = Modifier.align(Alignment.CenterStart).padding(start = 18.dp, top = 9.dp))
-                    Surface(color = Color(0xFFFFF7EE), shape = RoundedCornerShape(50), modifier = Modifier.align(Alignment.BottomStart).padding(start = 18.dp, bottom = 16.dp)) {
-                        Text("发现本周灵感  ↗", color = Color(0xFF514653), fontSize = 9.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp))
-                    }
-                    Text("♡", color = Color.White, fontSize = 55.sp, modifier = Modifier.align(Alignment.CenterEnd).padding(end = 42.dp))
-                    Text("VOL. 08", color = Color.White.copy(alpha = .9f), fontSize = 9.sp, fontWeight = FontWeight.Black, modifier = Modifier.align(Alignment.BottomEnd).padding(17.dp))
-                }
-            }
-            item {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text("同好正在发光", color = Color(0xFF302D35), fontSize = 16.sp, fontWeight = FontWeight.Black, modifier = Modifier.weight(1f))
-                    Text("全部动态  ↗", color = Color(0xFF9A8298), fontSize = 9.sp, fontWeight = FontWeight.Bold)
-                }
-                Spacer(Modifier.height(11.dp))
-                LazyRow(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                    items(stories) { story ->
-                        Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(5.dp)) {
-                            Box(Modifier.size(57.dp).clip(CircleShape).background(story.third).padding(3.dp).clip(CircleShape).background(Color(0xFFFFFAF6)), contentAlignment = Alignment.Center) {
-                                Box(Modifier.size(45.dp).clip(CircleShape).background(story.third), contentAlignment = Alignment.Center) { Text(story.first.take(1), color = Color(0xFF514653), fontSize = 17.sp, fontWeight = FontWeight.Black) }
-                            }
-                            Text(story.first, color = Color(0xFF514653), fontSize = 9.sp, fontWeight = FontWeight.Bold)
-                            Text(story.second, color = Color(0xFFAAA2A8), fontSize = 8.sp)
+                Surface(color = Color.White, shape = RoundedCornerShape(16.dp), modifier = Modifier.fillMaxWidth()) {
+                    Row(Modifier.padding(horizontal = 12.dp, vertical = 10.dp), verticalAlignment = Alignment.CenterVertically) {
+                        Box(Modifier.size(29.dp).clip(CircleShape).background(Color(0xFFEADCEB)), contentAlignment = Alignment.Center) {
+                            Text("M", color = Color(0xFF66596B), fontSize = 11.sp, fontWeight = FontWeight.Bold)
                         }
+                        Spacer(Modifier.width(9.dp))
+                        Text("分享最近让你心动的东西…", color = Color(0xFFAAA2A8), fontSize = 10.sp, modifier = Modifier.weight(1f))
+                        Text("＋", color = Color(0xFF8A789D), fontSize = 19.sp, fontWeight = FontWeight.Light)
                     }
                 }
             }
             item {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text("按兴趣逛逛", color = Color(0xFF302D35), fontSize = 16.sp, fontWeight = FontWeight.Black, modifier = Modifier.weight(1f))
-                    Text("找到你的频道  ↗", color = Color(0xFF9A8298), fontSize = 9.sp)
-                }
-                Spacer(Modifier.height(9.dp))
-                LazyRow(horizontalArrangement = Arrangement.spacedBy(7.dp)) {
-                    items(categories) { category ->
-                        FilterChip(selected = selectedCategory == category, onClick = { selectedCategory = category }, label = { Text(category, fontSize = 10.sp, fontWeight = FontWeight.SemiBold) }, shape = RoundedCornerShape(12.dp), colors = FilterChipDefaults.filterChipColors(selectedContainerColor = Color(0xFF514653), selectedLabelColor = Color.White, containerColor = Color.White, labelColor = Color(0xFF817783)), border = null)
-                    }
-                }
-            }
-            item {
-                Row(verticalAlignment = Alignment.Bottom) {
-                    Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                        Text("FRESH FROM THE FEED", color = Color(0xFF9A8298), fontSize = 8.sp, fontWeight = FontWeight.Black, letterSpacing = 1.2.sp)
-                        Text("灵感刚刚更新", color = Color(0xFF302D35), fontSize = 19.sp, fontWeight = FontWeight.Black)
-                    }
-                    Text("为你推荐 · 现在", color = Color(0xFFAAA2A8), fontSize = 9.sp)
+                    Text(if (feedTab == "推荐") "为你挑选的新鲜灵感" else "你关注的创作者", color = Color(0xFF514653), fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                    Spacer(Modifier.weight(1f))
+                    Text("实时更新 · 发现喜欢", color = Color(0xFFAAA2A8), fontSize = 8.sp)
                 }
             }
             items(posts.indices.toList().chunked(2)) { rowItems ->
-                Row(horizontalArrangement = Arrangement.spacedBy(11.dp)) {
+                Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                     rowItems.forEach { index ->
                         val post = posts[index]
                         Column(Modifier.weight(1f)) {
-                            Surface(color = Color.White, shape = RoundedCornerShape(19.dp)) {
+                            Surface(color = Color.White, shape = RoundedCornerShape(18.dp)) {
                                 Column {
                                     Box(
                                         Modifier.fillMaxWidth()
-                                            .height(if (index % 3 == 0) 174.dp else if (index % 3 == 1) 132.dp else 152.dp)
+                                            .height(if (index % 3 == 0) 184.dp else if (index % 3 == 1) 143.dp else 164.dp)
                                             .background(
                                                 ComposeBrush.linearGradient(
                                                     when (index % 4) {
-                                                        0 -> listOf(Color(0xFFEADCEB), Color(0xFFD5C9E6))
-                                                        1 -> listOf(Color(0xFFF1E0C9), Color(0xFFE5C8B9))
+                                                        0 -> listOf(Color(0xFFE8D9EA), Color(0xFFCFC5E3))
+                                                        1 -> listOf(Color(0xFFF0DFCC), Color(0xFFE4C4B9))
                                                         2 -> listOf(Color(0xFFDCE9E2), Color(0xFFBFD5CE))
                                                         else -> listOf(Color(0xFFDCE3F0), Color(0xFFC6CDE5))
                                                     }
@@ -858,21 +827,16 @@ private fun DiscoverHomeScreen() {
                                             ),
                                         contentAlignment = Alignment.Center
                                     ) {
-                                        Text(
-                                            listOf("✳", "♡", "◈", "✦", "☁", "★")[index],
-                                            color = Color.White.copy(alpha = .88f),
-                                            fontSize = if (index % 3 == 0) 54.sp else 43.sp,
-                                            fontWeight = FontWeight.Light
-                                        )
-                                        Surface(
-                                            color = Color.White.copy(alpha = .84f),
-                                            shape = RoundedCornerShape(50),
-                                            modifier = Modifier.align(Alignment.BottomStart).padding(9.dp)
-                                        ) {
+                                        Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(5.dp)) {
+                                            Text(listOf("✳", "♡", "◈", "✦", "☁", "★", "✿", "☆")[index], color = Color.White.copy(alpha = .9f), fontSize = 49.sp, fontWeight = FontWeight.Light)
+                                            Text(listOf("SPRING SKETCH", "MY FIGURE", "WEEKEND LOG", "MY ROOM", "PIXEL DAYS", "DAILY LOOK", "COSPLAY", "FAN ART")[index], color = Color(0xFF66596B), fontSize = 7.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.sp)
+                                        }
+                                        Surface(color = Color.White.copy(alpha = .88f), shape = RoundedCornerShape(50), modifier = Modifier.align(Alignment.BottomStart).padding(8.dp)) {
                                             Text(post.second, color = Color(0xFF66596B), fontSize = 8.sp, modifier = Modifier.padding(horizontal = 8.dp, vertical = 5.dp))
                                         }
+                                        Text("•••", color = Color.White, fontSize = 15.sp, modifier = Modifier.align(Alignment.TopEnd).padding(8.dp))
                                     }
-                                    Column(Modifier.padding(10.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                                    Column(Modifier.padding(horizontal = 10.dp, vertical = 9.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                                         Text(post.third, color = Color(0xFF48434D), fontSize = 10.sp, lineHeight = 15.sp, maxLines = 3)
                                         Row(verticalAlignment = Alignment.CenterVertically) {
                                             Box(Modifier.size(22.dp).clip(CircleShape).background(listOf(Color(0xFFEADCEB), Color(0xFFE8E3D7), Color(0xFFDCE9E2))[index % 3]), contentAlignment = Alignment.Center) {
@@ -880,12 +844,7 @@ private fun DiscoverHomeScreen() {
                                             }
                                             Spacer(Modifier.width(5.dp))
                                             Text(post.first, color = Color(0xFF716A75), fontSize = 8.sp, maxLines = 1, modifier = Modifier.weight(1f))
-                                            Text(
-                                                if (liked.contains(index)) "♥" else "♡",
-                                                color = if (liked.contains(index)) Color(0xFFE18F9B) else Color(0xFF918B94),
-                                                fontSize = 14.sp,
-                                                modifier = Modifier.clickable { liked = if (liked.contains(index)) liked - index else liked + index }
-                                            )
+                                            Text(if (liked.contains(index)) "♥" else "♡", color = if (liked.contains(index)) Color(0xFFE18F9B) else Color(0xFF918B94), fontSize = 15.sp, modifier = Modifier.clickable { liked = if (liked.contains(index)) liked - index else liked + index })
                                         }
                                         Row(verticalAlignment = Alignment.CenterVertically) {
                                             Text(if (saved.contains(index)) "已收藏" else "收藏", color = if (saved.contains(index)) Color(0xFF8A789D) else Color(0xFFAAA2A8), fontSize = 8.sp, modifier = Modifier.clickable { saved = if (saved.contains(index)) saved - index else saved + index })

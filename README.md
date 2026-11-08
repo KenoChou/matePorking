@@ -1,29 +1,62 @@
-# matePorking — AniMate Android Client
+# matePorking — AniMate Android UI Prototype
 
-Native Android client for the AniMate platform.
+Native Android UI prototype for the AniMate product, built with Kotlin and Jetpack Compose.
 
-## UI direction
+## Current scope
 
-- Native Kotlin + Jetpack Compose + Material 3.
-- Bottom navigation: Discover, Community, Market, Messages, Profile.
-- Authenticated API calls use `Authorization: Bearer <accessToken>`.
-- API responses follow the backend `Result<T>` envelope: `code`, `message`, `data`.
-- Paginated lists follow `PageResult<T>`: `page`, `size`, `total`, `records`.
+This repository is currently focused on **UI design and page-level previews only**.
 
-## Backend integration status
+- No backend API requests are required to browse the prototype.
+- Screen content is local presentation data and must not be treated as production data.
+- No real login, checkout, payment, messaging, creator operations, or merchant operations are performed.
+- The `animate` backend is the product-domain reference for information architecture; backend integration is explicitly out of scope for this UI phase.
 
-The backend API contract currently confirms the authentication routes under `/api/v1/auth`. The User and Order modules still contain example/test behavior, Payment supports basic payment record creation and lookup, and most Discover, Community, Market, Creator, Events, and Message routes in `docs/api-contract.md` are proposals rather than implemented endpoints.
+## Run the prototype
 
-The Android UI must therefore distinguish live API-backed features from planned modules. Do not present planned endpoints as working production features.
+1. Open the repository in Android Studio.
+2. Allow Gradle sync to finish.
+3. Select the `app` run configuration.
+4. Run on an emulator or Android device.
 
-## Main navigation
+The app launches directly into the in-app **Preview Gallery**.
 
-1. Discover — feed and trending content.
-2. Community — circles and social interactions.
-3. Market — product discovery and shopping.
-4. Messages — conversations and notifications.
-5. Profile — account, creator/merchant entry points, orders and settings.
+## Browse page previews
 
-## Build
+The gallery groups screens by product domain. Select a category, then tap a page to open its dedicated Compose layout.
 
-Open this repository in Android Studio and run the `app` configuration. Configure the backend Gateway base URL for the target environment before API integration.
+The project also contains individual `@Preview` functions in:
+
+- `ui/preview/ScreenPreviews.kt`
+- `ui/preview/PreviewGallery.kt`
+
+Use Android Studio's Design or Split view to inspect these previews without launching the app.
+
+## UI modules
+
+- Authentication: welcome, phone login, verification
+- Discover: feed, trends, search, content detail
+- Community: circle discovery, circle detail, member list
+- Market: storefront, categories, product detail, cart
+- Orders: order list, order detail, payment result
+- Messages: conversation list, chat detail, notifications
+- Profile: profile home, edit profile, favorites, settings
+- Creator: creator dashboard, works, analytics
+- Merchant: merchant dashboard, product management, shop settings
+- Events: event list, event detail, registration, tickets
+
+## Design language
+
+- Material 3 with native Compose components
+- Warm white surfaces, soft lavender accents, restrained coral highlights
+- Rounded cards, clear hierarchy, content-first layouts
+- Local static presentation data, visibly treated as illustrative samples
+
+## Build verification
+
+Run the following from the repository root:
+
+```bash
+./gradlew :app:assembleDebug
+```
+
+A successful source commit does not imply that Gradle compilation has passed. Record build verification separately after running the command in an Android SDK-enabled environment.

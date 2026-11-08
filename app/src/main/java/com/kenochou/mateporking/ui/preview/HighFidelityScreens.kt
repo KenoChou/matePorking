@@ -6,6 +6,7 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -732,147 +733,132 @@ private fun CircleDetailScreen() {
 
 @Composable
 private fun DiscoverHomeScreen() {
-    Column(Modifier.fillMaxSize().background(HBg)) {
+    var selectedCategory by remember { mutableStateOf("推荐") }
+    var liked by remember { mutableStateOf(setOf<Int>()) }
+    val categories = listOf("推荐", "插画", "动漫", "手办", "游戏", "穿搭")
+    val stories = listOf(Triple("小满", "今日穿搭", Color(0xFFF0C8C4)), Triple("阿澈", "新作发布", Color(0xFFD8D5EC)), Triple("MIO", "逛展日记", Color(0xFFD7E6DB)), Triple("KIKI", "开箱啦", Color(0xFFF1DDA8)), Triple("七七", "摸鱼中", Color(0xFFD9E2EE)))
+    val posts = listOf(
+        Triple("纸上星河", "原创插画", "把最近画的春日系列整理出来了，想把每一种喜欢都画成自己的小宇宙。"),
+        Triple("模型收藏研究所", "手办 / 收藏", "终于等到这只到货！桌面的一角突然变得好幸福。"),
+        Triple("周末漫游计划", "线下活动", "周末去看展吗？整理了一份东京独立插画展路线。")
+    )
+    Column(Modifier.fillMaxSize().background(Color(0xFFFFFAF6))) {
         LazyColumn(
             modifier = Modifier.weight(1f),
-            contentPadding = PaddingValues(start = 16.dp, top = 12.dp, end = 16.dp, bottom = 28.dp),
-            verticalArrangement = Arrangement.spacedBy(19.dp)
+            contentPadding = PaddingValues(start = 17.dp, top = 13.dp, end = 17.dp, bottom = 28.dp),
+            verticalArrangement = Arrangement.spacedBy(18.dp)
         ) {
             item {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                        Text("ANIMATE / TOKYO CULTURE CLUB", color = HMuted, fontSize = 8.sp, fontWeight = FontWeight.Black, letterSpacing = 1.2.sp)
-                        Text("好き、集合。", color = HInk, fontSize = 28.sp, fontWeight = FontWeight.Bold)
+                        Text("SATURDAY, YOUR WAY ✳", color = Color(0xFF9A8298), fontSize = 8.sp, fontWeight = FontWeight.Black, letterSpacing = 1.2.sp)
+                        Text("今天，喜欢什么？", color = Color(0xFF302D35), fontSize = 27.sp, fontWeight = FontWeight.Black)
                     }
-                    Surface(color = Color(0xFF514B54), shape = CircleShape) {
-                        Row(Modifier.padding(horizontal = 12.dp, vertical = 9.dp), verticalAlignment = Alignment.CenterVertically) {
-                            Icon(Icons.Rounded.Search, null, tint = Color.White, modifier = Modifier.size(17.dp))
-                            Spacer(Modifier.width(6.dp))
-                            Text("探索", color = Color.White, fontSize = 10.sp, fontWeight = FontWeight.Bold)
-                        }
+                    Surface(color = Color.White, shape = CircleShape) {
+                        IconButton(onClick = {}) { Icon(Icons.Rounded.NotificationsNone, "通知", tint = Color(0xFF514653)) }
                     }
                     Spacer(Modifier.width(7.dp))
-                    IconButton(onClick = {}) { Icon(Icons.Rounded.NotificationsNone, "通知", tint = HInk) }
+                    Surface(color = Color(0xFFE9DDEB), shape = CircleShape) {
+                        Box(Modifier.size(39.dp), contentAlignment = Alignment.Center) { Text("M", color = Color(0xFF514653), fontWeight = FontWeight.Black) }
+                    }
                 }
             }
             item {
-                Box(
-                    Modifier.fillMaxWidth().height(244.dp).clip(RoundedCornerShape(16.dp))
-                        .background(Color(0xFF9A8BAA))
-                ) {
-                    Box(Modifier.fillMaxWidth().height(244.dp).background(
-                        androidx.compose.ui.graphics.Brush.linearGradient(
-                            listOf(Color(0xFF9A8BAA), Color(0xFFB7A9BD), Color(0xFFE2C5C2))
-                        )
-                    ))
-                    Text("VOL. 01", color = Color(0xFFE9E1D8), fontSize = 10.sp, fontWeight = FontWeight.Black, letterSpacing = 2.sp, modifier = Modifier.align(Alignment.TopStart).padding(17.dp))
-                    Text("好きなものに、\n夢中でいい。", color = Color.White, fontSize = 27.sp, lineHeight = 36.sp, fontWeight = FontWeight.Bold, modifier = Modifier.align(Alignment.CenterStart).padding(start = 18.dp, top = 16.dp))
-                    Text("YOUR INTEREST. YOUR SCENE.", color = Color.White.copy(alpha = .86f), fontSize = 8.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.3.sp, modifier = Modifier.align(Alignment.BottomStart).padding(18.dp))
-                    Surface(color = Color(0xFFE9E1D8), shape = RoundedCornerShape(4.dp), modifier = Modifier.align(Alignment.BottomEnd).padding(16.dp)) {
-                        Text("DISCOVER →", color = Color(0xFF514B54), fontSize = 9.sp, fontWeight = FontWeight.Black, modifier = Modifier.padding(horizontal = 11.dp, vertical = 8.dp))
+                Surface(color = Color.White, shape = RoundedCornerShape(17.dp), modifier = Modifier.fillMaxWidth()) {
+                    Row(Modifier.padding(horizontal = 14.dp, vertical = 12.dp), verticalAlignment = Alignment.CenterVertically) {
+                        Icon(Icons.Rounded.Search, null, tint = Color(0xFF9A8298), modifier = Modifier.size(19.dp))
+                        Spacer(Modifier.width(9.dp))
+                        Text("搜作品、角色、同好和圈子", color = Color(0xFFAAA2A8), fontSize = 11.sp)
+                        Spacer(Modifier.weight(1f))
+                        Text("⌘", color = Color(0xFFB7AEB4), fontSize = 13.sp)
                     }
-                    Text("✳", color = Color(0xFFE9E1D8), fontSize = 105.sp, modifier = Modifier.align(Alignment.TopEnd).padding(end = 12.dp, top = 27.dp))
-                    Text("ANIME / ART / FIGURE / GAME", color = Color.White.copy(alpha = .8f), fontSize = 8.sp, fontWeight = FontWeight.Bold, modifier = Modifier.align(Alignment.CenterEnd).padding(end = 16.dp))
+                }
+            }
+            item {
+                Box(Modifier.fillMaxWidth().height(205.dp).clip(RoundedCornerShape(23.dp)).background(Color(0xFFB7A6C6))) {
+                    Box(Modifier.fillMaxSize().background(Brush.linearGradient(listOf(Color(0xFFB9A9CB), Color(0xFFE6BFC0), Color(0xFFF0D8B7)))))
+                    Box(Modifier.size(160.dp).align(Alignment.CenterEnd).offset(x = 24.dp, y = 19.dp).clip(CircleShape).background(Color(0xFFFFE9C8).copy(alpha = .72f)))
+                    Box(Modifier.size(105.dp).align(Alignment.TopEnd).offset(x = (-67).dp, y = 20.dp).clip(CircleShape).background(Color(0xFF8D86B4).copy(alpha = .5f)))
+                    Text("THIS WEEK'S MOOD", color = Color.White.copy(alpha = .9f), fontSize = 8.sp, fontWeight = FontWeight.Black, letterSpacing = 1.6.sp, modifier = Modifier.align(Alignment.TopStart).padding(18.dp))
+                    Text("把热爱\n调成最大声。", color = Color(0xFF403746), fontSize = 27.sp, lineHeight = 34.sp, fontWeight = FontWeight.Black, modifier = Modifier.align(Alignment.CenterStart).padding(start = 18.dp, top = 9.dp))
+                    Surface(color = Color(0xFFFFF7EE), shape = RoundedCornerShape(50), modifier = Modifier.align(Alignment.BottomStart).padding(start = 18.dp, bottom = 16.dp)) {
+                        Text("发现本周灵感  ↗", color = Color(0xFF514653), fontSize = 9.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp))
+                    }
+                    Text("♡", color = Color.White, fontSize = 55.sp, modifier = Modifier.align(Alignment.CenterEnd).padding(end = 42.dp))
+                    Text("VOL. 08", color = Color.White.copy(alpha = .9f), fontSize = 9.sp, fontWeight = FontWeight.Black, modifier = Modifier.align(Alignment.BottomEnd).padding(17.dp))
                 }
             }
             item {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text("PICK YOUR SIDE", color = HInk, fontSize = 11.sp, fontWeight = FontWeight.Black, letterSpacing = 1.3.sp, modifier = Modifier.weight(1f))
-                    Text("兴趣频道 ↗", color = HPrimary, fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                    Text("同好正在发光", color = Color(0xFF302D35), fontSize = 16.sp, fontWeight = FontWeight.Black, modifier = Modifier.weight(1f))
+                    Text("全部动态  ↗", color = Color(0xFF9A8298), fontSize = 9.sp, fontWeight = FontWeight.Bold)
                 }
-                Spacer(Modifier.height(10.dp))
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    listOf(
-                        Triple("ANIME", "动漫", Color(0xFFE9E1D8)),
-                        Triple("ILLUST", "插画", Color(0xFFEBD9D8)),
-                        Triple("FIGURE", "手办", Color(0xFFDCD4E4)),
-                        Triple("GAME", "游戏", Color(0xFFD8E4DE))
-                    ).forEach { channel ->
-                        Surface(color = channel.third, shape = RoundedCornerShape(12.dp), modifier = Modifier.weight(1f)) {
-                            Column(Modifier.padding(vertical = 12.dp, horizontal = 7.dp), verticalArrangement = Arrangement.spacedBy(5.dp)) {
-                                Text(channel.first, color = HInk, fontSize = 7.sp, fontWeight = FontWeight.Black, letterSpacing = .4.sp)
-                                Text(channel.second, color = HInk, fontSize = 13.sp, fontWeight = FontWeight.Black)
+                Spacer(Modifier.height(11.dp))
+                LazyRow(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                    items(stories) { story ->
+                        Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(5.dp)) {
+                            Box(Modifier.size(57.dp).clip(CircleShape).background(story.third).padding(3.dp).clip(CircleShape).background(Color(0xFFFFFAF6)), contentAlignment = Alignment.Center) {
+                                Box(Modifier.size(45.dp).clip(CircleShape).background(story.third), contentAlignment = Alignment.Center) { Text(story.first.take(1), color = Color(0xFF514653), fontSize = 17.sp, fontWeight = FontWeight.Black) }
                             }
+                            Text(story.first, color = Color(0xFF514653), fontSize = 9.sp, fontWeight = FontWeight.Bold)
+                            Text(story.second, color = Color(0xFFAAA2A8), fontSize = 8.sp)
                         }
                     }
                 }
             }
             item {
-                Row(verticalAlignment = Alignment.Bottom) {
-                    Column(Modifier.weight(1f)) {
-                        Text("TRENDING NOW", color = HPrimary, fontSize = 8.sp, fontWeight = FontWeight.Black, letterSpacing = 1.1.sp)
-                        Text("现在大家在玩什么", color = HInk, fontSize = 19.sp, fontWeight = FontWeight.Black)
-                    }
-                    Text("#本周话题", color = HMuted, fontSize = 9.sp)
-                }
-                Spacer(Modifier.height(10.dp))
-                Row(horizontalArrangement = Arrangement.spacedBy(9.dp)) {
-                    listOf("痛包改造", "原创角色", "谷子交换").forEachIndexed { index, tag ->
-                        Surface(color = if (index == 0) Color(0xFF514B54) else Color.White, shape = RoundedCornerShape(4.dp)) {
-                            Text("# $tag", color = if (index == 0) Color(0xFFE9E1D8) else HInk, fontSize = 10.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(horizontal = 11.dp, vertical = 9.dp))
-                        }
-                    }
-                }
-            }
-            item {
-                Row(verticalAlignment = Alignment.Bottom) {
-                    Column(Modifier.weight(1f)) {
-                        Text("THE CREATOR FILE", color = HPrimary, fontSize = 8.sp, fontWeight = FontWeight.Black, letterSpacing = 1.5.sp)
-                        Text("本期编辑推荐", color = HInk, fontSize = 19.sp, fontWeight = FontWeight.Black)
-                    }
-                    Text("VIEW ALL ↗", color = HMuted, fontSize = 8.sp, fontWeight = FontWeight.Black)
-                }
-                Spacer(Modifier.height(10.dp))
-                Surface(color = Color.White, shape = RoundedCornerShape(7.dp), modifier = Modifier.fillMaxWidth()) {
-                    Column(Modifier.padding(10.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                        Box(Modifier.fillMaxWidth().height(188.dp).clip(RoundedCornerShape(4.dp)).background(
-                            androidx.compose.ui.graphics.Brush.linearGradient(listOf(Color(0xFFEBD9D8), Color(0xFFDCD4E4), Color(0xFFD8E4DE)))
-                        )) {
-                            Text("ART\nIS\nEVERYWHERE", color = Color(0xFF514B54), fontSize = 29.sp, lineHeight = 28.sp, fontWeight = FontWeight.Black, modifier = Modifier.align(Alignment.CenterStart).padding(start = 18.dp))
-                            Text("✷", color = Color.White, fontSize = 92.sp, modifier = Modifier.align(Alignment.CenterEnd).padding(end = 20.dp))
-                            Text("CREATOR SPOTLIGHT / 001", color = Color(0xFF514B54), fontSize = 8.sp, fontWeight = FontWeight.Black, modifier = Modifier.align(Alignment.BottomStart).padding(12.dp))
-                        }
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
-                                Text("纸上星河", color = HInk, fontSize = 13.sp, fontWeight = FontWeight.Black)
-                                Text("独立插画师 · ORIGINAL CHARACTER", color = HMuted, fontSize = 8.sp, fontWeight = FontWeight.Bold)
-                            }
-                            Surface(color = Color(0xFFE9E1D8), shape = RoundedCornerShape(4.dp)) {
-                                Text("FOLLOW +", color = HInk, fontSize = 9.sp, fontWeight = FontWeight.Black, modifier = Modifier.padding(horizontal = 10.dp, vertical = 8.dp))
-                            }
-                        }
-                        Text("把脑海里的角色，变成自己的宇宙。", color = HInk, fontSize = 14.sp, fontWeight = FontWeight.Black)
-                        Text("原创角色设定、色彩实验与日常灵感记录。", color = HMuted, fontSize = 10.sp)
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text("♡ 1.2K", color = HMuted, fontSize = 9.sp, modifier = Modifier.weight(1f))
-                            Text("◯ 86 COMMENTS", color = HMuted, fontSize = 9.sp, fontWeight = FontWeight.Bold)
-                        }
-                    }
-                }
-            }
-            item {
-                Row(verticalAlignment = Alignment.Bottom) {
-                    Column(Modifier.weight(1f)) {
-                        Text("COMMUNITY SNAP", color = HPrimary, fontSize = 8.sp, fontWeight = FontWeight.Black, letterSpacing = 1.4.sp)
-                        Text("来自同好的现场", color = HInk, fontSize = 19.sp, fontWeight = FontWeight.Black)
-                    }
-                    Text("更多动态 ↗", color = HMuted, fontSize = 9.sp)
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text("按兴趣逛逛", color = Color(0xFF302D35), fontSize = 16.sp, fontWeight = FontWeight.Black, modifier = Modifier.weight(1f))
+                    Text("找到你的频道  ↗", color = Color(0xFF9A8298), fontSize = 9.sp)
                 }
                 Spacer(Modifier.height(9.dp))
-                Surface(color = Color(0xFFE9E1D8), shape = RoundedCornerShape(7.dp), modifier = Modifier.fillMaxWidth()) {
-                    Row(Modifier.padding(14.dp), verticalAlignment = Alignment.CenterVertically) {
-                        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(5.dp)) {
-                            Text("WEEKEND LOG", color = HInk, fontSize = 8.sp, fontWeight = FontWeight.Black, letterSpacing = 1.2.sp)
-                            Text("痛包、立牌和一点点快乐。", color = HInk, fontSize = 15.sp, fontWeight = FontWeight.Black)
-                            Text("模型收藏研究所 · 86 likes", color = HMuted, fontSize = 9.sp)
+                LazyRow(horizontalArrangement = Arrangement.spacedBy(7.dp)) {
+                    items(categories) { category ->
+                        FilterChip(selected = selectedCategory == category, onClick = { selectedCategory = category }, label = { Text(category, fontSize = 10.sp, fontWeight = FontWeight.SemiBold) }, shape = RoundedCornerShape(12.dp), colors = FilterChipDefaults.filterChipColors(selectedContainerColor = Color(0xFF514653), selectedLabelColor = Color.White, containerColor = Color.White, labelColor = Color(0xFF817783)), border = null)
+                    }
+                }
+            }
+            item {
+                Row(verticalAlignment = Alignment.Bottom) {
+                    Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                        Text("FRESH FROM THE FEED", color = Color(0xFF9A8298), fontSize = 8.sp, fontWeight = FontWeight.Black, letterSpacing = 1.2.sp)
+                        Text("灵感刚刚更新", color = Color(0xFF302D35), fontSize = 19.sp, fontWeight = FontWeight.Black)
+                    }
+                    Text("为你推荐 · 现在", color = Color(0xFFAAA2A8), fontSize = 9.sp)
+                }
+            }
+            items(posts.indices.toList()) { index ->
+                val post = posts[index]
+                Surface(color = Color.White, shape = RoundedCornerShape(21.dp)) {
+                    Column(Modifier.padding(13.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Box(Modifier.size(37.dp).clip(CircleShape).background(listOf(Color(0xFFEADCEB), Color(0xFFE8E3D7), Color(0xFFDCE9E2))[index]), contentAlignment = Alignment.Center) { Text(post.first.take(1), color = Color(0xFF514653), fontWeight = FontWeight.Black) }
+                            Spacer(Modifier.width(9.dp))
+                            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                                Text(post.first, color = Color(0xFF302D35), fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                                Text("刚刚 · " + post.second, color = Color(0xFFAAA2A8), fontSize = 8.sp)
+                            }
+                            Text("关注 +", color = Color(0xFF8A789D), fontSize = 9.sp, fontWeight = FontWeight.Bold)
                         }
-                        Text("✦", color = HPrimary, fontSize = 45.sp)
+                        Text(post.third, color = Color(0xFF514B54), fontSize = 12.sp, lineHeight = 19.sp)
+                        Box(Modifier.fillMaxWidth().height(if (index == 0) 150.dp else 112.dp).clip(RoundedCornerShape(15.dp)).background(listOf(Color(0xFFE8DCE9), Color(0xFFE9E3D8), Color(0xFFDDE9E3))[index]), contentAlignment = Alignment.Center) {
+                            Text(listOf("✳  ORIGINAL ART  ✳", "MY LITTLE COLLECTION", "WEEKEND WALK ✦")[index], color = Color(0xFF716478), fontSize = 13.sp, fontWeight = FontWeight.Black, letterSpacing = 1.sp)
+                        }
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text("♡  " + listOf("328", "96", "54")[index], color = if (liked.contains(index)) Color(0xFFE18F9B) else Color(0xFF918B94), fontSize = 10.sp, modifier = Modifier.clickable { liked = if (liked.contains(index)) liked - index else liked + index })
+                            Spacer(Modifier.width(18.dp))
+                            Text("◯  " + listOf("42", "18", "12")[index], color = Color(0xFF918B94), fontSize = 10.sp)
+                            Spacer(Modifier.weight(1f))
+                            Text("收藏  ↗", color = Color(0xFF9A8298), fontSize = 9.sp)
+                        }
                     }
                 }
             }
         }
+        PrimaryBottomBar("Discover")
     }
 }
+
 @Composable
 private fun GenericDetailScreen(name: String) {
     Column(Modifier.fillMaxSize().background(HBg).padding(18.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {

@@ -27,6 +27,9 @@ private val HCoral = Color(0xFFFF8A83)
 @Composable
 fun HighFidelityScreen(name: String) {
     when (name) {
+        "圈子首页" -> CommunityFeedScreen()
+        "商城首页" -> MarketHomeScreen()
+        "会话列表" -> ConversationListScreen()
         "商品详情" -> ProductDetailScreen()
         "购物车" -> CartScreen()
         "订单详情" -> OrderDetailScreen()

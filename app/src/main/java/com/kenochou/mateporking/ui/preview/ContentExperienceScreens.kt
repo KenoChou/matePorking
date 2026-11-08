@@ -1,5 +1,7 @@
 package com.kenochou.mateporking.ui.preview
 
+import android.content.Intent
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -15,6 +17,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -34,6 +39,11 @@ fun ContentDetailScreen() {
     val favoriteCount = 856 + if (favorited) 1 else 0
     var comment by remember { mutableStateOf("") }
     var sent by remember { mutableStateOf(false) }
+    var showShareSheet by remember { mutableStateOf(false) }
+    val context = LocalContext.current
+    val clipboard = LocalClipboardManager.current
+    val shareText = "把夏天收进一颗星星里 ✦\n来自 animate 兴趣社区"
+    val shareLink = "https://animate.example.com/post/001"
 
     Column(Modifier.fillMaxSize().background(Color.White)) {
         Row(
@@ -42,7 +52,7 @@ fun ContentDetailScreen() {
         ) {
             IconButton(onClick = {}) { Icon(Icons.Rounded.ArrowBack, "返回", tint = CInk) }
             Text("作品详情", color = CInk, fontSize = 15.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.weight(1f))
-            IconButton(onClick = {}) { Icon(Icons.Rounded.Share, "分享", tint = CMuted) }
+            IconButton(onClick = { showShareSheet = true }) { Icon(Icons.Rounded.Share, "分享", tint = CMuted) }
             IconButton(onClick = {}) { Icon(Icons.Rounded.MoreHoriz, "更多", tint = CMuted) }
         }
         LazyColumn(
@@ -52,7 +62,7 @@ fun ContentDetailScreen() {
         ) {
             item {
                 Box(
-                    Modifier.fillMaxWidth().height(390.dp).background(
+                    Modifier.fillMaxWidth().height(330.dp).background(
                         Brush.linearGradient(listOf(Color(0xFFE9DDF0), Color(0xFFF5DCD8), Color(0xFFDCE9E6)))
                     ),
                     contentAlignment = Alignment.Center
@@ -64,7 +74,7 @@ fun ContentDetailScreen() {
                 }
             }
             item {
-                Column(Modifier.padding(horizontal = 18.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                Column(Modifier.fillMaxWidth().padding(horizontal = 20.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Box(Modifier.size(43.dp).clip(CircleShape).background(CPale), contentAlignment = Alignment.Center) {
                             Text("星", color = CAccent, fontWeight = FontWeight.Bold)
@@ -81,7 +91,7 @@ fun ContentDetailScreen() {
                             colors = ButtonDefaults.outlinedButtonColors(contentColor = CAccent)
                         ) { Text(if (following) "已关注" else "关注", fontSize = 10.sp) }
                     }
-                    Text("把夏天收进一颗星星里 ✦", color = CInk, fontSize = 21.sp, fontWeight = FontWeight.Bold, lineHeight = 29.sp)
+                    Text("把夏天收进一颗星星里 ✦", color = CInk, fontSize = 22.sp, fontWeight = FontWeight.Bold, lineHeight = 29.sp)
                     Text(
                         "最近在练习更轻一点的配色。把傍晚的粉紫色、玻璃汽水的蓝，还有一点点星光放在一起，想做成一组关于夏日记忆的小插画。希望你也能从里面找到一点灵感。",
                         color = Color(0xFF625D65), fontSize = 12.sp, lineHeight = 21.sp
@@ -94,9 +104,9 @@ fun ContentDetailScreen() {
                         }
                     }
                     Row(
-                        Modifier.fillMaxWidth().padding(top = 2.dp, bottom = 2.dp),
+                        Modifier.fillMaxWidth().padding(top = 5.dp, bottom = 5.dp),
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(22.dp)
+                        horizontalArrangement = Arrangement.SpaceEvenly
                     ) {
                         EngagementMetric(Icons.Rounded.Favorite, formatEngagementCount(likeCount), "点赞", CCoral)
                         EngagementMetric(Icons.Rounded.Bookmark, formatEngagementCount(favoriteCount), "收藏", CAccent)
@@ -110,7 +120,7 @@ fun ContentDetailScreen() {
                 }
             }
             item {
-                Column(Modifier.padding(horizontal = 18.dp), verticalArrangement = Arrangement.spacedBy(15.dp)) {
+                Column(Modifier.fillMaxWidth().padding(horizontal = 20.dp), verticalArrangement = Arrangement.spacedBy(15.dp)) {
                     CommentLine("小满", "这个配色好舒服！有种夏日傍晚的感觉。", "刚刚", "♡ 12")
                     CommentLine("Mio", "想问一下紫色部分是怎么调出来的？", "18 分钟前", "♡ 8")
                     CommentLine("阿澄", "收藏了，下一张也期待！", "42 分钟前", "♡ 5")
@@ -152,12 +162,73 @@ fun ContentDetailScreen() {
                     }
                     Text(formatEngagementCount(favoriteCount), color = CMuted, fontSize = 8.sp)
                 }
+                IconButton(onClick = { showShareSheet = true }) {
+                    Icon(Icons.Rounded.Share, "分享", tint = CMuted)
+                }
                 TextButton(onClick = { if (comment.isNotBlank()) { sent = true; comment = "" } }) {
                     Text("发送", color = CAccent, fontSize = 11.sp, fontWeight = FontWeight.Bold)
                 }
             }
         }
     }
+
+    if (showShareSheet) {
+        ModalBottomSheet(
+            onDismissRequest = { showShareSheet = false },
+            containerColor = Color.White,
+            dragHandle = { BottomSheetDefaults.DragHandle(color = Color(0xFFE7E1E7)) }
+        ) {
+            Column(
+                Modifier.fillMaxWidth().padding(horizontal = 22.dp).padding(bottom = 28.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                Text("分享这份灵感", color = CInk, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                Text("让更多同好看到这件作品", color = CMuted, fontSize = 11.sp)
+                Row(
+                    Modifier.fillMaxWidth().clip(RoundedCornerShape(16.dp))
+                        .background(Color(0xFFFAF8F7)).clickable {
+                            clipboard.setText(AnnotatedString("$shareText\n$shareLink"))
+                            Toast.makeText(context, "分享链接已复制", Toast.LENGTH_SHORT).show()
+                            showShareSheet = false
+                        }.padding(15.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Box(Modifier.size(40.dp).clip(CircleShape).background(CPale), contentAlignment = Alignment.Center) {
+                        Icon(Icons.Rounded.Link, null, tint = CAccent)
+                    }
+                    Spacer(Modifier.width(12.dp))
+                    Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
+                        Text("复制作品链接", color = CInk, fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
+                        Text("复制标题与链接，发送给朋友", color = CMuted, fontSize = 10.sp)
+                    }
+                    Icon(Icons.Rounded.ChevronRight, null, tint = CMuted)
+                }
+                Row(
+                    Modifier.fillMaxWidth().clip(RoundedCornerShape(16.dp))
+                        .background(Color(0xFFFAF8F7)).clickable {
+                            val intent = Intent(Intent.ACTION_SEND).apply {
+                                type = "text/plain"
+                                putExtra(Intent.EXTRA_TEXT, "$shareText\n$shareLink")
+                            }
+                            context.startActivity(Intent.createChooser(intent, "分享作品"))
+                            showShareSheet = false
+                        }.padding(15.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Box(Modifier.size(40.dp).clip(CircleShape).background(Color(0xFFF8ECEA)), contentAlignment = Alignment.Center) {
+                        Icon(Icons.Rounded.IosShare, null, tint = CCoral)
+                    }
+                    Spacer(Modifier.width(12.dp))
+                    Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
+                        Text("通过其他应用分享", color = CInk, fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
+                        Text("打开系统分享面板", color = CMuted, fontSize = 10.sp)
+                    }
+                    Icon(Icons.Rounded.ChevronRight, null, tint = CMuted)
+                }
+            }
+        }
+    }
+
 }
 
 @Composable

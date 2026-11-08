@@ -28,7 +28,10 @@ private val CCoral = Color(0xFFD9A6A5)
 @Composable
 fun ContentDetailScreen() {
     var liked by remember { mutableStateOf(false) }
+    var favorited by remember { mutableStateOf(false) }
     var following by remember { mutableStateOf(false) }
+    val likeCount = 1280 + if (liked) 1 else 0
+    val favoriteCount = 856 + if (favorited) 1 else 0
     var comment by remember { mutableStateOf("") }
     var sent by remember { mutableStateOf(false) }
 
@@ -90,6 +93,15 @@ fun ContentDetailScreen() {
                             }
                         }
                     }
+                    Row(
+                        Modifier.fillMaxWidth().padding(top = 2.dp, bottom = 2.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(22.dp)
+                    ) {
+                        EngagementMetric(Icons.Rounded.Favorite, formatEngagementCount(likeCount), "点赞", CCoral)
+                        EngagementMetric(Icons.Rounded.Bookmark, formatEngagementCount(favoriteCount), "收藏", CAccent)
+                        EngagementMetric(Icons.Rounded.Visibility, "8.6k", "浏览", CMuted)
+                    }
                     HorizontalDivider(color = Color(0xFFF0ECE9))
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text("评论  26", color = CInk, fontSize = 14.sp, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
@@ -126,9 +138,19 @@ fun ContentDetailScreen() {
                         focusedBorderColor = CAccent
                     )
                 )
-                IconButton(onClick = { liked = !liked }) {
-                    Icon(if (liked) Icons.Rounded.Favorite else Icons.Rounded.FavoriteBorder, "喜欢",
-                        tint = if (liked) CCoral else CMuted)
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    IconButton(onClick = { liked = !liked }) {
+                        Icon(if (liked) Icons.Rounded.Favorite else Icons.Rounded.FavoriteBorder, "点赞",
+                            tint = if (liked) CCoral else CMuted)
+                    }
+                    Text(formatEngagementCount(likeCount), color = CMuted, fontSize = 8.sp)
+                }
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    IconButton(onClick = { favorited = !favorited }) {
+                        Icon(if (favorited) Icons.Rounded.Bookmark else Icons.Rounded.BookmarkBorder, "收藏",
+                            tint = if (favorited) CAccent else CMuted)
+                    }
+                    Text(formatEngagementCount(favoriteCount), color = CMuted, fontSize = 8.sp)
                 }
                 TextButton(onClick = { if (comment.isNotBlank()) { sent = true; comment = "" } }) {
                     Text("发送", color = CAccent, fontSize = 11.sp, fontWeight = FontWeight.Bold)
@@ -137,6 +159,25 @@ fun ContentDetailScreen() {
         }
     }
 }
+
+@Composable
+private fun EngagementMetric(
+    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    count: String,
+    label: String,
+    tint: Color
+) {
+    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(5.dp)) {
+        Icon(icon, contentDescription = null, tint = tint, modifier = Modifier.size(15.dp))
+        Column(verticalArrangement = Arrangement.spacedBy(1.dp)) {
+            Text(count, color = CInk, fontSize = 11.sp, fontWeight = FontWeight.SemiBold)
+            Text(label, color = CMuted, fontSize = 9.sp)
+        }
+    }
+}
+
+private fun formatEngagementCount(count: Int): String =
+    if (count >= 1000) String.format(java.util.Locale.ROOT, "%.1fk", count / 1000f) else count.toString()
 
 @Composable
 private fun CommentLine(author: String, body: String, time: String, likes: String) {

@@ -10,6 +10,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -189,7 +191,7 @@ private fun VerificationScreen(phone: String = "138****8888") {
             Text("输入 6 位短信验证码", color = HInk, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
             OutlinedTextField(
                 value = code,
-                onValueChange = { code = it.filter(Char::isDigit).take(6) },
+                onValueChange = { newValue: String -> code = newValue.filter(Char::isDigit).take(6) },
                 modifier = Modifier.fillMaxWidth(),
                 placeholder = { Text("—  —  —  —  —  —", color = HMuted) },
                 singleLine = true,

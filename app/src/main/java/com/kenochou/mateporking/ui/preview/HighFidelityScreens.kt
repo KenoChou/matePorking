@@ -28,12 +28,12 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-private val HInk = Color(0xFF302D35)
-private val HMuted = Color(0xFF918B94)
-private val HBg = Color(0xFFFAF8F5)
-private val HPrimary = Color(0xFF8A789D)
-private val HPale = Color(0xFFF0E9EE)
-private val HCoral = Color(0xFFD9A6A5)
+private val HInk = Color(0xFF384052)
+private val HMuted = Color(0xFF92919A)
+private val HBg = Color(0xFFFFF9F4)
+private val HPrimary = Color(0xFFE58EA5)
+private val HPale = Color(0xFFFCEAF0)
+private val HCoral = Color(0xFFF3A6A9)
 
 @Composable
 fun HighFidelityScreen(name: String) {
@@ -79,15 +79,15 @@ private fun WelcomeScreen() {
         Column(verticalArrangement = Arrangement.spacedBy(20.dp)) {
             Box(
                 Modifier.fillMaxWidth().height(310.dp).clip(RoundedCornerShape(30.dp))
-                    .background(Color(0xFFF0E8E4))
+                    .background(Color(0xFFFFE9E8))
             ) {
                 Box(Modifier.fillMaxWidth(0.62f).height(210.dp).align(Alignment.TopEnd).padding(top = 18.dp, end = 14.dp)
                     .clip(RoundedCornerShape(topStart = 90.dp, topEnd = 24.dp, bottomEnd = 90.dp, bottomStart = 24.dp))
-                    .background(Color(0xFFAFC7D8)))
+                    .background(Color(0xFFB9D9CF)))
                 Box(Modifier.size(112.dp).align(Alignment.CenterEnd).offset(x = (-28).dp, y = 5.dp)
-                    .clip(CircleShape).background(Color(0xFFF4D875)))
+                    .clip(CircleShape).background(Color(0xFFFFD98E)))
                 Box(Modifier.size(72.dp).align(Alignment.TopStart).offset(x = 22.dp, y = 82.dp)
-                    .clip(CircleShape).background(Color(0xFFE9AEBB)))
+                    .clip(CircleShape).background(Color(0xFFF3A6B8)))
                 Text("好きなもの\nぜんぶ！", color = Color(0xFF4C4650), fontSize = 31.sp, lineHeight = 37.sp,
                     fontWeight = FontWeight.Black, modifier = Modifier.align(Alignment.TopStart).padding(start = 24.dp, top = 24.dp))
                 Text("♡", color = Color(0xFFFBF7F0), fontSize = 54.sp, modifier = Modifier.align(Alignment.CenterEnd).padding(end = 54.dp))
@@ -110,7 +110,7 @@ private fun WelcomeScreen() {
                 onClick = { showLogin = true },
                 modifier = Modifier.fillMaxWidth().height(54.dp),
                 shape = RoundedCornerShape(16.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF514653))
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF384052))
             ) {
                 Text("开始探索", color = Color.White, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
                 Spacer(Modifier.width(8.dp))

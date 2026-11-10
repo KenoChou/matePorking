@@ -915,7 +915,7 @@ private fun RedesignedContentDetailScreen() {
                     Box(
                         Modifier.fillMaxSize().padding(horizontal = 14.dp, vertical = 8.dp)
                             .clip(RoundedCornerShape(24.dp))
-                            .background(Brush.linearGradient(listOf(Color(0xFFF3C8D6), Color(0xFFE5DDF0), Color(0xFFC9E2D7)))
+                            .background(Brush.linearGradient(listOf(Color(0xFFF3C8D6), Color(0xFFE5DDF0), Color(0xFFC9E2D7))))
                     ) {
                         Box(Modifier.size(210.dp).align(Alignment.CenterEnd).offset(x = 38.dp, y = 18.dp)
                             .clip(CircleShape).background(Color(0xFFFFE6A9)))

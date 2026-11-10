@@ -205,6 +205,7 @@ private enum class Tab(val title: String, val icon: androidx.compose.ui.graphics
     PROFILE("我的", Icons.Rounded.PersonOutline)
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun StarDoorMainShell() {
     var selected by remember { mutableStateOf(Tab.CREATE) }

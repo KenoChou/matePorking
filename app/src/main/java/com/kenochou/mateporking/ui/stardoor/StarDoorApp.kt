@@ -20,6 +20,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
@@ -275,5 +276,72 @@ private fun ExhibitionsScreen(onOpenWork: () -> Unit) {
                 }
             }
         }
+    }
+}
+
+
+// Android Studio Preview gallery. These previews render each screen independently
+// without requiring the app to launch or a backend connection.
+@Preview(showBackground = true, name = "01 - Login")
+@Composable
+private fun StarDoorLoginPreview() {
+    MaterialTheme(colorScheme = lightColorScheme(primary = Purple, secondary = Color(0xFFE9A9C2), background = Canvas, surface = Color.White)) {
+        StarDoorLoginScreen(LoginUiState(), StarDoorViewModel())
+    }
+}
+
+@Preview(showBackground = true, name = "02 - Create")
+@Composable
+private fun StarDoorCreatePreview() {
+    MaterialTheme(colorScheme = lightColorScheme(primary = Purple, background = Canvas, surface = Color.White)) {
+        ContentPublishScreen()
+    }
+}
+
+@Preview(showBackground = true, name = "03 - Events")
+@Composable
+private fun StarDoorEventsPreview() {
+    MaterialTheme(colorScheme = lightColorScheme(primary = Purple, background = Canvas, surface = Color.White)) {
+        ExhibitionsScreen(onOpenWork = {})
+    }
+}
+
+@Preview(showBackground = true, name = "04 - IM")
+@Composable
+private fun StarDoorImPreview() {
+    MaterialTheme(colorScheme = lightColorScheme(primary = Purple, background = Canvas, surface = Color.White)) {
+        ConversationListScreen()
+    }
+}
+
+@Preview(showBackground = true, name = "05 - Store")
+@Composable
+private fun StarDoorStorePreview() {
+    MaterialTheme(colorScheme = lightColorScheme(primary = Purple, background = Canvas, surface = Color.White)) {
+        MarketHomeScreen()
+    }
+}
+
+@Preview(showBackground = true, name = "06 - Profile")
+@Composable
+private fun StarDoorProfilePreview() {
+    MaterialTheme(colorScheme = lightColorScheme(primary = Purple, background = Canvas, surface = Color.White)) {
+        ProfileHomeScreen()
+    }
+}
+
+@Preview(showBackground = true, name = "07 - Work Detail")
+@Composable
+private fun StarDoorWorkDetailPreview() {
+    MaterialTheme(colorScheme = lightColorScheme(primary = Purple, background = Canvas, surface = Color.White)) {
+        ContentDetailScreen()
+    }
+}
+
+@Preview(showBackground = true, name = "08 - Main App Shell")
+@Composable
+private fun StarDoorMainShellPreview() {
+    MaterialTheme(colorScheme = lightColorScheme(primary = Purple, background = Canvas, surface = Color.White)) {
+        StarDoorMainShell()
     }
 }

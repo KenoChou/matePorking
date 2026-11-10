@@ -47,7 +47,7 @@ private val Night = Color(0xFF211C2B)
 data class LoginUiState(
     val phone: String = "", val code: String = "", val password: String = "",
     val passwordMode: Boolean = false, val agreed: Boolean = false,
-    val seconds: Int = 0, val privacy: Boolean = false, val error: String? = null
+    val seconds: Int = 0, val privacy: Boolean = false, val error: String? = null, val previewEntered: Boolean = false
 )
 
 class StarDoorViewModel : ViewModel() {
@@ -59,6 +59,7 @@ class StarDoorViewModel : ViewModel() {
     fun mode(v: Boolean) = _state.update { it.copy(passwordMode = v, error = null) }
     fun agree(v: Boolean) = _state.update { it.copy(agreed = v, error = null) }
     fun privacy(v: Boolean) = _state.update { it.copy(privacy = v) }
+    fun enterPreview() = _state.update { it.copy(previewEntered = true) }
 
     fun requestCode() {
         if (!_state.value.phone.matches(Regex("1[3-9]\\d{9}"))) {
@@ -93,7 +94,7 @@ class StarDoorViewModel : ViewModel() {
 fun StarDoorApp(viewModel: StarDoorViewModel = viewModel()) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     MaterialTheme(colorScheme = lightColorScheme(primary = Purple, secondary = Color(0xFFE9A9C2), background = Canvas, surface = Color.White)) {
-        StarDoorLoginScreen(state, viewModel)
+        if (state.previewEntered) StarDoorMainShell() else StarDoorLoginScreen(state, viewModel)
     }
 }
 
@@ -165,6 +166,7 @@ private fun StarDoorLoginScreen(s: LoginUiState, vm: StarDoorViewModel) {
                             }
                         }
                     }
+                    OutlinedButton(onClick = vm::enterPreview, modifier = Modifier.fillMaxWidth()) { Text("直接进入界面预览（不登录）") }
                     Spacer(Modifier.weight(1f))
                     Text("未满 18 周岁的用户请在监护人指导下使用。", color = Muted, fontSize = 9.sp)
                 }

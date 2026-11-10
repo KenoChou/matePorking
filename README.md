@@ -1,4 +1,4 @@
-# matePorking — AniMate Android UI Prototype
+# matePorking — Star Door Android UI Prototype
 
 Native Android UI prototype for the AniMate product, built with Kotlin and Jetpack Compose.
 
@@ -18,9 +18,9 @@ This repository is currently focused on **UI design and page-level previews only
 3. Select the `app` run configuration.
 4. Run on an emulator or Android device.
 
-The app launches directly into the in-app **Preview Gallery**.
+The app launches into the **Star Door login experience**. Use “直接进入界面预览（不登录）” to inspect the five-tab shell without claiming an authenticated session.
 
-## Browse page previews
+## Star Door app shell\n\n- Login UI: phone number, SMS-code/password mode switch, consent checkbox, privacy notice, and a local resend countdown. The countdown is a UI demonstration only; it does not send SMS.\n- Main navigation: Create, Events, IM, Store, Profile.\n- Existing Compose previews are reused for content publishing, content detail, conversations, market, and profile.\n- The gift-task sheet is informational only; no ad is played and no gift or payment is issued.\n- The login submit action intentionally does not create a session until a real authentication response is integrated.\n\n## Browse page previews
 
 The gallery groups screens by product domain. Select a category, then tap a page to open its dedicated Compose layout.
 

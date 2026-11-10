@@ -21,13 +21,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-private val PInk = Color(0xFF302D35)
-private val PMuted = Color(0xFF918B94)
-private val PBg = Color(0xFFFAF8F5)
-private val PAccent = Color(0xFF8A789D)
-private val PPale = Color(0xFFF0E9EE)
-private val PCoral = Color(0xFFD9A6A5)
-private val PLine = Color(0xFFEDE8E3)
+private val PInk = Color(0xFF384052)
+private val PMuted = Color(0xFF92919A)
+private val PBg = Color(0xFFFFF9F4)
+private val PAccent = Color(0xFFE58EA5)
+private val PPale = Color(0xFFFCEAF0)
+private val PCoral = Color(0xFFF3A6A9)
+private val PLine = Color(0xFFF1E8E2)
 
 private data class FeedPost(
     val author: String,
@@ -61,7 +61,7 @@ fun CommunityFeedScreen() {
             (selectedTab != "圈子" || post.author.contains("社") || post.author.contains("研究所"))
     }
 
-    Column(Modifier.fillMaxSize().background(Color.White)) {
+    Column(Modifier.fillMaxSize().background(PBg)) {
         LazyColumn(
             modifier = Modifier.weight(1f),
             contentPadding = PaddingValues(start = 16.dp, top = 10.dp, end = 16.dp, bottom = 22.dp),

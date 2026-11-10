@@ -54,6 +54,7 @@ fun HighFidelityScreen(name: String) {
         "活动详情" -> EventDetailScreen()
         "圈子发现" -> CircleDiscoveryScreen()
         "圈子详情" -> CircleDetailScreen()
+        "圈子成员" -> CircleMembersScreen()
         "Discover 首页" -> DiscoverHomeScreen()
         "搜索" -> SearchScreen()
         "趋势发现" -> TrendingDiscoverScreen()
@@ -1014,6 +1015,164 @@ private fun CircleDetailScreen() {
                     Icon(Icons.Rounded.Edit, null, modifier = Modifier.size(14.dp))
                     Spacer(Modifier.width(5.dp))
                     Text("发动态", fontSize = 10.sp)
+                }
+            }
+        }
+    }
+}
+
+
+@Composable
+private fun CircleMembersScreen() {
+    var query by remember { mutableStateOf("") }
+    var filter by remember { mutableStateOf("全部成员") }
+    var followed by remember { mutableStateOf(setOf<String>()) }
+    val members = listOf(
+        listOf("纸上星河", "擅长色彩搭配与原创角色设计", "圈主", "12.8k"),
+        listOf("柚子汽水", "喜欢厚涂，也喜欢分享绘画过程", "管理员", "8.6k"),
+        listOf("晚风收藏家", "把生活里的小灵感画下来", "活跃成员", "6.2k"),
+        listOf("薄荷拿铁", "摸鱼画画中，持续更新作品", "活跃成员", "4.9k"),
+        listOf("云朵邮差", "角色设计 / 手帐 / 日常记录", "普通成员", "2.1k"),
+        listOf("桃桃乌龙", "新手画师，请多多指教", "普通成员", "986")
+    )
+    val visibleMembers = members.filter {
+        (filter == "全部成员" || (filter == "管理团队" && (it[2] == "圈主" || it[2] == "管理员")) ||
+            (filter == "活跃成员" && it[2] == "活跃成员")) &&
+            (query.isBlank() || it[0].contains(query) || it[1].contains(query))
+    }
+    Column(Modifier.fillMaxSize().background(HBg)) {
+        LazyColumn(
+            modifier = Modifier.weight(1f),
+            contentPadding = PaddingValues(start = 20.dp, end = 20.dp, top = 18.dp, bottom = 26.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            item {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                        Text("COMMUNITY / MEMBERS", color = HPrimary, fontSize = 9.sp,
+                            fontWeight = FontWeight.Black, letterSpacing = 1.4.sp)
+                        Text("圈子成员", color = HInk, fontSize = 27.sp, fontWeight = FontWeight.Black)
+                        Text("认识一起创作、一起分享的朋友。", color = HMuted, fontSize = 11.sp)
+                    }
+                    Surface(color = HPale, shape = CircleShape) {
+                        Icon(Icons.Rounded.Groups, null, tint = HPrimary, modifier = Modifier.padding(12.dp).size(22.dp))
+                    }
+                }
+            }
+            item {
+                Surface(color = Color.White, shape = RoundedCornerShape(18.dp), modifier = Modifier.fillMaxWidth()) {
+                    Row(Modifier.padding(horizontal = 15.dp, vertical = 14.dp), verticalAlignment = Alignment.CenterVertically) {
+                        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
+                            Text("2,486", color = HInk, fontSize = 23.sp, fontWeight = FontWeight.Black)
+                            Text("圈子成员", color = HMuted, fontSize = 10.sp)
+                        }
+                        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
+                            Text("36", color = HPrimary, fontSize = 19.sp, fontWeight = FontWeight.Black)
+                            Text("今日加入", color = HMuted, fontSize = 10.sp)
+                        }
+                        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
+                            Text("128", color = HInk, fontSize = 19.sp, fontWeight = FontWeight.Black)
+                            Text("本周活跃", color = HMuted, fontSize = 10.sp)
+                        }
+                    }
+                }
+            }
+            item {
+                Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(14.dp)).background(Color.White)
+                    .padding(horizontal = 13.dp, vertical = 12.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Icon(Icons.Rounded.Search, null, tint = HMuted, modifier = Modifier.size(18.dp))
+                    Spacer(Modifier.width(8.dp))
+                    BasicTextField(value = query, onValueChange = { query = it }, singleLine = true,
+                        textStyle = androidx.compose.ui.text.TextStyle(color = HInk, fontSize = 12.sp),
+                        modifier = Modifier.weight(1f),
+                        decorationBox = { inner ->
+                            if (query.isEmpty()) Text("搜索圈子成员", color = HMuted, fontSize = 12.sp)
+                            inner()
+                        })
+                    if (query.isNotEmpty()) {
+                        Icon(Icons.Rounded.Close, null, tint = HMuted, modifier = Modifier.size(16.dp).clickable { query = "" })
+                    }
+                }
+            }
+            item {
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    listOf("全部成员", "管理团队", "活跃成员").forEach { item ->
+                        val active = filter == item
+                        Surface(color = if (active) HInk else Color.White, shape = RoundedCornerShape(18.dp),
+                            modifier = Modifier.clickable { filter = item }) {
+                            Text(item, color = if (active) Color.White else HMuted, fontSize = 10.sp,
+                                fontWeight = if (active) FontWeight.Bold else FontWeight.Medium,
+                                modifier = Modifier.padding(horizontal = 13.dp, vertical = 9.dp))
+                        }
+                    }
+                }
+            }
+            item {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text("成员列表", color = HInk, fontSize = 17.sp, fontWeight = FontWeight.Black, modifier = Modifier.weight(1f))
+                    Text("按活跃度排序 ⌄", color = HMuted, fontSize = 10.sp)
+                }
+            }
+            if (visibleMembers.isEmpty()) {
+                item {
+                    Column(Modifier.fillMaxWidth().padding(vertical = 34.dp), horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Icon(Icons.Rounded.PersonSearch, null, tint = HMuted, modifier = Modifier.size(34.dp))
+                        Text("没有找到相关成员", color = HMuted, fontSize = 11.sp)
+                    }
+                }
+            } else {
+                items(visibleMembers) { member ->
+                    Surface(color = Color.White, shape = RoundedCornerShape(17.dp), modifier = Modifier.fillMaxWidth()) {
+                        Row(Modifier.padding(13.dp), verticalAlignment = Alignment.CenterVertically) {
+                            Box(Modifier.size(48.dp).clip(CircleShape)
+                                .background(when (member[2]) {
+                                    "圈主" -> Color(0xFFF5DCE4)
+                                    "管理员" -> Color(0xFFFFEBCB)
+                                    "活跃成员" -> Color(0xFFDDEBE4)
+                                    else -> Color(0xFFE8E1F1)
+                                }), contentAlignment = Alignment.Center) {
+                                Text(member[0].take(1), color = HPrimary, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                            }
+                            Spacer(Modifier.width(11.dp))
+                            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                                    Text(member[0], color = HInk, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                                    Surface(color = HPale, shape = RoundedCornerShape(5.dp)) {
+                                        Text(member[2], color = HPrimary, fontSize = 8.sp,
+                                            modifier = Modifier.padding(horizontal = 6.dp, vertical = 3.dp))
+                                    }
+                                }
+                                Text(member[1], color = HMuted, fontSize = 9.sp, maxLines = 1)
+                                Text("获赞 ${member[3]} · 插画爱好者", color = HMuted, fontSize = 8.sp)
+                            }
+                            val isFollowed = member[0] in followed
+                            Surface(color = if (isFollowed) HPale else HInk, shape = RoundedCornerShape(18.dp),
+                                modifier = Modifier.clickable {
+                                    followed = if (isFollowed) followed - member[0] else followed + member[0]
+                                }) {
+                                Text(if (isFollowed) "已关注" else "关注", color = if (isFollowed) HPrimary else Color.White,
+                                    fontSize = 9.sp, fontWeight = FontWeight.Bold,
+                                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 7.dp))
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        Surface(color = Color.White, shadowElevation = 8.dp) {
+            Row(Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 11.dp),
+                verticalAlignment = Alignment.CenterVertically) {
+                Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                    Text("一起分享，让圈子更有趣", color = HInk, fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                    Text("邀请更多同好加入这里", color = HMuted, fontSize = 9.sp)
+                }
+                Button(onClick = { }, shape = RoundedCornerShape(20.dp),
+                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = HPrimary)) {
+                    Icon(Icons.Rounded.PersonAdd, null, modifier = Modifier.size(14.dp))
+                    Spacer(Modifier.width(5.dp))
+                    Text("邀请成员", fontSize = 10.sp)
                 }
             }
         }

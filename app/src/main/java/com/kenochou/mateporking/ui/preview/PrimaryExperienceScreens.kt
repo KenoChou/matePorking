@@ -202,133 +202,196 @@ fun MarketHomeScreen() {
     var selectedCategory by remember { mutableStateOf("全部") }
     var favorites by remember { mutableStateOf(setOf("星月系列收藏摆件")) }
     var cartCount by remember { mutableIntStateOf(0) }
+    var searchVisible by remember { mutableStateOf(false) }
+    var query by remember { mutableStateOf("") }
     val products = listOf(
-        Triple("星月系列收藏摆件", "¥128", "✧"),
-        Triple("原创插画收藏卡", "¥36", "❀"),
-        Triple("艺术周边礼盒", "¥88", "✦"),
-        Triple("限定主题徽章", "¥25", "♡"),
-        Triple("手作主题挂件", "¥49", "☾"),
-        Triple("插画灵感手账", "¥32", "✿")
+        listOf("星月系列收藏摆件", "¥128", "✧", "手办模型", "LIMITED"),
+        listOf("原创插画收藏卡", "¥36", "❀", "原创插画", "CREATOR PICK"),
+        listOf("艺术周边礼盒", "¥88", "✦", "文创周边", "GIFT IDEA"),
+        listOf("限定主题徽章", "¥25", "♡", "服饰配件", "NEW"),
+        listOf("手作主题挂件", "¥49", "☾", "文创周边", "HANDMADE"),
+        listOf("插画灵感手账", "¥32", "✿", "原创插画", "EDITOR'S PICK")
     )
-    val categories = listOf("全部", "手办模型", "原创插画", "服饰配件", "文创周边")
+    val categories = listOf(
+        Triple("手办模型", Icons.Rounded.Toys, Color(0xFFF0E9EE)),
+        Triple("原创插画", Icons.Rounded.Brush, Color(0xFFF7E8E5)),
+        Triple("服饰配件", Icons.Rounded.Checkroom, Color(0xFFE7EFEB)),
+        Triple("文创周边", Icons.Rounded.CardGiftcard, Color(0xFFF5EEDC))
+    )
+    val filters = listOf("全部", "手办模型", "原创插画", "服饰配件", "文创周边")
+    val visibleProducts = products.filter { product ->
+        (selectedCategory == "全部" || product[3] == selectedCategory) &&
+            (query.isBlank() || product[0].contains(query.trim(), ignoreCase = true))
+    }
 
     Column(Modifier.fillMaxSize().background(PBg)) {
         LazyColumn(
             modifier = Modifier.weight(1f),
-            contentPadding = PaddingValues(start = 18.dp, top = 18.dp, end = 18.dp, bottom = 24.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            contentPadding = PaddingValues(start = 18.dp, top = 14.dp, end = 18.dp, bottom = 24.dp),
+            verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
             item {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
-                        Eyebrow("ANIMATE MARKET · CURATED")
-                        Text("灵感补给站", color = PInk, fontSize = 30.sp, fontWeight = FontWeight.Black)
-                        Text("让每一份喜欢，都值得被收藏", color = PMuted, fontSize = 11.sp)
+                        Eyebrow("ANIMATE  /  MARKET JOURNAL")
+                        Text("喜欢的，都在这里。", color = PInk, fontSize = 25.sp, fontWeight = FontWeight.Black)
+                        Text("为每一种热爱，收藏一点灵感。", color = PMuted, fontSize = 10.sp)
                     }
-                    IconButton(onClick = {}) { Icon(Icons.Rounded.Search, "搜索商品", tint = PInk) }
+                    IconButton(onClick = { searchVisible = !searchVisible }) {
+                        Icon(if (searchVisible) Icons.Rounded.Close else Icons.Rounded.Search, "搜索商品", tint = PInk)
+                    }
                     BadgedBox(badge = { if (cartCount > 0) Badge { Text(cartCount.toString()) } }) {
-                        IconButton(onClick = {}) { Icon(Icons.Rounded.ShoppingBag, "购物袋", tint = PInk) }
+                        IconButton(onClick = { }) {
+                            Icon(Icons.Rounded.ShoppingBag, "购物袋", tint = PInk)
+                        }
                     }
+                }
+            }
+            if (searchVisible) {
+                item {
+                    OutlinedTextField(
+                        value = query,
+                        onValueChange = { query = it },
+                        modifier = Modifier.fillMaxWidth(),
+                        placeholder = { Text("搜索商品与创作者", fontSize = 12.sp) },
+                        leadingIcon = { Icon(Icons.Rounded.Search, null, tint = PMuted) },
+                        trailingIcon = {
+                            if (query.isNotEmpty()) IconButton(onClick = { query = "" }) {
+                                Icon(Icons.Rounded.Close, "清空搜索", tint = PMuted)
+                            }
+                        },
+                        singleLine = true,
+                        shape = RoundedCornerShape(15.dp),
+                        colors = OutlinedTextFieldDefaults.colors(
+                            unfocusedContainerColor = Color.White,
+                            focusedContainerColor = Color.White,
+                            unfocusedBorderColor = Color.Transparent,
+                            focusedBorderColor = PAccent
+                        )
+                    )
                 }
             }
             item {
                 Box(
                     Modifier.fillMaxWidth().clip(RoundedCornerShape(25.dp))
-                        .background(Brush.linearGradient(listOf(Color(0xFF8A789D), Color(0xFF9B70FF), Color(0xFFFF6D91))))
-                        .padding(20.dp)
+                        .background(Brush.linearGradient(listOf(Color(0xFFE8E1EF), Color(0xFFF1E4E1), Color(0xFFE8EFEB))))
+                        .padding(19.dp)
                 ) {
-                    Column(verticalArrangement = Arrangement.spacedBy(9.dp)) {
-                        Text("THE CREATOR CLUB ✳", color = Color(0xFFF0E9EE), fontSize = 10.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.5.sp)
-                        Text("喜欢的东西，\n就要大声收藏。", color = Color.White, fontSize = 25.sp, lineHeight = 29.sp, fontWeight = FontWeight.Bold)
-                        Text("原创设计 · 限量周边 · 兴趣好物", color = Color.White.copy(alpha = .9f), fontSize = 10.sp)
-                        Surface(color = Color.White.copy(alpha = .96f), shape = CircleShape) {
-                            Row(Modifier.padding(horizontal = 13.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
-                                Text("探索创作者精选", color = PAccent, fontSize = 10.sp, fontWeight = FontWeight.Bold)
-                                Spacer(Modifier.width(5.dp))
+                    Column(Modifier.fillMaxWidth(.82f), verticalArrangement = Arrangement.spacedBy(9.dp)) {
+                        Text("THE THINGS WE LOVE  /  VOL. 01", color = PAccent, fontSize = 8.sp,
+                            fontWeight = FontWeight.Black, letterSpacing = 1.2.sp)
+                        Text("把喜欢，\n带回家。", color = PInk, fontSize = 29.sp, lineHeight = 34.sp,
+                            fontWeight = FontWeight.Black)
+                        Text("原创设计 · 独立创作 · 兴趣收藏", color = PMuted, fontSize = 10.sp)
+                        Spacer(Modifier.height(2.dp))
+                        Surface(color = Color.White.copy(alpha = .9f), shape = RoundedCornerShape(30.dp),
+                            modifier = Modifier.clickable { selectedCategory = "全部" }) {
+                            Row(Modifier.padding(horizontal = 13.dp, vertical = 9.dp), verticalAlignment = Alignment.CenterVertically) {
+                                Text("逛逛本期精选", color = PInk, fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                                Spacer(Modifier.width(6.dp))
                                 Icon(Icons.Rounded.ArrowForward, null, tint = PAccent, modifier = Modifier.size(13.dp))
                             }
                         }
                     }
-                    Text("✧", color = Color.White.copy(alpha = .22f), fontSize = 94.sp, modifier = Modifier.align(Alignment.BottomEnd))
+                    Text("✳", color = Color(0xFFB7A6C2).copy(alpha = .55f), fontSize = 105.sp,
+                        modifier = Modifier.align(Alignment.CenterEnd).offset(x = 12.dp, y = (-8).dp))
+                    Text("CURATED WITH LOVE", color = PAccent.copy(alpha = .8f), fontSize = 7.sp,
+                        fontWeight = FontWeight.Bold, letterSpacing = 1.sp, modifier = Modifier.align(Alignment.BottomEnd))
                 }
             }
             item {
-                SectionHeading("发现分类", "全部分类")
-                Spacer(Modifier.height(10.dp))
-                LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                    items(listOf(
-                        Triple("手办模型", Icons.Rounded.Toys, PPale),
-                        Triple("原创插画", Icons.Rounded.Brush, Color(0xFFFFE9E5)),
-                        Triple("服饰配件", Icons.Rounded.Checkroom, Color(0xFFE5F1EF)),
-                        Triple("文创周边", Icons.Rounded.CardGiftcard, Color(0xFFFFF0D9))
-                    )) { category ->
-                        Column(
-                            Modifier.width(69.dp).clickable { selectedCategory = category.first },
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.spacedBy(7.dp)
-                        ) {
-                            Surface(color = category.third, shape = RoundedCornerShape(20.dp)) {
-                                Box(Modifier.size(58.dp), contentAlignment = Alignment.Center) {
-                                    Icon(category.second, null, tint = PAccent, modifier = Modifier.size(25.dp))
+                Column(verticalArrangement = Arrangement.spacedBy(11.dp)) {
+                    SectionHeading("按兴趣逛逛", "全部分类")
+                    Row(horizontalArrangement = Arrangement.spacedBy(9.dp)) {
+                        categories.forEach { category ->
+                            Column(Modifier.weight(1f).clickable { selectedCategory = category.first },
+                                horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(7.dp)) {
+                                Surface(color = category.third, shape = RoundedCornerShape(18.dp)) {
+                                    Box(Modifier.fillMaxWidth().height(62.dp), contentAlignment = Alignment.Center) {
+                                        Icon(category.second, null, tint = PAccent, modifier = Modifier.size(25.dp))
+                                    }
                                 }
+                                Text(category.first, color = PInk, fontSize = 9.sp, maxLines = 1)
                             }
-                            Text(category.first, color = PInk, fontSize = 9.sp, maxLines = 1)
                         }
                     }
                 }
             }
             item {
-                LazyRow(horizontalArrangement = Arrangement.spacedBy(7.dp)) {
-                    items(categories) { category ->
-                        FilterChip(
-                            selected = selectedCategory == category,
-                            onClick = { selectedCategory = category },
-                            label = { Text(category, fontSize = 10.sp) },
-                            shape = RoundedCornerShape(12.dp),
-                            colors = FilterChipDefaults.filterChipColors(
-                                selectedContainerColor = PAccent,
-                                selectedLabelColor = Color.White,
-                                containerColor = Color.White,
-                                labelColor = PMuted
-                            ),
-                            border = null
-                        )
+                Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                    Row(verticalAlignment = Alignment.Bottom) {
+                        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
+                            Eyebrow("A LITTLE SOMETHING FOR YOU")
+                            Text("发现好物", color = PInk, fontSize = 19.sp, fontWeight = FontWeight.Black)
+                        }
+                        Text("按分类筛选  ↗", color = PAccent, fontSize = 9.sp, fontWeight = FontWeight.SemiBold)
+                    }
+                    LazyRow(horizontalArrangement = Arrangement.spacedBy(7.dp)) {
+                        items(filters) { category ->
+                            FilterChip(
+                                selected = selectedCategory == category,
+                                onClick = { selectedCategory = category },
+                                label = { Text(category, fontSize = 10.sp) },
+                                shape = RoundedCornerShape(11.dp),
+                                colors = FilterChipDefaults.filterChipColors(
+                                    selectedContainerColor = PAccent, selectedLabelColor = Color.White,
+                                    containerColor = Color.White, labelColor = PMuted
+                                ),
+                                border = null
+                            )
+                        }
                     }
                 }
             }
-            item { SectionHeading("创作者精选", "发现更多") }
-            item {
-                Column(verticalArrangement = Arrangement.spacedBy(11.dp)) {
-                    products.chunked(2).forEach { rowProducts ->
+            if (visibleProducts.isNotEmpty()) {
+                item {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text("编辑精选", color = PInk, fontSize = 14.sp, fontWeight = FontWeight.Bold)
+                        Spacer(Modifier.width(7.dp))
+                        Text("EDITOR'S SELECTION", color = PMuted, fontSize = 7.sp, letterSpacing = 1.sp)
+                        Spacer(Modifier.weight(1f))
+                        Text("${visibleProducts.size} 件好物", color = PMuted, fontSize = 9.sp)
+                    }
+                    Spacer(Modifier.height(9.dp))
+                    visibleProducts.chunked(2).forEach { rowProducts ->
                         Row(horizontalArrangement = Arrangement.spacedBy(11.dp)) {
                             rowProducts.forEach { product ->
-                                ProductTile(
-                                    title = product.first,
-                                    price = product.second,
-                                    symbol = product.third,
-                                    modifier = Modifier.weight(1f),
-                                    favorite = favorites.contains(product.first),
-                                    onFavorite = {
-                                        favorites = if (favorites.contains(product.first)) favorites - product.first else favorites + product.first
-                                    },
-                                    onAdd = { cartCount += 1 }
-                                )
+                                Box(Modifier.weight(1f)) {
+                                    ProductTile(
+                                        title = product[0], price = product[1], symbol = product[2],
+                                        modifier = Modifier.fillMaxWidth(),
+                                        favorite = favorites.contains(product[0]),
+                                        onFavorite = {
+                                            favorites = if (favorites.contains(product[0])) favorites - product[0] else favorites + product[0]
+                                        },
+                                        onAdd = { cartCount += 1 }
+                                    )
+                                    Surface(color = Color(0xFFF7F2ED), shape = RoundedCornerShape(6.dp),
+                                        modifier = Modifier.align(Alignment.TopStart).padding(15.dp)) {
+                                        Text(product[4], color = PAccent, fontSize = 6.sp, fontWeight = FontWeight.Black,
+                                            letterSpacing = .4.sp, modifier = Modifier.padding(horizontal = 6.dp, vertical = 4.dp))
+                                    }
+                                }
                             }
                             if (rowProducts.size == 1) Spacer(Modifier.weight(1f))
                         }
                     }
                 }
+            } else {
+                item { EmptyHint("没有找到相关商品", "换个关键词或分类，再发现一点灵感") }
             }
             item {
-                Surface(color = Color.White, shape = RoundedCornerShape(17.dp)) {
-                    Row(Modifier.fillMaxWidth().padding(14.dp), verticalAlignment = Alignment.CenterVertically) {
-                        Icon(Icons.Rounded.Verified, null, tint = PAccent)
-                        Spacer(Modifier.width(9.dp))
-                        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
-                            Text("支持原创创作者", color = PInk, fontSize = 11.sp, fontWeight = FontWeight.Bold)
-                            Text("发现独立设计与兴趣社群的灵感好物", color = PMuted, fontSize = 9.sp)
+                Surface(color = Color.White, shape = RoundedCornerShape(18.dp)) {
+                    Row(Modifier.fillMaxWidth().padding(15.dp), verticalAlignment = Alignment.CenterVertically) {
+                        Box(Modifier.size(38.dp).clip(RoundedCornerShape(13.dp)).background(PPale), contentAlignment = Alignment.Center) {
+                            Icon(Icons.Rounded.Verified, null, tint = PAccent, modifier = Modifier.size(20.dp))
                         }
-                        Icon(Icons.Rounded.ChevronRight, null, tint = PMuted)
+                        Spacer(Modifier.width(11.dp))
+                        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
+                            Text("让原创被更多人看见", color = PInk, fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                            Text("支持独立创作者，收藏每一份认真创作", color = PMuted, fontSize = 9.sp)
+                        }
+                        Icon(Icons.Rounded.ChevronRight, null, tint = PMuted, modifier = Modifier.size(18.dp))
                     }
                 }
             }

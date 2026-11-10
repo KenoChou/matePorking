@@ -55,6 +55,7 @@ fun HighFidelityScreen(name: String) {
         "圈子详情" -> CircleDetailScreen()
         "Discover 首页" -> DiscoverHomeScreen()
         "搜索" -> SearchScreen()
+        "趋势发现" -> TrendingDiscoverScreen()
         "内容详情" -> ContentDetailScreen()
         "内容发布" -> ContentPublishScreen()
         else -> GenericDetailScreen(name)
@@ -894,6 +895,128 @@ private fun GenericDetailScreen(name: String) {
     }
 }
 
+
+
+@Composable
+private fun TrendingDiscoverScreen() {
+    var selectedTab by remember { mutableStateOf("综合") }
+    val tabs = listOf("综合", "二次元", "潮玩", "绘画", "展会")
+    val topics = listOf(
+        Triple("01", "痛包改造灵感", "12.8 万人正在讨论"),
+        Triple("02", "秋日主题拍摄", "8.6 万人正在讨论"),
+        Triple("03", "原创角色设定", "6.2 万人正在讨论"),
+        Triple("04", "线下交换活动", "4.9 万人正在讨论")
+    )
+    Column(Modifier.fillMaxSize().background(HBg)) {
+        Column(
+            Modifier.fillMaxWidth().padding(horizontal = 20.dp).padding(top = 18.dp, bottom = 14.dp),
+            verticalArrangement = Arrangement.spacedBy(15.dp)
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                    Text("DISCOVER / TRENDING", color = HPrimary, fontSize = 9.sp, fontWeight = FontWeight.Black, letterSpacing = 1.5.sp)
+                    Text("趋势发现", color = HInk, fontSize = 28.sp, fontWeight = FontWeight.Black)
+                    Text("看看大家最近都在喜欢什么", color = HMuted, fontSize = 11.sp)
+                }
+                Surface(color = HPale, shape = CircleShape) {
+                    Icon(Icons.Rounded.AutoAwesome, null, tint = HPrimary, modifier = Modifier.padding(12.dp).size(22.dp))
+                }
+            }
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                tabs.forEach { tab ->
+                    val active = selectedTab == tab
+                    Surface(
+                        color = if (active) HInk else Color.White,
+                        shape = RoundedCornerShape(20.dp),
+                        modifier = Modifier.clickable { selectedTab = tab }
+                    ) {
+                        Text(tab, color = if (active) Color.White else HMuted, fontSize = 11.sp,
+                            fontWeight = if (active) FontWeight.Bold else FontWeight.Medium,
+                            modifier = Modifier.padding(horizontal = 14.dp, vertical = 9.dp))
+                    }
+                }
+            }
+        }
+        LazyColumn(
+            modifier = Modifier.weight(1f),
+            contentPadding = PaddingValues(start = 20.dp, end = 20.dp, bottom = 28.dp),
+            verticalArrangement = Arrangement.spacedBy(18.dp)
+        ) {
+            item {
+                Box(Modifier.fillMaxWidth().height(178.dp).clip(RoundedCornerShape(22.dp))
+                    .background(Brush.linearGradient(listOf(Color(0xFFF6C8D3), Color(0xFFE8DDF1), Color(0xFFCBE2D7))))) {
+                    Box(Modifier.size(124.dp).align(Alignment.CenterEnd).offset(x = 18.dp, y = 12.dp)
+                        .clip(CircleShape).background(Color(0xFFFFE3A5)))
+                    Box(Modifier.size(78.dp).align(Alignment.TopEnd).offset(x = (-76).dp, y = 18.dp)
+                        .clip(CircleShape).background(Color(0xFFB9D9CF)))
+                    Column(Modifier.align(Alignment.CenterStart).padding(start = 20.dp), verticalArrangement = Arrangement.spacedBy(7.dp)) {
+                        Text("本周兴趣焦点", color = Color(0xFF75616E), fontSize = 9.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.sp)
+                        Text("把喜欢的事，
+变成生活主角。", color = HInk, fontSize = 22.sp, lineHeight = 29.sp, fontWeight = FontWeight.Black)
+                        Text("灵感 · 同好 · 新鲜话题", color = Color(0xFF756F78), fontSize = 10.sp)
+                    }
+                    Text("✳", color = Color.White, fontSize = 30.sp, modifier = Modifier.align(Alignment.BottomEnd).padding(20.dp))
+                }
+            }
+            item {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
+                        Text("HOT RIGHT NOW", color = HPrimary, fontSize = 8.sp, fontWeight = FontWeight.Black, letterSpacing = 1.4.sp)
+                        Text("正在升温的话题", color = HInk, fontSize = 18.sp, fontWeight = FontWeight.Black)
+                    }
+                    Text("查看全部  ↗", color = HMuted, fontSize = 10.sp)
+                }
+            }
+            items(topics) { topic ->
+                Surface(color = Color.White, shape = RoundedCornerShape(16.dp), modifier = Modifier.fillMaxWidth()) {
+                    Row(Modifier.padding(horizontal = 14.dp, vertical = 13.dp), verticalAlignment = Alignment.CenterVertically) {
+                        Text(topic.first, color = if (topic.first in listOf("01", "02")) HPrimary else HMuted, fontSize = 15.sp, fontWeight = FontWeight.Black)
+                        Spacer(Modifier.width(13.dp))
+                        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                            Text(topic.second, color = HInk, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                            Text(topic.third, color = HMuted, fontSize = 10.sp)
+                        }
+                        Surface(color = HPale, shape = RoundedCornerShape(7.dp)) {
+                            Text("热度上升", color = HPrimary, fontSize = 8.sp, fontWeight = FontWeight.Bold,
+                                modifier = Modifier.padding(horizontal = 8.dp, vertical = 5.dp))
+                        }
+                    }
+                }
+            }
+            item {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
+                        Text("PICKS FOR YOU", color = HPrimary, fontSize = 8.sp, fontWeight = FontWeight.Black, letterSpacing = 1.4.sp)
+                        Text("今日灵感推荐", color = HInk, fontSize = 18.sp, fontWeight = FontWeight.Black)
+                    }
+                    Text("换一组 ↻", color = HMuted, fontSize = 10.sp)
+                }
+            }
+            item {
+                Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                    Column(Modifier.weight(1f)) {
+                        Box(Modifier.fillMaxWidth().height(118.dp).clip(RoundedCornerShape(15.dp))
+                            .background(Color(0xFFF4DDE4)), contentAlignment = Alignment.Center) {
+                            Text("♡", color = Color(0xFFD98BA2), fontSize = 48.sp)
+                        }
+                        Spacer(Modifier.height(8.dp))
+                        Text("今日痛包灵感合集", color = HInk, fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                        Text("收藏 2.4k · 穿搭分享", color = HMuted, fontSize = 9.sp)
+                    }
+                    Column(Modifier.weight(1f)) {
+                        Box(Modifier.fillMaxWidth().height(118.dp).clip(RoundedCornerShape(15.dp))
+                            .background(Color(0xFFDDEBE4)), contentAlignment = Alignment.Center) {
+                            Text("✦", color = Color(0xFF82A998), fontSize = 48.sp)
+                        }
+                        Spacer(Modifier.height(8.dp))
+                        Text("原创角色配色参考", color = HInk, fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                        Text("收藏 1.8k · 绘画创作", color = HMuted, fontSize = 9.sp)
+                    }
+                }
+            }
+        }
+    }
+}
 
 @Composable
 private fun SearchScreen() {

@@ -838,29 +838,182 @@ private fun CircleDiscoveryScreen() {
 
 @Composable
 private fun CircleDetailScreen() {
-    Column(Modifier.fillMaxSize().background(HBg).padding(18.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
-        PageHeader("圈子详情", "分享")
-        Surface(color = HPale, shape = RoundedCornerShape(22.dp), modifier = Modifier.fillMaxWidth()) {
-            Column(Modifier.padding(20.dp)) {
-                Box(Modifier.size(58.dp).clip(RoundedCornerShape(18.dp)).background(Color.White), contentAlignment = Alignment.Center) {
-                    Icon(Icons.Rounded.Groups, null, tint = HPrimary, modifier = Modifier.size(30.dp))
+    var joined by remember { mutableStateOf(false) }
+    var selectedTab by remember { mutableStateOf("动态") }
+    var likedPost by remember { mutableStateOf(setOf<Int>()) }
+    val postTitles = listOf("分享一组最近练习的春日配色", "第一次尝试厚涂，来听听大家的建议", "每周灵感交换：最近让你心动的作品")
+    val postAuthors = listOf("纸上星河", "柚子汽水", "晚风收藏家")
+    Column(Modifier.fillMaxSize().background(HBg)) {
+        LazyColumn(
+            modifier = Modifier.weight(1f),
+            contentPadding = PaddingValues(bottom = 20.dp),
+            verticalArrangement = Arrangement.spacedBy(0.dp)
+        ) {
+            item {
+                Box(Modifier.fillMaxWidth().height(214.dp)) {
+                    Box(Modifier.fillMaxSize().padding(horizontal = 14.dp, vertical = 8.dp)
+                        .clip(RoundedCornerShape(23.dp))
+                        .background(Brush.linearGradient(listOf(Color(0xFFF1C9D6), Color(0xFFE6DFF0), Color(0xFFCBE3D8))))) {
+                        Box(Modifier.size(170.dp).align(Alignment.CenterEnd).offset(x = 28.dp, y = 16.dp)
+                            .clip(CircleShape).background(Color(0xFFFFE6AB)))
+                        Box(Modifier.size(112.dp).align(Alignment.TopEnd).offset(x = (-82).dp, y = 15.dp)
+                            .clip(CircleShape).background(Color(0xFFB9D9CF)))
+                        Box(Modifier.size(80.dp).align(Alignment.BottomStart).offset(x = 42.dp, y = 20.dp)
+                            .clip(CircleShape).background(Color(0xFFF4AFC0)))
+                        Icon(Icons.Rounded.Groups, null, tint = Color.White, modifier = Modifier.align(Alignment.Center).size(74.dp))
+                        Text("A PLACE TO SHARE", color = Color(0xFF796B78), fontSize = 9.sp,
+                            fontWeight = FontWeight.Black, letterSpacing = 1.4.sp,
+                            modifier = Modifier.align(Alignment.BottomStart).padding(18.dp))
+                    }
+                    Row(Modifier.fillMaxWidth().padding(horizontal = 22.dp, vertical = 18.dp),
+                        verticalAlignment = Alignment.CenterVertically) {
+                        Surface(color = Color.White.copy(alpha = .9f), shape = CircleShape, modifier = Modifier.clickable { }) {
+                            Icon(Icons.Rounded.ArrowBack, "返回", tint = HInk, modifier = Modifier.padding(10.dp).size(19.dp))
+                        }
+                        Spacer(Modifier.weight(1f))
+                        Surface(color = Color.White.copy(alpha = .9f), shape = CircleShape, modifier = Modifier.clickable { }) {
+                            Icon(Icons.Rounded.Share, "分享", tint = HInk, modifier = Modifier.padding(10.dp).size(19.dp))
+                        }
+                    }
                 }
-                Spacer(Modifier.height(12.dp))
-                Text("原创插画交流社", color = HInk, fontSize = 20.sp, fontWeight = FontWeight.Bold)
-                Text("分享灵感、交流技法、认识同好。", color = HMuted, fontSize = 11.sp)
-                Spacer(Modifier.height(12.dp))
-                Text("2.4k 成员   ·   128 篇帖子", color = HPrimary, fontSize = 11.sp, fontWeight = FontWeight.SemiBold)
-                Spacer(Modifier.height(12.dp))
-                ActionButton("加入圈子", Modifier.fillMaxWidth())
+            }
+            item {
+                Column(Modifier.padding(horizontal = 20.dp), verticalArrangement = Arrangement.spacedBy(13.dp)) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Surface(color = HPale, shape = RoundedCornerShape(7.dp)) {
+                            Text("兴趣圈子", color = HPrimary, fontSize = 9.sp, fontWeight = FontWeight.Bold,
+                                modifier = Modifier.padding(horizontal = 9.dp, vertical = 6.dp))
+                        }
+                        Spacer(Modifier.width(7.dp))
+                        Text("创作 · 交流 · 分享", color = HMuted, fontSize = 10.sp)
+                    }
+                    Text("原创插画交流社", color = HInk, fontSize = 25.sp, fontWeight = FontWeight.Black)
+                    Text("分享灵感、交流技法，和喜欢画画的朋友一起成长。", color = HMuted, fontSize = 12.sp, lineHeight = 19.sp)
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
+                            Text("2,486", color = HInk, fontSize = 17.sp, fontWeight = FontWeight.Black)
+                            Text("圈子成员", color = HMuted, fontSize = 9.sp)
+                        }
+                        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
+                            Text("128", color = HInk, fontSize = 17.sp, fontWeight = FontWeight.Black)
+                            Text("累计帖子", color = HMuted, fontSize = 9.sp)
+                        }
+                        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
+                            Text("今日 36", color = HInk, fontSize = 17.sp, fontWeight = FontWeight.Black)
+                            Text("新增动态", color = HMuted, fontSize = 9.sp)
+                        }
+                    }
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        listOf("#原创插画", "#绘画交流", "#灵感分享").forEach { tag ->
+                            Surface(color = Color.White, shape = RoundedCornerShape(8.dp)) {
+                                Text(tag, color = HPrimary, fontSize = 9.sp, modifier = Modifier.padding(horizontal = 9.dp, vertical = 6.dp))
+                            }
+                        }
+                    }
+                    Button(
+                        onClick = { joined = !joined },
+                        modifier = Modifier.fillMaxWidth().height(45.dp),
+                        shape = RoundedCornerShape(14.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = if (joined) HPale else HPrimary, contentColor = if (joined) HPrimary else Color.White)
+                    ) {
+                        Text(if (joined) "已加入圈子" else "加入圈子", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                    }
+                    HorizontalDivider(color = Color(0xFFEFE6E3))
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        listOf("动态", "成员", "简介").forEach { tab ->
+                            Column(Modifier.weight(1f).clickable { selectedTab = tab }.padding(vertical = 10.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(7.dp)) {
+                                Text(tab, color = if (selectedTab == tab) HPrimary else HMuted, fontSize = 12.sp,
+                                    fontWeight = if (selectedTab == tab) FontWeight.Bold else FontWeight.Medium)
+                                Box(Modifier.width(24.dp).height(3.dp).clip(RoundedCornerShape(3.dp))
+                                    .background(if (selectedTab == tab) HPrimary else Color.Transparent))
+                            }
+                        }
+                    }
+                }
+            }
+            if (selectedTab == "动态") {
+                item {
+                    Row(Modifier.padding(horizontal = 20.dp, vertical = 10.dp), verticalAlignment = Alignment.CenterVertically) {
+                        Text("圈子动态", color = HInk, fontSize = 17.sp, fontWeight = FontWeight.Black, modifier = Modifier.weight(1f))
+                        Text("最新发布 ⌄", color = HMuted, fontSize = 10.sp)
+                    }
+                }
+                items(3) { index ->
+                    Surface(color = Color.White, shape = RoundedCornerShape(17.dp),
+                        modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 6.dp)) {
+                        Column(Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Box(Modifier.size(34.dp).clip(CircleShape).background(listOf(Color(0xFFF5DCE4), Color(0xFFDDEBE4), Color(0xFFE8E1F1))[index]),
+                                    contentAlignment = Alignment.Center) {
+                                    Text(listOf("星", "柚", "晚")[index], color = HPrimary, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                                }
+                                Spacer(Modifier.width(9.dp))
+                                Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                                    Text(postAuthors[index], color = HInk, fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                                    Text(listOf("刚刚", "20 分钟前", "1 小时前")[index], color = HMuted, fontSize = 9.sp)
+                                }
+                                Text("⋯", color = HMuted, fontSize = 20.sp)
+                            }
+                            Text(postTitles[index], color = HInk, fontSize = 13.sp, fontWeight = FontWeight.Bold)
+                            Box(Modifier.fillMaxWidth().height(118.dp).clip(RoundedCornerShape(13.dp))
+                                .background(listOf(Color(0xFFF4DCE3), Color(0xFFDDEBE4), Color(0xFFE8E1F1))[index]),
+                                contentAlignment = Alignment.Center) {
+                                Icon(listOf(Icons.Rounded.Palette, Icons.Rounded.Brush, Icons.Rounded.AutoAwesome)[index],
+                                    null, tint = listOf(Color(0xFFD58BA2), Color(0xFF79A18F), Color(0xFF9A8CB0))[index],
+                                    modifier = Modifier.size(42.dp))
+                            }
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Text("♡  ${listOf(28, 16, 42)[index]}", color = HMuted, fontSize = 10.sp,
+                                    modifier = Modifier.clickable { likedPost = if (index in likedPost) likedPost - index else likedPost + index })
+                                Spacer(Modifier.width(18.dp))
+                                Text("◯  ${listOf(12, 8, 19)[index]} 条评论", color = HMuted, fontSize = 10.sp)
+                                Spacer(Modifier.weight(1f))
+                                Text(if (index in likedPost) "已点赞" else "点赞", color = HPrimary, fontSize = 10.sp)
+                            }
+                        }
+                    }
+                }
+            } else if (selectedTab == "成员") {
+                item {
+                    Column(Modifier.padding(horizontal = 20.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                        Text("活跃成员", color = HInk, fontSize = 17.sp, fontWeight = FontWeight.Black)
+                        listOf("纸上星河", "柚子汽水", "晚风收藏家", "薄荷拿铁").forEachIndexed { index, name ->
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Box(Modifier.size(38.dp).clip(CircleShape).background(listOf(Color(0xFFF5DCE4), Color(0xFFDDEBE4), Color(0xFFE8E1F1), Color(0xFFFFEBCB))[index]),
+                                    contentAlignment = Alignment.Center) {
+                                    Text(name.take(1), color = HPrimary, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                                }
+                                Spacer(Modifier.width(10.dp))
+                                Text(name, color = HInk, fontSize = 11.sp, modifier = Modifier.weight(1f))
+                                Text(if (index == 0) "圈主" else "成员", color = HMuted, fontSize = 9.sp)
+                            }
+                        }
+                    }
+                }
+            } else {
+                item {
+                    Column(Modifier.padding(horizontal = 20.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                        Text("关于这个圈子", color = HInk, fontSize = 17.sp, fontWeight = FontWeight.Black)
+                        Text("这里是插画爱好者的交流空间。无论你是刚刚拿起画笔，还是已经有自己的创作习惯，都欢迎分享作品、交流经验、记录灵感。", color = HMuted, fontSize = 12.sp, lineHeight = 21.sp)
+                        Text("圈子规则", color = HInk, fontSize = 14.sp, fontWeight = FontWeight.Bold)
+                        Text("尊重原创 · 友善交流 · 理性讨论 · 禁止未经授权转载", color = HMuted, fontSize = 11.sp, lineHeight = 19.sp)
+                    }
+                }
             }
         }
-        SectionTitle("圈子动态", "发布")
-        repeat(3) { index ->
-            Surface(color = Color.White, shape = RoundedCornerShape(17.dp)) {
-                Column(Modifier.padding(15.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Text(listOf("今日配色练习分享", "最近完成的一组原创作品", "大家最喜欢哪种创作风格？")[index], color = HInk, fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
-                    Text("兴趣交流 · 帖子内容展示样例", color = HMuted, fontSize = 10.sp)
-                    Text("♡  28       ◯  12", color = HMuted, fontSize = 10.sp)
+        Surface(color = Color.White, shadowElevation = 8.dp) {
+            Row(Modifier.fillMaxWidth().padding(horizontal = 18.dp, vertical = 10.dp),
+                verticalAlignment = Alignment.CenterVertically) {
+                Text("分享你的创作与灵感…", color = HMuted, fontSize = 10.sp,
+                    modifier = Modifier.weight(1f).clip(RoundedCornerShape(22.dp)).background(HBg).clickable { }.padding(horizontal = 14.dp, vertical = 12.dp))
+                Spacer(Modifier.width(10.dp))
+                Button(onClick = { }, shape = RoundedCornerShape(20.dp),
+                    contentPadding = PaddingValues(horizontal = 17.dp, vertical = 8.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = HPrimary)) {
+                    Icon(Icons.Rounded.Edit, null, modifier = Modifier.size(14.dp))
+                    Spacer(Modifier.width(5.dp))
+                    Text("发动态", fontSize = 10.sp)
                 }
             }
         }

@@ -18,6 +18,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -322,7 +323,7 @@ private fun SectionTitle(title: String, more: String = "") {
 private fun MockImage(height: Int = 150, symbol: String = "✦") {
     Box(
         Modifier.fillMaxWidth().height(height.dp).clip(RoundedCornerShape(5.dp)).background(
-            androidx.compose.ui.graphics.Brush.linearGradient(listOf(Color(0xFFFFB8CF), Color(0xFFB9A7FF), Color(0xFFE7FF68)))
+            Brush.linearGradient(listOf(Color(0xFFFFB8CF), Color(0xFFB9A7FF), Color(0xFFE7FF68)))
         ),
         contentAlignment = Alignment.Center
     ) {

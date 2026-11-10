@@ -532,7 +532,7 @@ fun ConversationListScreen() {
 }
 
 @Composable
-private fun PrimaryBottomBar(selected: String) {
+fun PrimaryBottomBar(selected: String) {
     Surface(color = Color.White, shadowElevation = 8.dp) {
         Row(
             Modifier.fillMaxWidth().navigationBarsPadding().padding(horizontal = 8.dp, vertical = 8.dp),

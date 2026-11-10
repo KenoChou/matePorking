@@ -951,8 +951,7 @@ private fun TrendingDiscoverScreen() {
                         .clip(CircleShape).background(Color(0xFFB9D9CF)))
                     Column(Modifier.align(Alignment.CenterStart).padding(start = 20.dp), verticalArrangement = Arrangement.spacedBy(7.dp)) {
                         Text("本周兴趣焦点", color = Color(0xFF75616E), fontSize = 9.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.sp)
-                        Text("把喜欢的事，
-变成生活主角。", color = HInk, fontSize = 22.sp, lineHeight = 29.sp, fontWeight = FontWeight.Black)
+                        Text("把喜欢的事，\n变成生活主角。", color = HInk, fontSize = 22.sp, lineHeight = 29.sp, fontWeight = FontWeight.Black)
                         Text("灵感 · 同好 · 新鲜话题", color = Color(0xFF756F78), fontSize = 10.sp)
                     }
                     Text("✳", color = Color.White, fontSize = 30.sp, modifier = Modifier.align(Alignment.BottomEnd).padding(20.dp))

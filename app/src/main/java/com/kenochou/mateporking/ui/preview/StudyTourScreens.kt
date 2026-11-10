@@ -16,6 +16,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -377,3 +378,36 @@ private fun studyFieldColors() = OutlinedTextFieldDefaults.colors(
     unfocusedContainerColor = Color.White, focusedContainerColor = Color.White,
     unfocusedBorderColor = StudyLine, focusedBorderColor = StudyGreen
 )
+
+
+@Preview(name = "研学 01 · 发现首页", showBackground = true, widthDp = 393, heightDp = 852)
+@Composable
+private fun StudyTourHomePreview() {
+    MaterialTheme(colorScheme = lightColorScheme(primary = StudyGreen, background = StudyBg)) {
+        StudyTourHome()
+    }
+}
+
+@Preview(name = "研学 02 · 线路详情", showBackground = true, widthDp = 393, heightDp = 852)
+@Composable
+private fun StudyTourDetailPreview() {
+    MaterialTheme(colorScheme = lightColorScheme(primary = StudyGreen, background = StudyBg)) {
+        StudyTourDetail()
+    }
+}
+
+@Preview(name = "研学 03 · 报名信息", showBackground = true, widthDp = 393, heightDp = 852)
+@Composable
+private fun StudyTourBookingPreview() {
+    MaterialTheme(colorScheme = lightColorScheme(primary = StudyGreen, background = StudyBg)) {
+        StudyTourBooking()
+    }
+}
+
+@Preview(name = "研学 04 · 行程安排", showBackground = true, widthDp = 393, heightDp = 852)
+@Composable
+private fun StudyTourItineraryPreview() {
+    MaterialTheme(colorScheme = lightColorScheme(primary = StudyGreen, background = StudyBg)) {
+        StudyTourItinerary()
+    }
+}

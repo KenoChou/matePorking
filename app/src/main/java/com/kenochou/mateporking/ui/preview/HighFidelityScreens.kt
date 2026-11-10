@@ -54,6 +54,7 @@ fun HighFidelityScreen(name: String) {
         "活动详情" -> EventDetailScreen()
         "圈子详情" -> CircleDetailScreen()
         "Discover 首页" -> DiscoverHomeScreen()
+        "搜索" -> SearchScreen()
         "内容详情" -> ContentDetailScreen()
         "内容发布" -> ContentPublishScreen()
         else -> GenericDetailScreen(name)
@@ -890,5 +891,166 @@ private fun GenericDetailScreen(name: String) {
             }
         }
         repeat(4) { index -> DashboardRow(listOf("主要内容", "详细信息", "相关记录", "更多操作")[index]) }
+    }
+}
+
+
+@Composable
+private fun SearchScreen() {
+    var query by remember { mutableStateOf("") }
+    var selectedCategory by remember { mutableStateOf("全部") }
+    val categories = listOf("全部", "内容", "圈子", "商品", "用户")
+    val hotTopics = listOf("痛包改造", "原创角色", "展会返图", "手办摄影", "谷子交换", "同人创作")
+    val recentSearches = listOf("初音未来", "吧唧收纳", "周末漫展")
+
+    Column(
+        Modifier.fillMaxSize().background(HBg)
+    ) {
+        Column(
+            Modifier.fillMaxWidth().padding(horizontal = 20.dp).padding(top = 18.dp, bottom = 14.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                    Text("EXPLORE / SEARCH", color = HPrimary, fontSize = 9.sp, fontWeight = FontWeight.Black, letterSpacing = 1.6.sp)
+                    Text("发现感兴趣的", color = HInk, fontSize = 27.sp, fontWeight = FontWeight.Black)
+                }
+                Surface(color = HPale, shape = CircleShape) {
+                    Text("✦", color = HPrimary, fontSize = 20.sp, modifier = Modifier.padding(horizontal = 13.dp, vertical = 9.dp))
+                }
+            }
+            Row(
+                Modifier.fillMaxWidth().clip(RoundedCornerShape(16.dp)).background(Color.White)
+                    .border(1.dp, Color(0xFFF0E3E7), RoundedCornerShape(16.dp))
+                    .padding(horizontal = 13.dp, vertical = 3.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(Icons.Rounded.Search, contentDescription = "搜索", tint = HPrimary, modifier = Modifier.size(21.dp))
+                Spacer(Modifier.width(9.dp))
+                BasicTextField(
+                    value = query,
+                    onValueChange = { query = it },
+                    modifier = Modifier.weight(1f).padding(vertical = 13.dp),
+                    singleLine = true,
+                    textStyle = androidx.compose.ui.text.TextStyle(color = HInk, fontSize = 13.sp),
+                    decorationBox = { inner ->
+                        Box {
+                            if (query.isEmpty()) Text("搜索内容、圈子、商品或用户", color = HMuted, fontSize = 12.sp)
+                            inner()
+                        }
+                    }
+                )
+                if (query.isNotEmpty()) {
+                    Text("清除", color = HPrimary, fontSize = 11.sp, modifier = Modifier.clickable { query = "" })
+                }
+            }
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                categories.forEach { category ->
+                    val selected = selectedCategory == category
+                    Surface(
+                        color = if (selected) HInk else Color.White,
+                        shape = RoundedCornerShape(20.dp),
+                        modifier = Modifier.clickable { selectedCategory = category }
+                    ) {
+                        Text(
+                            category,
+                            color = if (selected) Color.White else HMuted,
+                            fontSize = 11.sp,
+                            fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium,
+                            modifier = Modifier.padding(horizontal = 15.dp, vertical = 9.dp)
+                        )
+                    }
+                }
+            }
+        }
+        LazyColumn(
+            modifier = Modifier.weight(1f),
+            contentPadding = PaddingValues(start = 20.dp, end = 20.dp, bottom = 28.dp),
+            verticalArrangement = Arrangement.spacedBy(22.dp)
+        ) {
+            if (query.isEmpty()) {
+                item {
+                    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text("最近搜索", color = HInk, fontSize = 15.sp, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+                            Text("清空记录", color = HMuted, fontSize = 10.sp, modifier = Modifier.clickable { })
+                        }
+                        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            recentSearches.forEach { term ->
+                                Surface(color = Color.White, shape = RoundedCornerShape(9.dp), modifier = Modifier.clickable { query = term }) {
+                                    Row(Modifier.padding(horizontal = 11.dp, vertical = 9.dp), verticalAlignment = Alignment.CenterVertically) {
+                                        Icon(Icons.Rounded.History, null, tint = HMuted, modifier = Modifier.size(13.dp))
+                                        Spacer(Modifier.width(5.dp))
+                                        Text(term, color = HInk, fontSize = 10.sp)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                item {
+                    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Column(Modifier.weight(1f)) {
+                                Text("TRENDING TOPICS", color = HPrimary, fontSize = 8.sp, fontWeight = FontWeight.Black, letterSpacing = 1.5.sp)
+                                Text("大家都在搜索", color = HInk, fontSize = 19.sp, fontWeight = FontWeight.Black)
+                            }
+                            Text("实时热度 ↗", color = HMuted, fontSize = 10.sp)
+                        }
+                        hotTopics.forEachIndexed { index, topic ->
+                            Row(
+                                Modifier.fillMaxWidth().clip(RoundedCornerShape(13.dp)).background(Color.White)
+                                    .clickable { query = topic }.padding(horizontal = 13.dp, vertical = 12.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text("%02d".format(index + 1), color = if (index < 3) HPrimary else HMuted, fontSize = 12.sp, fontWeight = FontWeight.Black)
+                                Spacer(Modifier.width(13.dp))
+                                Text(topic, color = HInk, fontSize = 12.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.weight(1f))
+                                if (index < 2) {
+                                    Surface(color = Color(0xFFFFF0E5), shape = RoundedCornerShape(5.dp)) {
+                                        Text(if (index == 0) "HOT" else "NEW", color = Color(0xFFD58A62), fontSize = 8.sp, fontWeight = FontWeight.Black, modifier = Modifier.padding(horizontal = 7.dp, vertical = 4.dp))
+                                    }
+                                } else {
+                                    Text("↗", color = HMuted, fontSize = 13.sp)
+                                }
+                            }
+                        }
+                    }
+                }
+                item {
+                    Surface(color = Color(0xFFE8F0EB), shape = RoundedCornerShape(18.dp), modifier = Modifier.fillMaxWidth()) {
+                        Row(Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+                            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(5.dp)) {
+                                Text("EDITOR'S PICK", color = Color(0xFF648879), fontSize = 8.sp, fontWeight = FontWeight.Black, letterSpacing = 1.2.sp)
+                                Text("找到你的同好", color = HInk, fontSize = 17.sp, fontWeight = FontWeight.Black)
+                                Text("从兴趣出发，遇见同频的人。", color = HMuted, fontSize = 10.sp)
+                            }
+                            Text("♡", color = Color(0xFFE58EA5), fontSize = 42.sp)
+                        }
+                    }
+                }
+            } else {
+                item {
+                    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                        Text("搜索“$query”", color = HInk, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                        repeat(4) { index ->
+                            Surface(color = Color.White, shape = RoundedCornerShape(14.dp), modifier = Modifier.fillMaxWidth()) {
+                                Row(Modifier.padding(13.dp), verticalAlignment = Alignment.CenterVertically) {
+                                    Box(Modifier.size(46.dp).clip(RoundedCornerShape(12.dp)).background(listOf(Color(0xFFFCEAF0), Color(0xFFE8F0EB), Color(0xFFFFF0D9), Color(0xFFEAE8F5))[index]), contentAlignment = Alignment.Center) {
+                                        Text(listOf("✦", "♡", "▧", "◎")[index], color = HPrimary, fontSize = 22.sp)
+                                    }
+                                    Spacer(Modifier.width(12.dp))
+                                    Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                                        Text(listOf("相关内容", "兴趣圈子", "精选商品", "相关用户")[index], color = HInk, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                                        Text("发现更多与“$query”相关的内容", color = HMuted, fontSize = 10.sp)
+                                    }
+                                    Icon(Icons.Rounded.ChevronRight, null, tint = HMuted)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }

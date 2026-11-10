@@ -56,7 +56,7 @@ fun HighFidelityScreen(name: String) {
         "Discover 首页" -> DiscoverHomeScreen()
         "搜索" -> SearchScreen()
         "趋势发现" -> TrendingDiscoverScreen()
-        "内容详情" -> ContentDetailScreen()
+        "内容详情" -> RedesignedContentDetailScreen()
         "内容发布" -> ContentPublishScreen()
         else -> GenericDetailScreen(name)
     }
@@ -896,6 +896,150 @@ private fun GenericDetailScreen(name: String) {
 }
 
 
+
+
+@Composable
+private fun RedesignedContentDetailScreen() {
+    var liked by remember { mutableStateOf(false) }
+    var collected by remember { mutableStateOf(false) }
+    var followed by remember { mutableStateOf(false) }
+
+    Column(Modifier.fillMaxSize().background(HBg)) {
+        LazyColumn(
+            modifier = Modifier.weight(1f),
+            contentPadding = PaddingValues(bottom = 18.dp),
+            verticalArrangement = Arrangement.spacedBy(0.dp)
+        ) {
+            item {
+                Box(Modifier.fillMaxWidth().height(330.dp)) {
+                    Box(
+                        Modifier.fillMaxSize().padding(horizontal = 14.dp, vertical = 8.dp)
+                            .clip(RoundedCornerShape(24.dp))
+                            .background(Brush.linearGradient(listOf(Color(0xFFF3C8D6), Color(0xFFE5DDF0), Color(0xFFC9E2D7)))
+                    ) {
+                        Box(Modifier.size(210.dp).align(Alignment.CenterEnd).offset(x = 38.dp, y = 18.dp)
+                            .clip(CircleShape).background(Color(0xFFFFE6A9)))
+                        Box(Modifier.size(132.dp).align(Alignment.TopEnd).offset(x = (-74).dp, y = 35.dp)
+                            .clip(CircleShape).background(Color(0xFFB9D9CF)))
+                        Box(Modifier.size(92.dp).align(Alignment.BottomStart).offset(x = 42.dp, y = 22.dp)
+                            .clip(CircleShape).background(Color(0xFFF4AFC0)))
+                        Text("✦", color = Color.White, fontSize = 76.sp, modifier = Modifier.align(Alignment.Center).offset(x = 10.dp, y = (-8).dp))
+                        Text("COLOR STUDY  /  01", color = Color(0xFF756B78), fontSize = 9.sp,
+                            fontWeight = FontWeight.Bold, letterSpacing = 1.4.sp,
+                            modifier = Modifier.align(Alignment.BottomStart).padding(20.dp))
+                    }
+                    Row(Modifier.fillMaxWidth().padding(horizontal = 22.dp, vertical = 18.dp),
+                        verticalAlignment = Alignment.CenterVertically) {
+                        Surface(color = Color.White.copy(alpha = .88f), shape = CircleShape,
+                            modifier = Modifier.clickable { }) {
+                            Icon(Icons.Rounded.ArrowBack, "返回", tint = HInk, modifier = Modifier.padding(10.dp).size(19.dp))
+                        }
+                        Spacer(Modifier.weight(1f))
+                        Surface(color = Color.White.copy(alpha = .88f), shape = CircleShape,
+                            modifier = Modifier.clickable { collected = !collected }) {
+                            Icon(if (collected) Icons.Rounded.Bookmark else Icons.Rounded.BookmarkBorder,
+                                "收藏", tint = HPrimary, modifier = Modifier.padding(10.dp).size(19.dp))
+                        }
+                        Spacer(Modifier.width(8.dp))
+                        Surface(color = Color.White.copy(alpha = .88f), shape = CircleShape,
+                            modifier = Modifier.clickable { }) {
+                            Icon(Icons.Rounded.MoreHoriz, "更多", tint = HInk, modifier = Modifier.padding(10.dp).size(19.dp))
+                        }
+                    }
+                }
+            }
+            item {
+                Column(Modifier.padding(horizontal = 22.dp), verticalArrangement = Arrangement.spacedBy(13.dp)) {
+                    Row(horizontalArrangement = Arrangement.spacedBy(7.dp), verticalAlignment = Alignment.CenterVertically) {
+                        Surface(color = HPale, shape = RoundedCornerShape(7.dp)) {
+                            Text("灵感记录", color = HPrimary, fontSize = 9.sp, fontWeight = FontWeight.Bold,
+                                modifier = Modifier.padding(horizontal = 9.dp, vertical = 6.dp))
+                        }
+                        Text("原创插画 · 2 小时前", color = HMuted, fontSize = 10.sp)
+                    }
+                    Text("把夏日的颜色，收藏进一场温柔的梦。", color = HInk, fontSize = 24.sp,
+                        lineHeight = 33.sp, fontWeight = FontWeight.Black)
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Box(Modifier.size(38.dp).clip(CircleShape).background(Color(0xFFE8DDEB)), contentAlignment = Alignment.Center) {
+                            Text("星", color = HPrimary, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                        }
+                        Spacer(Modifier.width(9.dp))
+                        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                            Text("纸上星河", color = HInk, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                            Text("插画创作者 · 分享日常灵感", color = HMuted, fontSize = 9.sp)
+                        }
+                        OutlinedButton(
+                            onClick = { followed = !followed },
+                            shape = RoundedCornerShape(20.dp),
+                            contentPadding = PaddingValues(horizontal = 14.dp, vertical = 5.dp),
+                            colors = ButtonDefaults.outlinedButtonColors(contentColor = HPrimary)
+                        ) { Text(if (followed) "已关注" else "关注", fontSize = 10.sp) }
+                    }
+                    HorizontalDivider(color = Color(0xFFEFE6E3))
+                    Text(
+                        "最近在整理自己的色彩灵感。比起明确的主题，我更喜欢从日常里收集一点细碎的心情：傍晚的天空、汽水里的气泡，还有阳光落在桌面上的形状。",
+                        color = Color(0xFF62616A), fontSize = 13.sp, lineHeight = 23.sp
+                    )
+                    Text(
+                        "这次尝试用柔和的粉色和薄荷绿做搭配，希望画面看起来轻盈一点，也保留一些属于夏天的明亮。",
+                        color = Color(0xFF62616A), fontSize = 13.sp, lineHeight = 23.sp
+                    )
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        listOf("#色彩灵感", "#原创插画", "#日常记录").forEach { tag ->
+                            Surface(color = Color.White, shape = RoundedCornerShape(8.dp)) {
+                                Text(tag, color = HPrimary, fontSize = 10.sp,
+                                    modifier = Modifier.padding(horizontal = 10.dp, vertical = 7.dp))
+                            }
+                        }
+                    }
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text("互动", color = HInk, fontSize = 16.sp, fontWeight = FontWeight.Black, modifier = Modifier.weight(1f))
+                        Text("浏览 2,486 次", color = HMuted, fontSize = 10.sp)
+                    }
+                    Surface(color = Color.White, shape = RoundedCornerShape(16.dp), modifier = Modifier.fillMaxWidth()) {
+                        Column(Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Box(Modifier.size(30.dp).clip(CircleShape).background(Color(0xFFE9F0EA)), contentAlignment = Alignment.Center) {
+                                    Text("林", color = Color(0xFF719987), fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                                }
+                                Spacer(Modifier.width(8.dp))
+                                Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                                    Text("林间来信", color = HInk, fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                                    Text("这个配色好舒服！", color = HMuted, fontSize = 10.sp)
+                                }
+                                Text("♡  18", color = HMuted, fontSize = 9.sp)
+                            }
+                            HorizontalDivider(color = HBg)
+                            Text("查看全部 26 条评论  →", color = HPrimary, fontSize = 10.sp, fontWeight = FontWeight.SemiBold)
+                        }
+                    }
+                }
+            }
+        }
+        Surface(color = Color.White, shadowElevation = 8.dp) {
+            Row(Modifier.fillMaxWidth().padding(horizontal = 18.dp, vertical = 10.dp),
+                verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(17.dp)) {
+                Row(Modifier.weight(1f).clip(RoundedCornerShape(22.dp)).background(HBg).padding(horizontal = 13.dp, vertical = 11.dp),
+                    verticalAlignment = Alignment.CenterVertically) {
+                    Icon(Icons.Rounded.Edit, null, tint = HMuted, modifier = Modifier.size(15.dp))
+                    Spacer(Modifier.width(7.dp))
+                    Text("说点什么…", color = HMuted, fontSize = 10.sp)
+                }
+                Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.clickable { liked = !liked }) {
+                    Icon(if (liked) Icons.Rounded.Favorite else Icons.Rounded.FavoriteBorder, null,
+                        tint = if (liked) HPrimary else HMuted, modifier = Modifier.size(21.dp))
+                    Spacer(Modifier.width(4.dp))
+                    Text(if (liked) "129" else "128", color = HMuted, fontSize = 10.sp)
+                }
+                Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.clickable { collected = !collected }) {
+                    Icon(if (collected) Icons.Rounded.Bookmark else Icons.Rounded.BookmarkBorder, null,
+                        tint = if (collected) HPrimary else HMuted, modifier = Modifier.size(21.dp))
+                }
+                Icon(Icons.Rounded.ChatBubbleOutline, null, tint = HMuted, modifier = Modifier.size(20.dp))
+            }
+        }
+    }
+}
 
 @Composable
 private fun TrendingDiscoverScreen() {

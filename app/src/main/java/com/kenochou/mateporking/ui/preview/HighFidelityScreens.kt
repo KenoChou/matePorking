@@ -88,7 +88,7 @@ private fun WelcomeScreen() {
                     .clip(CircleShape).background(Color(0xFFFFD98E)))
                 Box(Modifier.size(72.dp).align(Alignment.TopStart).offset(x = 22.dp, y = 82.dp)
                     .clip(CircleShape).background(Color(0xFFF3A6B8)))
-                Text("好きなもの\nぜんぶ！", color = Color(0xFF4C4650), fontSize = 31.sp, lineHeight = 37.sp,
+                Text("把热爱\n放大！", color = Color(0xFF4C4650), fontSize = 31.sp, lineHeight = 37.sp,
                     fontWeight = FontWeight.Black, modifier = Modifier.align(Alignment.TopStart).padding(start = 24.dp, top = 24.dp))
                 Text("♡", color = Color(0xFFFBF7F0), fontSize = 54.sp, modifier = Modifier.align(Alignment.CenterEnd).padding(end = 54.dp))
                 Text("FAN CULTURE CLUB", color = Color(0xFF4C4650), fontSize = 9.sp, letterSpacing = 2.sp,
@@ -748,7 +748,7 @@ private fun DiscoverHomeScreen() {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
                         Text("ANIMATE / TOKYO CULTURE CLUB", color = HMuted, fontSize = 8.sp, fontWeight = FontWeight.Black, letterSpacing = 1.2.sp)
-                        Text("好き、集合。", color = HInk, fontSize = 28.sp, fontWeight = FontWeight.Bold)
+                        Text("兴趣集合。", color = HInk, fontSize = 28.sp, fontWeight = FontWeight.Bold)
                     }
                     Surface(color = Color(0xFF514B54), shape = CircleShape) {
                         Row(Modifier.padding(horizontal = 12.dp, vertical = 9.dp), verticalAlignment = Alignment.CenterVertically) {
@@ -772,7 +772,7 @@ private fun DiscoverHomeScreen() {
                         )
                     ))
                     Text("VOL. 01", color = Color(0xFFE9E1D8), fontSize = 10.sp, fontWeight = FontWeight.Black, letterSpacing = 2.sp, modifier = Modifier.align(Alignment.TopStart).padding(17.dp))
-                    Text("好きなものに、\n夢中でいい。", color = Color.White, fontSize = 27.sp, lineHeight = 36.sp, fontWeight = FontWeight.Bold, modifier = Modifier.align(Alignment.CenterStart).padding(start = 18.dp, top = 16.dp))
+                    Text("为热爱而生，\n尽情投入。", color = Color.White, fontSize = 27.sp, lineHeight = 36.sp, fontWeight = FontWeight.Bold, modifier = Modifier.align(Alignment.CenterStart).padding(start = 18.dp, top = 16.dp))
                     Text("YOUR INTEREST. YOUR SCENE.", color = Color.White.copy(alpha = .86f), fontSize = 8.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.3.sp, modifier = Modifier.align(Alignment.BottomStart).padding(18.dp))
                     Surface(color = Color(0xFFE9E1D8), shape = RoundedCornerShape(4.dp), modifier = Modifier.align(Alignment.BottomEnd).padding(16.dp)) {
                         Text("DISCOVER →", color = Color(0xFF514B54), fontSize = 9.sp, fontWeight = FontWeight.Black, modifier = Modifier.padding(horizontal = 11.dp, vertical = 8.dp))

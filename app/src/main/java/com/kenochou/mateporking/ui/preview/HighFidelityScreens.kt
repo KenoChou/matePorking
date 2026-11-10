@@ -2,6 +2,7 @@ package com.kenochou.mateporking.ui.preview
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.layout.*
@@ -13,6 +14,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -591,7 +594,7 @@ private fun CreatorDashboardScreen() {
             item { PageHeader("创作者中心", "工作台") }
             item {
                 Surface(color = HPrimary, shape = RoundedCornerShape(22.dp), modifier = Modifier.fillMaxWidth()) {
-                    Column(Modifier.background(androidx.compose.ui.graphics.Brush.linearGradient(listOf(Color(0xFF7866D8), Color(0xFF9A87E8)))).padding(18.dp), verticalArrangement = Arrangement.spacedBy(11.dp)) {
+                    Column(Modifier.background(Brush.linearGradient(listOf(Color(0xFF7866D8), Color(0xFF9A87E8)))).padding(18.dp), verticalArrangement = Arrangement.spacedBy(11.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Column(Modifier.weight(1f)) {
                                 Text("CREATOR STUDIO / 001", color = Color(0xFFE7FF68), fontSize = 9.sp, fontWeight = FontWeight.Bold, letterSpacing = 1.3.sp)
@@ -764,7 +767,7 @@ private fun DiscoverHomeScreen() {
                         .background(Color(0xFF9A8BAA))
                 ) {
                     Box(Modifier.fillMaxWidth().height(244.dp).background(
-                        androidx.compose.ui.graphics.Brush.linearGradient(
+                        Brush.linearGradient(
                             listOf(Color(0xFF9A8BAA), Color(0xFFB7A9BD), Color(0xFFE2C5C2))
                         )
                     ))
@@ -829,7 +832,7 @@ private fun DiscoverHomeScreen() {
                 Surface(color = Color.White, shape = RoundedCornerShape(7.dp), modifier = Modifier.fillMaxWidth()) {
                     Column(Modifier.padding(10.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
                         Box(Modifier.fillMaxWidth().height(188.dp).clip(RoundedCornerShape(4.dp)).background(
-                            androidx.compose.ui.graphics.Brush.linearGradient(listOf(Color(0xFFEBD9D8), Color(0xFFDCD4E4), Color(0xFFD8E4DE)))
+                            Brush.linearGradient(listOf(Color(0xFFEBD9D8), Color(0xFFDCD4E4), Color(0xFFD8E4DE)))
                         )) {
                             Text("ART\nIS\nEVERYWHERE", color = Color(0xFF514B54), fontSize = 29.sp, lineHeight = 28.sp, fontWeight = FontWeight.Black, modifier = Modifier.align(Alignment.CenterStart).padding(start = 18.dp))
                             Text("✷", color = Color.White, fontSize = 92.sp, modifier = Modifier.align(Alignment.CenterEnd).padding(end = 20.dp))

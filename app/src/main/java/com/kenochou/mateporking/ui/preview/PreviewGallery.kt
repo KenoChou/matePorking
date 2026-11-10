@@ -64,7 +64,11 @@ private val previewRoutes = listOf(
     PreviewRoute("活动", "活动列表", "展会与兴趣活动"),
     PreviewRoute("活动", "活动详情", "活动介绍与日程"),
     PreviewRoute("活动", "活动报名", "报名资料与场次"),
-    PreviewRoute("活动", "我的电子票", "门票与核验状态")
+    PreviewRoute("活动", "我的电子票", "门票与核验状态"),
+    PreviewRoute("研学", "研学发现首页", "目的地推荐与主题研学线路"),
+    PreviewRoute("研学", "研学线路详情", "课程目标、导师介绍与费用说明"),
+    PreviewRoute("研学", "研学报名信息", "学生资料与监护人联系方式"),
+    PreviewRoute("研学", "研学行程安排", "每日时间轴、研学任务与安全须知")
 )
 
 @Composable
@@ -180,7 +184,8 @@ fun PreviewGallery() {
                     Text(selectedPage!!.description, color = GalleryMuted, fontSize = 10.sp)
                 }
             }
-            HighFidelityScreen(selectedPage!!.name)
+            if (selectedPage!!.group == "研学") StudyTourScreen(selectedPage!!.name)
+            else HighFidelityScreen(selectedPage!!.name)
         }
     }
 }

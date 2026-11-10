@@ -7,14 +7,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 
 private val ExperiencePreviewColors = lightColorScheme(
-    primary = Color(0xFF8A789D),
-    secondary = Color(0xFFD9A6A5),
-    background = Color(0xFFFAF8F5),
+    primary = Color(0xFFE58EA5),
+    secondary = Color(0xFFB9D9CF),
+    background = Color(0xFFFFF9F4),
     surface = Color.White,
     onPrimary = Color.White,
-    onSecondary = Color(0xFF302D35),
-    onBackground = Color(0xFF302D35),
-    onSurface = Color(0xFF302D35)
+    onSecondary = Color(0xFF384052),
+    onBackground = Color(0xFF384052),
+    onSurface = Color(0xFF384052)
 )
 
 @Composable
